@@ -7,7 +7,7 @@ a web micro-framework.
 ## Team
 
 - David Cole
-- MEMBER2
+- Davis Pitts
 - MEMBER3
 - MEMBER4
 
