@@ -9,7 +9,7 @@ a web micro-framework.
 - David Cole
 - Davis Pitts
 - Joe Wesnofske
-- MEMBER4
+- Connor Stange
 
 
 ## Prerequisites
