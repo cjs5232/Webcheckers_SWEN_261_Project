@@ -6,7 +6,7 @@ a web micro-framework.
 
 ## Team
 
-- David Cole
+- David Cole (dac3404@rit.edu)
 - Davis Pitts
 - Joe Wesnofske
 - MEMBER4
