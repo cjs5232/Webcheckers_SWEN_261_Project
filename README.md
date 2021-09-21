@@ -8,7 +8,7 @@ a web micro-framework.
 
 - David Cole
 - Davis Pitts
-- MEMBER3
+- Joe Wesnofske
 - MEMBER4
 
 
