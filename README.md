@@ -10,6 +10,7 @@ a web micro-framework.
 - Davis Pitts
 - Joe Wesnofske
 - Connor Stange 
+- Zachary Rutherford
 
 
 ## Prerequisites
