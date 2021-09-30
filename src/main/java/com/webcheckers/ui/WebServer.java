@@ -54,6 +54,16 @@ public class WebServer {
    */
   public static final String HOME_URL = "/";
 
+  /**
+   * The URL pattern to request the Login page.
+   */
+  public static final String LOGIN_URL = "/login";
+
+  /**
+   * The URL pattern to request the favicon.ico.
+   */
+  public static final String FAV_ICON_URL = "/favicon.ico";
+
   //
   // Attributes
   //
@@ -135,6 +145,12 @@ public class WebServer {
     //// that are appropriate for the HTTP client interface that you define.
     //// Create separate Route classes to handle each route; this keeps your
     //// code clean; using small classes.
+
+    //Shows the signin page
+    get(LOGIN_URL, new GetLoginRoute(templateEngine));
+
+    //Favicon
+    get(FAV_ICON_URL, new GetFavIconRoute(templateEngine));
 
     // Shows the Checkers game Home page.
     get(HOME_URL, new GetHomeRoute(templateEngine));
