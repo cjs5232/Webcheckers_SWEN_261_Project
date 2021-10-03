@@ -65,11 +65,6 @@ public class WebServer {
    */
   public static final String LOGIN_URL = "/login";
 
-  /**
-   * The URL pattern to request the favicon.ico.
-   */
-  public static final String FAV_ICON_URL = "/favicon.ico";
-
   public static final String ADD_PLAYER_URL = "/addPlayer";
 
   public static final String GAME_URL = "/game";
@@ -158,21 +153,22 @@ public class WebServer {
     //// Create separate Route classes to handle each route; this keeps your
     //// code clean; using small classes.
 
-   
-    //Shows the signin page
-
+    //Starts the sign-in
     post(ADD_PLAYER_URL, new AddPlayerRoute(templateEngine));
+    //Finished with sign-in
     get(ADD_PLAYER_URL, new GetHomeRoute(templateEngine));
 
+    //Starts the signout
     post(LOGOUT_URL, new RemovePlayerRoute(templateEngine));
+    //Finished with sign-in
     get(LOGOUT_URL, new GetHomeRoute(templateEngine));
 
+    //Shows the signin page
     get(LOGIN_URL, new GetLoginRoute(templateEngine));
 
     get(GAME_URL, new GetGameRoute(templateEngine));
 
-    //Favicon
-    get(FAV_ICON_URL, new GetFavIconRoute(templateEngine));
+    
 
     // Shows the Checkers game Home page.
     get(HOME_URL, new GetHomeRoute(templateEngine));

@@ -67,13 +67,17 @@ public class GetHomeRoute implements Route {
 
       if(loggedInPlayers != null && (loggedInPlayers.size() != 1)) {
 
-        for(Player p : loggedInPlayers){
+        /* for(Player p : loggedInPlayers){
 
           if(!p.toString().equals(vm.get("currentUser"))){
             vm.put("otherUser", p.toString());
             request.session().attribute("otherUser", p.toString());
           }
-        }
+        } */
+
+        List<Player> allButCurrentUser = List.copyOf(loggedInPlayers);
+        //TODO: Remove ${currentuser} from allButCurrentUser list
+        vm.put("otherUsers", allButCurrentUser);
       } 
     }
 

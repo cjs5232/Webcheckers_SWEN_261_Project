@@ -1,1 +1,0 @@
-<link href="{{ asset('../public/img/icon.png') }}" rel="shortcut icon" type="image/svg+xml">

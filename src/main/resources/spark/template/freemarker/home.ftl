@@ -25,8 +25,13 @@
             spectating active games,
             or replay archived games
     -->
-    <#if otherUser??>
-      ${otherUser}
+    <#if otherUsers??>
+      <h3>Other Players</h3>
+      <ul title="Other Players">
+        <#list otherUsers as user>
+          <li>${user}
+        </#list>
+      </ul>
     </#if>
 
   </div>
