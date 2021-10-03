@@ -9,7 +9,6 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.Session;
 import spark.TemplateEngine;
 
 import com.webcheckers.util.Message;
@@ -56,8 +55,18 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
+    if(request.session().attributes().contains("currentUser")){
+      vm.put("currentUser", request.session().attribute("currentUser"));
+    }
+
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
+
+    System.out.println("URL: " + request.url());
+
+    if(!request.url().equals("http://localhost:4567/")){
+      response.redirect("/");
+    }
     
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));

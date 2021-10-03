@@ -72,8 +72,9 @@ public class WebServer {
 
   public static final String ADD_PLAYER_URL = "/addPlayer";
 
-
   public static final String GAME_URL = "/game";
+
+  public static final String LOGOUT_URL = "/logout";
 
   //
   // Attributes
@@ -159,8 +160,13 @@ public class WebServer {
 
    
     //Shows the signin page
+
     post(ADD_PLAYER_URL, new AddPlayerRoute(templateEngine));
-    get(ADD_PLAYER_URL, new GetLoginRoute(templateEngine));
+    get(ADD_PLAYER_URL, new GetHomeRoute(templateEngine));
+
+    post(LOGOUT_URL, new RemovePlayerRoute(templateEngine));
+    get(LOGOUT_URL, new GetHomeRoute(templateEngine));
+
     get(LOGIN_URL, new GetLoginRoute(templateEngine));
 
     get(GAME_URL, new GetGameRoute(templateEngine));

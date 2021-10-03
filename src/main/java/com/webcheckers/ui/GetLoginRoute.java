@@ -21,7 +21,7 @@ import com.webcheckers.util.Message;
 public class GetLoginRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetLoginRoute.class.getName());
 
-  private static final Message LOGIN_MSG = Message.info("Please enter your username and password.");
+  private static final Message LOGIN_MSG = Message.info("Please enter a username");
 
   private final TemplateEngine templateEngine;
 
@@ -57,6 +57,8 @@ public class GetLoginRoute implements Route {
 
     // display a user message in the Home page
     vm.put("message", LOGIN_MSG);
+
+    response.redirect("/");
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "login.ftl"));
