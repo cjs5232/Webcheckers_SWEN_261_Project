@@ -49,6 +49,10 @@ public class PlayerController {
         return false;
     }
 
+    /**
+     * 
+     * @return A list of all logged in players
+     */
     public List<Player> getPlayers(){
 
         ArrayList<Player> loggedInPlayers = new ArrayList<>();
@@ -59,6 +63,30 @@ public class PlayerController {
         while(iterator.hasNext()){
             Map.Entry<Integer, Player> entry = iterator.next();
             loggedInPlayers.add(entry.getValue());
+        }
+
+        return loggedInPlayers;
+    }
+
+    /**
+     * 
+     * @param ignoredPlayer The player to ignore from the list, used to show "otherUsers" in home.ftl
+     * @return A list of all logged in players, ignoring the param
+     * 
+     * @see home.ftl
+     */
+    public List<Player> getPlayersExcept(String ignoredPlayer){
+
+        ArrayList<Player> loggedInPlayers = new ArrayList<>();
+
+        //Create an iterator to move through the entire map
+        Iterator<Map.Entry<Integer, Player> > iterator = playerMap.entrySet().iterator();
+
+        while(iterator.hasNext()){
+            Map.Entry<Integer, Player> entry = iterator.next();
+            if(!entry.getValue().toString().equals(ignoredPlayer)){
+                loggedInPlayers.add(entry.getValue());
+            }
         }
 
         return loggedInPlayers;
