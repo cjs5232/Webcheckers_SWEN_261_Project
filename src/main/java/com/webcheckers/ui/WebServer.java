@@ -71,6 +71,8 @@ public class WebServer {
 
   public static final String LOGOUT_URL = "/logout";
 
+  private static final String FAVICON_URL = "/favicon.ico";
+
   //
   // Attributes
   //
@@ -152,6 +154,9 @@ public class WebServer {
     //// that are appropriate for the HTTP client interface that you define.
     //// Create separate Route classes to handle each route; this keeps your
     //// code clean; using small classes.
+
+    //FavIcon
+    get(FAVICON_URL, new GetFavIconRoute());
 
     //Starts the sign-in
     post(ADD_PLAYER_URL, new AddPlayerRoute(templateEngine));

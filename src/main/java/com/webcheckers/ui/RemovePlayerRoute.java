@@ -61,7 +61,7 @@ public class RemovePlayerRoute implements Route {
       vm.put("title", "Welcome!");
   
       // display a user message in the Home page
-      vm.put("message", WELCOME_MSG);;
+      vm.put("message", WELCOME_MSG);
 
       String remPlayerName = request.session().attribute("currentUser").toString();
 

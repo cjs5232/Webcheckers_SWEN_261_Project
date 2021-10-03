@@ -34,7 +34,7 @@ public class GetGameRoute implements Route {
   public GetGameRoute(final TemplateEngine templateEngine) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
-    LOG.config("GetHomeRoute is initialized.");
+    LOG.config("GetGameRoute is initialized.");
   }
 
   /**

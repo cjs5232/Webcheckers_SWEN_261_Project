@@ -74,9 +74,6 @@ public class AddPlayerRoute implements Route {
           LOG.log(Level.INFO, "Successfully added a new player with name: {0}", newPlayerName);
           session.attribute("currentUser", WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(newPlayerName));
 
-          //REACH
-          System.out.println(session.attribute("currentUser").toString());
-
           vm.put("currentUser", newPlayerName);
           // Return the user to the home page
           return templateEngine.render(new ModelAndView(vm , "home.ftl"));
