@@ -1,6 +1,8 @@
 package com.webcheckers.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -12,6 +14,8 @@ import spark.Route;
 import spark.TemplateEngine;
 
 import com.webcheckers.util.Message;
+import com.webcheckers.util.Player;
+import com.webcheckers.util.PlayerController;
 
 /**
  * The UI Controller to GET the Home page.
@@ -55,15 +59,28 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
+    //If the user is logged in
     if(request.session().attributes().contains("currentUser")){
       vm.put("currentUser", request.session().attribute("currentUser"));
+
+      List<Player> loggedInPlayers = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayers();
+
+      if(loggedInPlayers != null && (loggedInPlayers.size() != 1)) {
+
+        for(Player p : loggedInPlayers){
+
+          if(!p.toString().equals(vm.get("currentUser"))){
+            vm.put("otherUser", p.toString());
+            request.session().attribute("otherUser", p.toString());
+          }
+        }
+      } 
     }
 
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 
-    System.out.println("URL: " + request.url());
-
+    //If the user did not load home from "/", redirect them on the next refresh cycle
     if(!request.url().equals("http://localhost:4567/")){
       response.redirect("/");
     }

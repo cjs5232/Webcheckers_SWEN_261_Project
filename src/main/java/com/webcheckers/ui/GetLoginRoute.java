@@ -58,8 +58,6 @@ public class GetLoginRoute implements Route {
     // display a user message in the Home page
     vm.put("message", LOGIN_MSG);
 
-    response.redirect("/");
-
     // render the View
     return templateEngine.render(new ModelAndView(vm , "login.ftl"));
   }

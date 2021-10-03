@@ -1,17 +1,15 @@
 package com.webcheckers.util;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * This class should be instatiated once when the web server is started, and will handle tracking logged in players
  */
 public class PlayerController {
-    
-    private static final Logger LOG = Logger.getLogger(PlayerController.class.getName());
 
     Map<Integer, Player> playerMap;
 
@@ -33,21 +31,36 @@ public class PlayerController {
 
     public boolean removePlayer(String playerName){
 
+        //Create an iterator to move through the entire map
         Iterator<Map.Entry<Integer, Player> > iterator = playerMap.entrySet().iterator();
 
         while(iterator.hasNext()){
 
             Map.Entry<Integer, Player> entry = iterator.next();
 
-            if(entry.getValue().toString().equals(playerName)){
-                
+            //If the entry has the name of the player, remove the player
+            if(entry.getValue().toString().equals(playerName)){ 
                 iterator.remove();
                 return true;
             }
         }
 
+        //The player was not found, or does not exist - this should never be reached by classical UI navigation
         return false;
-
     }
 
+    public List<Player> getPlayers(){
+
+        ArrayList<Player> loggedInPlayers = new ArrayList<>();
+
+        //Create an iterator to move through the entire map
+        Iterator<Map.Entry<Integer, Player> > iterator = playerMap.entrySet().iterator();
+
+        while(iterator.hasNext()){
+            Map.Entry<Integer, Player> entry = iterator.next();
+            loggedInPlayers.add(entry.getValue());
+        }
+
+        return loggedInPlayers;
+    }
 }

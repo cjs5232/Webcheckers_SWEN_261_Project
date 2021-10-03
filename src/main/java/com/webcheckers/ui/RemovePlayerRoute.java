@@ -10,11 +10,9 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.Session;
 import spark.TemplateEngine;
 
 import com.webcheckers.util.Message;
-import com.webcheckers.util.Player;
 
 /**
  * The UI Controller to GET the Home page.

@@ -75,8 +75,6 @@ public class AddPlayerRoute implements Route {
           session.attribute("currentUser", newPlayerName);
 
           vm.put("currentUser", newPlayerName);
-
-          LOG.log(Level.INFO, "currentUser: {0}", session.attribute("currentUser").toString());
         }
       else{
           LOG.log(Level.WARNING, "Did not create player with name: {0}", newPlayerName);
