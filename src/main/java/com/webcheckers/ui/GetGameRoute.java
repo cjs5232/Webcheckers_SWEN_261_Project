@@ -9,7 +9,6 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.Session;
 import spark.TemplateEngine;
 
 import com.webcheckers.util.Message;
@@ -19,8 +18,8 @@ import com.webcheckers.util.Message;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
-public class GetHomeRoute implements Route {
-  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+public class GetGameRoute implements Route {
+  private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
 
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
@@ -32,7 +31,7 @@ public class GetHomeRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine) {
+  public GetGameRoute(final TemplateEngine templateEngine) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
     LOG.config("GetHomeRoute is initialized.");
@@ -51,15 +50,15 @@ public class GetHomeRoute implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
-    LOG.finer("GetHomeRoute is invoked.");
+    LOG.finer("GetGameRoute is invoked.");
     //
     Map<String, Object> vm = new HashMap<>();
-    vm.put("title", "Welcome!");
+    vm.put("title", "Game");
 
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
     
     // render the View
-    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+    return templateEngine.render(new ModelAndView(vm , "game.ftl"));
   }
 }

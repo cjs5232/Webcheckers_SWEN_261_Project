@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.webcheckers.util.PlayerController;
 
 import spark.TemplateEngine;
 
@@ -50,6 +51,11 @@ public class WebServer {
   //
 
   /**
+   * Defines one PlayerController
+   */
+  public static final PlayerController GLOBAL_PLAYER_CONTROLLER = new PlayerController();
+
+  /**
    * The URL pattern to request the Home page.
    */
   public static final String HOME_URL = "/";
@@ -63,6 +69,11 @@ public class WebServer {
    * The URL pattern to request the favicon.ico.
    */
   public static final String FAV_ICON_URL = "/favicon.ico";
+
+  public static final String ADD_PLAYER_URL = "/addPlayer";
+
+
+  public static final String GAME_URL = "/game";
 
   //
   // Attributes
@@ -146,8 +157,13 @@ public class WebServer {
     //// Create separate Route classes to handle each route; this keeps your
     //// code clean; using small classes.
 
+   
     //Shows the signin page
+    post(ADD_PLAYER_URL, new AddPlayerRoute(templateEngine));
+    get(ADD_PLAYER_URL, new GetLoginRoute(templateEngine));
     get(LOGIN_URL, new GetLoginRoute(templateEngine));
+
+    get(GAME_URL, new GetGameRoute(templateEngine));
 
     //Favicon
     get(FAV_ICON_URL, new GetFavIconRoute(templateEngine));
