@@ -20,6 +20,11 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
+    <#if addUserError??>
+      <h4> Error: </h4>
+      <p> ${addUserError}
+    </#if>
+  
     <form method="POST" action="/addPlayer">
         <label for="name">Username:</label>
         <input name="name" id="name">

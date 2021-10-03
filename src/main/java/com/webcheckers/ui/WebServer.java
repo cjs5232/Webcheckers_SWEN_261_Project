@@ -166,11 +166,10 @@ public class WebServer {
     //Shows the signin page
     get(LOGIN_URL, new GetLoginRoute(templateEngine));
 
+    //Shows the game page (not fully implemented yet)
     get(GAME_URL, new GetGameRoute(templateEngine));
 
-    
-
-    // Shows the Checkers game Home page.
+    //Shows the Checkers game Home page.
     get(HOME_URL, new GetHomeRoute(templateEngine));
 
     //

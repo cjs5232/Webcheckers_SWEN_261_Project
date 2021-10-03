@@ -68,19 +68,27 @@ public class AddPlayerRoute implements Route {
       vm.put("message", WELCOME_MSG);
 
       String newPlayerName = request.queryParams("name");
+      String successfulAddPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.addPlayer(new Player(newPlayerName));
 
-      boolean successfulAddPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.addPlayer(new Player(newPlayerName));
-      if(successfulAddPlayer){
+      if(successfulAddPlayer.equals("")){
           LOG.log(Level.INFO, "Successfully added a new player with name: {0}", newPlayerName);
-          session.attribute("currentUser", newPlayerName);
+          session.attribute("currentUser", WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(newPlayerName));
+
+          //REACH
+          System.out.println(session.attribute("currentUser").toString());
 
           vm.put("currentUser", newPlayerName);
+          // Return the user to the home page
+          return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }
       else{
           LOG.log(Level.WARNING, "Did not create player with name: {0}", newPlayerName);
+          LOG.log(Level.INFO, "User error: {0}", successfulAddPlayer);
+
+          vm.put("addUserError", successfulAddPlayer);
+
+          // Return the user to the login page
+          return templateEngine.render(new ModelAndView(vm , "login.ftl"));
       }
-  
-      // render the View
-      return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
   }

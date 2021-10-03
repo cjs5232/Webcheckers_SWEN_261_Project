@@ -2,8 +2,8 @@ package com.webcheckers.util;
 
 public class Player {
     
-    private final String name;
-    private final int id;
+    public final String name;
+    public final int id;
 
     public Player(String name){
         this.name = name;

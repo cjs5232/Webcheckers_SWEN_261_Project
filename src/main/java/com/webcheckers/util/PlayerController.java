@@ -17,16 +17,22 @@ public class PlayerController {
         this.playerMap = new HashMap<>();
     }
 
-    public boolean addPlayer(Player newPlayer){
+    public String addPlayer(Player newPlayer){
         
         int hashId = newPlayer.getId();
+
+        if(!newPlayer.getName().matches("^[a-zA-Z0-9\\s]+$")){
+            return "Name contained invalid characters.";
+        }
 
         //TODO: Convert to playerMap.computeIfAbsent()
         if(!playerMap.containsKey(hashId)){
             playerMap.put(hashId, newPlayer);
-            return true;
+            return "";
         }
-        return false;
+        else{
+            return "User with this name already exists.";
+        }
     }
 
     public boolean removePlayer(String playerName){
@@ -47,6 +53,25 @@ public class PlayerController {
 
         //The player was not found, or does not exist - this should never be reached by classical UI navigation
         return false;
+    }
+
+    /**
+     * 
+     * @param playerName The name of the player to access
+     * @return The Player object associated with the passed name
+     */
+    public Player getPlayerByName(String playerName){
+        //Create an iterator to move through the entire map
+        Iterator<Map.Entry<Integer, Player> > iterator = playerMap.entrySet().iterator();
+
+        while(iterator.hasNext()){
+            Map.Entry<Integer, Player> entry = iterator.next();
+            if(entry.getValue().toString().equals(playerName)){
+                return entry.getValue();
+            }
+        }
+
+        return null;
     }
 
     /**

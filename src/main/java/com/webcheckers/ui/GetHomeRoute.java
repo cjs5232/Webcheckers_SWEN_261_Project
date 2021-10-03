@@ -57,11 +57,11 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
+    List<Player> loggedInPlayers = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayers();
+
     //If the user is logged in
     if(request.session().attributes().contains("currentUser")){
       vm.put("currentUser", request.session().attribute("currentUser"));
-
-      List<Player> loggedInPlayers = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayers();
 
       if(loggedInPlayers != null && (loggedInPlayers.size() != 1)) {
 
@@ -70,7 +70,13 @@ public class GetHomeRoute implements Route {
         vm.put("otherUsers", allButCurrentUser);
       }
     }
-
+    if(loggedInPlayers != null){
+      vm.put("otherUsersQuantity", loggedInPlayers.size());
+    }
+    else{
+      vm.put("otherUsersQuantity", 0);
+    }
+  
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 

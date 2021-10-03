@@ -38,6 +38,14 @@
       <#if currentUser??>
         <h3>Other Players</h3>
         <p>No other players are logged in</p>
+      <#else>
+        <#if otherUsersQuantity??>
+          <#if otherUsersQuantity == 1>
+            <p>There is ${otherUsersQuantity} player logged in.
+          <#else>
+            <p>There are ${otherUsersQuantity} players currently logged in.
+          </#if>
+        </#if>
       </#if>
       
     </#if>
