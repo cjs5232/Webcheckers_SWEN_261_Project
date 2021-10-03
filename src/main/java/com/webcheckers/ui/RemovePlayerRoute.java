@@ -67,11 +67,11 @@ public class RemovePlayerRoute implements Route {
 
       boolean successfulRemPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.removePlayer(remPlayerName);
       if(successfulRemPlayer){
-        LOG.log(Level.INFO, "Player with name {} removed", remPlayerName);
+        LOG.log(Level.INFO, "Player with name \"{0}\" removed", remPlayerName);
         request.session().removeAttribute("currentUser");
       }
       else{
-        LOG.log(Level.INFO, "Player with name {} not found, therefore not removed", remPlayerName);
+        LOG.log(Level.INFO, "Player with name \"{0}\" not found, therefore not removed", remPlayerName);
       }
   
       // render the View

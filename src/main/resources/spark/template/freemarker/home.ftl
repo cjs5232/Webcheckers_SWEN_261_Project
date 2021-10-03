@@ -29,9 +29,17 @@
       <h3>Other Players</h3>
       <ul title="Other Players">
         <#list otherUsers as user>
-          <li>${user}
+          <li>${user}</li>
+        <#else>
+          <p>No other users are logged in.
         </#list>
       </ul>
+    <#else>
+      <#if currentUser??>
+        <h3>Other Players</h3>
+        <p>No other players are logged in</p>
+      </#if>
+      
     </#if>
 
   </div>

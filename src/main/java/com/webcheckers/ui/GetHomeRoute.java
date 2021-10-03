@@ -1,6 +1,5 @@
 package com.webcheckers.ui;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import spark.TemplateEngine;
 
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
-import com.webcheckers.util.PlayerController;
 
 /**
  * The UI Controller to GET the Home page.
@@ -70,7 +68,7 @@ public class GetHomeRoute implements Route {
         //Get a list of all players EXCEPT FOR the currentUser
         List<Player> allButCurrentUser = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayersExcept(vm.get("currentUser").toString());
         vm.put("otherUsers", allButCurrentUser);
-      } 
+      }
     }
 
     // display a user message in the Home page
