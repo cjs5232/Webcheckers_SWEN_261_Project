@@ -65,12 +65,26 @@ public class WebServer {
    */
   public static final String LOGIN_URL = "/login";
 
+  /**
+   * The URL pattern to add a player 
+   */
   public static final String ADD_PLAYER_URL = "/addPlayer";
 
+  /**
+   * The URL pattern to start a game.
+   * This should not be directly accessed by the user
+   */
   public static final String GAME_URL = "/game";
 
+  /**
+   * The URL pattern to remove the currentuser
+   */
   public static final String LOGOUT_URL = "/logout";
 
+  /**
+   * "/favicon.ico" is the default place that a browser will look for for the 'display icon'
+   * that is placed next to a webpage. The default access to said icon is a GET request.
+   */
   private static final String FAVICON_URL = "/favicon.ico";
 
   //

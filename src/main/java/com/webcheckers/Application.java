@@ -39,7 +39,7 @@ public final class Application {
     return inDemoMode;
   }
   private static final String DEMO_MODE_PROPERTY = "demoMode";
-  private static Boolean inDemoMode = null;
+  private static Boolean inDemoMode = true;
 
   /**
    * The explicit, private property lookup method.
