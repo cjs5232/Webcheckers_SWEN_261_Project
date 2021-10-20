@@ -19,6 +19,16 @@ public class Row implements Iterable<Space>{
      */
     public Row(int index, ArrayList<Space> spaces){
         this.index = index;
+        for(int i = 0; i < 8; i++){
+            if(index % 2 == i % 2 )
+                spaces.add(new Space(i, null));
+            else if(index == 3 || index == 4)
+                spaces.add(new Space(i, null));
+            else if(index < 3)
+                spaces.add(new Space(i, new Piece(Piece.Type.SINGLE, Piece.Color.WHITE)));
+            else
+                spaces.add(new Space(i, new Piece(Piece.Type.SINGLE, Piece.Color.RED)));
+        }
         this.spaces = spaces;
     }
 
