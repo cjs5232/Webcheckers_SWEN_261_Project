@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -11,7 +12,9 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+import com.webcheckers.util.BoardView;
 import com.webcheckers.util.Message;
+import com.webcheckers.util.Row;
 
 /**
  * The UI Controller to GET the Home page.
@@ -60,6 +63,10 @@ public class GetGameRoute implements Route {
 
     vm.put("currentUser", request.session().attribute("currentUser"));
     vm.put("viewMode", "play");
+
+    ArrayList<Row> rows = new ArrayList<Row>();
+    BoardView board = new BoardView(rows);
+    vm.put("board", board);
     
     // render the View
     return templateEngine.render(new ModelAndView(vm , "game.ftl"));

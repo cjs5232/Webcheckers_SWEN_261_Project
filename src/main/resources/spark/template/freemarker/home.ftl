@@ -29,7 +29,8 @@
       <h3>Other Players</h3>
       <ul title="Other Players">
         <#list otherUsers as user>
-          <li>${user}</li>
+          
+          <a href="/game"><li>${user}</li></a>
         <#else>
           <p>No other users are logged in.
         </#list>
