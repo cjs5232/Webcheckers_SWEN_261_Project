@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/game.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script> var otherUser = getParameterByName('otherUser'); </script>
   <script>
   window.gameData = {
     "gameID" : ${gameID!'null'},
@@ -12,7 +13,7 @@
     "viewMode" : "${viewMode}",
     "modeOptions" : ${modeOptionsAsJSON!'{}'},
     "redPlayer" : "${currentUser}",
-    "whitePlayer" : "other player",
+    "whitePlayer" : "${otherUser}",
     "activeColor" : "RED"
   };
   </script>
@@ -82,8 +83,6 @@
                 </tr>
               </#list>
               </tbody>
-          
-
           </table>
         </div>
       </div>
