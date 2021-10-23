@@ -42,9 +42,25 @@ public class GameController {
                 if(p.getName().equals(queryPlayerName)) return true;
             }
         }
-
         return false;
-
     }
 
+    /**
+     * 
+     * @param queryPlayerName the name of the player who's game you wish to retrieve
+     * @return the active game of the queried player
+     */
+    public Game getGameOfPlayer(String queryPlayerName){
+        //For each game in the list
+        for(Game g : gameList){
+            //Get all players in said game
+            Player[] gPlayerList = g.getPlayers();
+            for(Player p : gPlayerList){
+                //Return the game if the player is in the list
+                if(p.getName().equals(queryPlayerName)) return g;
+            }
+        }
+
+        return null;
+    }
 }

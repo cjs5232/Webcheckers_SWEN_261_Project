@@ -110,6 +110,10 @@ public final class Message {
 
   @Override
   public String toString() {
+    return text;
+  }
+
+  public String toStringVerbose(){
     return "{Msg " + type + " '" + text + "'}";
   }
 

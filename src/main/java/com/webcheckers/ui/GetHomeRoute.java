@@ -63,6 +63,11 @@ public class GetHomeRoute implements Route {
     if(request.session().attributes().contains("currentUser")){
       vm.put("currentUser", request.session().attribute("currentUser"));
 
+      List<Message> gamePrompts = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(vm.get("currentUser").toString()).getPrompts();
+      if(!gamePrompts.isEmpty()){
+        vm.put("activePrompts", gamePrompts);
+      }
+
       if(loggedInPlayers != null && (loggedInPlayers.size() != 1)) {
 
         //Get a list of all players EXCEPT FOR the currentUser
