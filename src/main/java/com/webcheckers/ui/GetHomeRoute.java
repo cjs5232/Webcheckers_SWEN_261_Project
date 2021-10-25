@@ -1,6 +1,8 @@
 package com.webcheckers.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -12,6 +14,7 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+import com.webcheckers.util.DisappearingMessage;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 
@@ -59,11 +62,37 @@ public class GetHomeRoute implements Route {
 
     List<Player> loggedInPlayers = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayers();
 
+    //If error messages exist - add them
+    String errorMsg = request.session().attribute("sendPromptErrorMessage");
+    if(errorMsg != null && !errorMsg.isBlank()) vm.put("sendPromptErrorMessage", errorMsg);
+
     //If the user is logged in
     if(request.session().attributes().contains("currentUser")){
-      vm.put("currentUser", request.session().attribute("currentUser"));
+      String currentUser = request.session().attribute("currentUser").toString();
+      vm.put("currentUser", currentUser);
 
-      List<Message> gamePrompts = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(vm.get("currentUser").toString()).getPrompts();
+      Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
+      List<DisappearingMessage> disappearingMessages = currentUserPlayer.getDisappearingMessages();
+      List<DisappearingMessage> disappearingMessagesToShow = new ArrayList<>();
+
+      List<DisappearingMessage> toRemove = new ArrayList<>();
+
+      if(!disappearingMessages.isEmpty()){
+      
+        for(Iterator<DisappearingMessage> iterator = disappearingMessages.iterator(); iterator.hasNext();){
+          DisappearingMessage dm = iterator.next();
+          if(dm.getRemainingDisplays() != 0){
+            disappearingMessagesToShow.add(dm);
+          }
+          else{
+            toRemove.add(dm);
+          }
+        }
+        currentUserPlayer.removeDisappearingMessages(toRemove);
+        vm.put("disappearingMessages", disappearingMessagesToShow);
+      }
+
+      List<Message> gamePrompts = currentUserPlayer.getPrompts();
       if(!gamePrompts.isEmpty()){
         vm.put("activePrompts", gamePrompts);
       }
@@ -71,7 +100,7 @@ public class GetHomeRoute implements Route {
       if(loggedInPlayers != null && (loggedInPlayers.size() != 1)) {
 
         //Get a list of all players EXCEPT FOR the currentUser
-        List<Player> allButCurrentUser = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayersExcept(vm.get("currentUser").toString());
+        List<Player> allButCurrentUser = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayersExcept(currentUser);
         vm.put("otherUsers", allButCurrentUser);
       }
     }

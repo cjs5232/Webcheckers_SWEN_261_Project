@@ -3,12 +3,15 @@ package com.webcheckers.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.webcheckers.ui.WebServer;
+
 public class Player {
     
     private final String name;
     private final int id;
 
     private List<Message> promptMessages = new ArrayList<>();
+    private List<DisappearingMessage> disappearingMessages = new ArrayList<>();
 
     public Player(String name){
         this.name = name;
@@ -52,6 +55,22 @@ public class Player {
      */
     public List<Message> getPrompts(){
         return this.promptMessages;
+    }
+
+    public void addDisappearingMessage(DisappearingMessage m){
+        this.disappearingMessages.add(m);
+    }
+
+    public void removeDisappearingMessages(List<DisappearingMessage> removeDMList){
+        disappearingMessages.removeAll(removeDMList);
+    }
+
+    public List<DisappearingMessage> getDisappearingMessages(){
+        return this.disappearingMessages;
+    }
+
+    public boolean isPlaying(){
+        return WebServer.GLOBAL_GAME_CONTROLLER.isPlayerPlaying(this.toString());
     }
 
 }

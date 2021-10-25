@@ -82,6 +82,7 @@ public class AddPlayerRoute implements Route {
           vm.put("currentUser", newPlayerName);
 
           // Return the user to the home page
+          response.redirect("/");
           return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }
       //If there were errors

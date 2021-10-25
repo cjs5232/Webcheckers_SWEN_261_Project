@@ -83,6 +83,12 @@ public class WebServer {
   public static final String GAME_URL = "/game";
 
   /**
+   * The URL pattern to send a prompt.
+   * This should not be directly accessed by the user
+   */
+  public static final String SEND_PROMPT_URL = "/sendPrompt";
+
+  /**
    * The URL pattern to accept a game.
    * This should not be directly accessed by the user
    */
@@ -202,6 +208,8 @@ public class WebServer {
 
     //Shows the Checkers game Home page.
     get(HOME_URL, new GetHomeRoute(templateEngine));
+
+    get(SEND_PROMPT_URL, new SendPromptRoute(templateEngine));
 
     //Shows the Accept Game page (not fully implemented yet)
     get(ACCEPT_URL, new GetAcceptRoute(templateEngine));
