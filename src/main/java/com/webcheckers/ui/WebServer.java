@@ -83,6 +83,12 @@ public class WebServer {
   public static final String GAME_URL = "/game";
 
   /**
+   * The URL pattern to accept a game.
+   * This should not be directly accessed by the user
+   */
+  public static final String ACCEPT_URL = "/acceptPrompt";
+
+  /**
    * The URL pattern to remove the currentuser
    */
   public static final String LOGOUT_URL = "/logout";
@@ -196,6 +202,9 @@ public class WebServer {
 
     //Shows the Checkers game Home page.
     get(HOME_URL, new GetHomeRoute(templateEngine));
+
+    //Shows the Accept Game page (not fully implemented yet)
+    get(ACCEPT_URL, new GetAcceptRoute(templateEngine));
 
     //
     LOG.config("WebServer is initialized.");
