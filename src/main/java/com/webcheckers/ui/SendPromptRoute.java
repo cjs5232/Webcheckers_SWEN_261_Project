@@ -45,34 +45,16 @@ public class SendPromptRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Send Prompt");
 
+        //Grab the currentUser attribute, and find the Player object from it
         String currentUser = request.session().attribute("currentUser").toString();
         Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
         vm.put("currentUser", currentUser);
 
+        //Find the opponent from the "user" passed from the hyperlink generated in home.ftl
         String opponent = request.queryParams("user");
         Player opponentPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(opponent);
 
-        //Feedback, keeping attributes between redirects
-        List<Message> gamePrompts = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(vm.get("currentUser").toString()).getPrompts();
-        if(!gamePrompts.isEmpty()){
-            vm.put("activePrompts", gamePrompts);
-        }
-
-        List<Player> loggedInPlayers = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayers();
-        if(loggedInPlayers != null && (loggedInPlayers.size() != 1)) {
-
-            //Get a list of all players EXCEPT FOR the currentUser
-            List<Player> allButCurrentUser = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayersExcept(vm.get("currentUser").toString());
-            vm.put("otherUsers", allButCurrentUser);
-        }
-
-        if(loggedInPlayers != null){
-        vm.put("otherUsersQuantity", loggedInPlayers.size());
-        }
-        else{
-            vm.put("otherUsersQuantity", 0);
-        }
-
+        //Check if the user has already sent a request to this specific opponent
         boolean alreadyPromptedUser = false;
         List<Message> existingPrompts = opponentPlayer.getPrompts();
         for(Message m : existingPrompts){
@@ -81,6 +63,7 @@ public class SendPromptRoute implements Route {
             }
         }
 
+        //We do not want to send the opponent a prompt if they are currently playing
         if(opponentPlayer.isPlaying()){
 
             currentUserPlayer.addDisappearingMessage(DisappearingMessage.info(opponent + " is currently playing. Try again later."));
@@ -88,12 +71,14 @@ public class SendPromptRoute implements Route {
             response.redirect("/");
             return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }
+        //Only can send 1 prompt
         else if(alreadyPromptedUser){
             currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("You have already sent a request to " + opponent));
 
             response.redirect("/");
             return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }
+        //Send the prompt
         else{
 
             currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("Prompt sent to " + opponent));

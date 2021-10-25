@@ -75,6 +75,7 @@ public class RemovePlayerRoute implements Route {
       }
   
       // render the View
+      response.redirect("/");
       return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
   }
