@@ -36,6 +36,7 @@ public class GetGameRoute implements Route {
   public GetGameRoute(final TemplateEngine templateEngine) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
+    
     LOG.config("GetGameRoute is initialized.");
   }
 
@@ -73,7 +74,6 @@ public class GetGameRoute implements Route {
       String otherPlayerName = request.queryParams("otherUser");
       if(otherPlayerName != null){
         LOG.info("user param pulled with value: " + otherPlayerName);
-        vm.put("player2", otherPlayerName);
 
         //Get the other player by reference of their name
         Player otherPlayer =  WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(otherPlayerName);
@@ -83,8 +83,9 @@ public class GetGameRoute implements Route {
         otherPlayer.promptForGame(currentUser);
 
         LOG.info("PUTTING CURRENT USER");
-        vm.put("player1", currentUser);
-        vm.put("currentUser", currentUser);
+        vm.put("redPlayer", refGame.getPlayers()[0]);
+        vm.put("whitePlayer", refGame.getPlayers()[1]);
+        vm.put("currentPlayer", refPlayer);
         //If the other player accepts, create a new game
         refGame = new Game(refPlayer, otherPlayer);
       }
@@ -96,10 +97,12 @@ public class GetGameRoute implements Route {
     else{
       String otherPlayerName = request.queryParams("otherUser");
       Player otherPlayer =  WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(otherPlayerName);
+      refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(otherPlayerName);
       LOG.info("USER IN GAME");
-      vm.put("currentUser", currentUser);
-      vm.put("player1", otherPlayer);
-      vm.put("player2", currentUser);
+      //vm.put("currentUser", currentUser);
+      vm.put("redPlayer", refGame.getPlayers()[0]);
+      vm.put("whitePlayer", refGame.getPlayers()[1]);
+      vm.put("currentPlayer", refPlayer);
       refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUser);
     }
     
