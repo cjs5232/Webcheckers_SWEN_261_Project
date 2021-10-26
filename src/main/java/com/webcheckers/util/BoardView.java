@@ -11,13 +11,19 @@ public class BoardView implements Iterable<Row> {
     private ArrayList<Row> rows;
 
     /**
+     * The amount of row to generate.
+     * - Davis Pitts (dep2550)
+     */
+    private static final int ROW_COUNT = 8;
+
+    /**
      * Initialize a row given an index and spaces
      * @param rows The rows contained within the board
      *
      */
     public BoardView(ArrayList<Row> rows){
-        for(int i = 0; i < 8; i++){
-            rows.add(new Row(i, new ArrayList<Space>()));
+        for(int i = 0; i < ROW_COUNT; i++){
+            rows.add(new Row(i, new ArrayList<>()));
         }
         this.rows = rows;
     }
