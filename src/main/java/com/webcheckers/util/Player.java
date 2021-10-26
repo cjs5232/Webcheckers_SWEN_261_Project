@@ -18,6 +18,7 @@ public class Player {
 
     private final String name;
     private final int id;
+    private Player opponent;
 
     private List<DisappearingMessage> promptMessages = new ArrayList<>();
     private List<DisappearingMessage> disappearingMessages = new ArrayList<>();
@@ -26,6 +27,7 @@ public class Player {
         this.name = name;
         this.id = name.hashCode();
         this.playerStatus = 0;
+        this.opponent = null;
     }
 
     public int getPlayerStatus() {
@@ -33,7 +35,11 @@ public class Player {
     }
 
     public void setPlayerStatus(int stat) {
-        this.playerStatus = stat;
+        playerStatus = stat;
+    }
+
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
     }
 
     public String getName(){

@@ -9,8 +9,6 @@
 
 <script>
 window.data = {
-    "currentUser" : "${currentUser}",
-    "gameController" : "${gameController}"
   };
 </script>
 
@@ -27,26 +25,22 @@ window.data = {
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
+
   </div>
+
+  <#if (gameController.inQueue(currentUser))>
+      <script>
+         window.location = '/'
+      </script>
+  <#else>
+     <script>
+        window.location = '/game'
+     </script>
+  </#if>
 
 </div>
 </body>
 
-//TODO
-<script>
-    if (currentUser.getPlayerStatus() == 0) {
-        gameController.putInQueue(currentUser)
-        currentUser.setPlayerStatus(1)
-   }
-
-    if (gameController.inQueue(currentUser)) {
-        location.replace = '/queue'
-        currentUser.setPlayerStatus(2)
-    }
-
-    if (currentUser.getPlayerStatus() == 2) {
-        location.replace = '/home'
-    }
 
 </script>
 </html>

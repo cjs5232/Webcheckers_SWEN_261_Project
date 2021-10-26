@@ -61,10 +61,13 @@ public class GetQueueRoute implements Route {
     vm.put("message", WAIT_MSG);
 
     //put necessary info into page.
-    String currentUser = request.session().attribute("currentUser").toString();
-    vm.put("currentUser", WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser));
+    String userName = request.session().attribute("currentUser").toString();
+    Player currentUser = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(userName);
+    vm.put("currentUser", currentUser);
     vm.put("gameController", WebServer.GLOBAL_GAME_CONTROLLER);
 
+    //update info
+    WebServer.GLOBAL_GAME_CONTROLLER.putInQueue(currentUser);
     // render the View
 
     return templateEngine.render(new ModelAndView(vm , "queue.ftl"));

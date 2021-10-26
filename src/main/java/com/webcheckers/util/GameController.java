@@ -53,6 +53,7 @@ public class GameController {
      */
     public void putInQueue(Player newPlayer) {
         queue.add(newPlayer);
+        newPlayer.setPlayerStatus(1);
     }
 
     /**
@@ -62,9 +63,9 @@ public class GameController {
     public boolean inQueue(Player player) {
         if (queue.size() > 1 && queue.get(0) == player) {
             Player opponent = queue.get(1);
-            //Update status of players
-            opponent.setPlayerStatus(2);
-            player.setPlayerStatus(2);
+            //update data
+            player.setOpponent(opponent);
+            opponent.setOpponent(player);
             //Remove players from queue
             queue.remove(opponent);
             queue.remove(player);
