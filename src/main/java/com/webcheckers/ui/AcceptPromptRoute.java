@@ -1,17 +1,11 @@
 package com.webcheckers.ui;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.logging.Logger;
-
-import javax.swing.RowFilter;
-
-import com.webcheckers.util.Game;
-import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -21,9 +15,6 @@ public class AcceptPromptRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(AcceptPromptRoute.class.getName());
   
-  
-    private final TemplateEngine templateEngine;
-  
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
      *
@@ -31,8 +22,6 @@ public class AcceptPromptRoute implements Route {
      *   the HTML template rendering engine
      */
     public AcceptPromptRoute(final TemplateEngine templateEngine) {
-      this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
-      //
       LOG.config("RemovePlayerRoute is initialized.");
     }
   
@@ -63,15 +52,16 @@ public class AcceptPromptRoute implements Route {
       String[] promptSplit = prompt.split(" ");
       Player opponent = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(promptSplit[0]);
       
-
-      //Game game = new Game(refPlayer, opponent);
-      //WebServer.GLOBAL_GAME_CONTROLLER.addGame(game);
-      
       //Render the View
       response.redirect("/game?otherUser=" + opponent.toString());
 
       //Remove the request from the user's list
-      refPlayer.removePrompt(opponent.toString());
+      try{
+        refPlayer.removePrompt(opponent.toString());
+      }
+      catch(ConcurrentModificationException ex){
+        LOG.finer("ConcurrentModificationException caught from " + AcceptPromptRoute.class.getName() + ". Stacktrace: " + ex.getStackTrace());
+      }
       return null;
     }
 }
