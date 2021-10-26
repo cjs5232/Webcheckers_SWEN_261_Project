@@ -2,18 +2,21 @@ package com.webcheckers.util;
 
 import java.util.ArrayList;
 
+import com.webcheckers.util.Piece.Color;
+
 public class Game {
    
-    private Player p1;
-    private Player p2;
+    private Player redPlayer;
+    private Player whitePlayer;
+    private Color activeColor;
 
     private BoardView gameBoard;
 
-    public Game(Player p1, Player p2){
+    public Game(Player redPlayer, Player whitePlayer){
 
-        this.p1 = p1;
-        this.p2 = p2;
-
+        this.redPlayer = redPlayer;
+        this.whitePlayer = whitePlayer;
+        this.activeColor = Color.RED;
         this.gameBoard = new BoardView(new ArrayList<>());
 
     }
@@ -29,7 +32,7 @@ public class Game {
      * @return the two Players playing the game
      */
     public Player[] getPlayers(){
-        return new Player[]{p1, p2};
+        return new Player[]{redPlayer, whitePlayer};
     }
 
     /**
@@ -49,7 +52,7 @@ public class Game {
 
         // determining team
         Piece.Color team;
-        if(player.equals(p1)) team = Piece.Color.RED;
+        if(player.equals(redPlayer)) team = Piece.Color.RED;
         else team = Piece.Color.WHITE;
         Piece.Type type = gameBoard.getRow(y1).getSpace(x1).getPiece().getType();
 
