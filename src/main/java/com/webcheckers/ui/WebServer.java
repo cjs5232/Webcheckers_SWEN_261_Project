@@ -100,6 +100,11 @@ public class WebServer {
   public static final String LOGOUT_URL = "/logout";
 
   /**
+   * The URL pattern to join the queue
+   */
+  public static final String QUEUE_URL = "/queue";
+
+  /**
    * "/favicon.ico" is the default place that a browser will look for for the 'display icon'
    * that is placed next to a webpage. The default access to said icon is a GET request.
    */
@@ -208,6 +213,9 @@ public class WebServer {
 
     //Shows the Checkers game Home page.
     get(HOME_URL, new GetHomeRoute(templateEngine));
+
+    //Shows queue waiting page.
+    get(QUEUE_URL, new GetQueueRoute(templateEngine));
 
     get(SEND_PROMPT_URL, new SendPromptRoute(templateEngine));
 

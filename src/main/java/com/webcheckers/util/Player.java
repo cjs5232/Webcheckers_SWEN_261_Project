@@ -8,6 +8,13 @@ import com.webcheckers.ui.WebServer;
 public class Player {
     
     private Player waitingOnAccept;
+    /**
+     * TEMP
+     * 0 = not in game
+     * 1 = searching for game
+     * 2 = in game
+     */
+    private int playerStatus;
 
     private final String name;
     private final int id;
@@ -18,6 +25,15 @@ public class Player {
     public Player(String name){
         this.name = name;
         this.id = name.hashCode();
+        this.playerStatus = 0;
+    }
+
+    public int getPlayerStatus() {
+        return this.playerStatus;
+    }
+
+    public void setPlayerStatus(int stat) {
+        this.playerStatus = stat;
     }
 
     public String getName(){
