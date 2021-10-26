@@ -20,7 +20,7 @@ public final class DisappearingMessage extends Message {
    * The amount of times a DisappearingMessage can appear before it hides/disappears.
    * - Davis Pitts (dep2550)
    */
-  private static final int MAX_SHOWS = 3;
+  private static int MAX_SHOWS = 3;
 
   //Store how many times the message has been shown to the user
   private int showNum;
@@ -47,31 +47,10 @@ public final class DisappearingMessage extends Message {
    *
    * @return a new {@link DisappearingMessage}
    */
-  public static DisappearingMessage info(final String message) {
+  public static DisappearingMessage info(final String message, int showNumTemplate) {
+    MAX_SHOWS = showNumTemplate;
     return new DisappearingMessage(message, Type.INFO);
   }
-
-  //
-  // Inner Types
-  //
-
-//  /**
-//   * The type of {@link DisappearingMessage}; either information or an error.
-//   */
-//  public enum Type {
-//    INFO, ERROR
-//  }
-
-  //
-  // Attributes
-  //
-
-  //private final String text;
-  //private final Type type;
-
-  //
-  // Constructor
-  //
 
   /**
    * Create a new message.
@@ -83,47 +62,6 @@ public final class DisappearingMessage extends Message {
     super(message, type);
     this.showNum = 0;
     LOG.finer(this + " created.");
-  }
-
-  //
-  // Public methods
-  //
-
-//  /**
-//   * Get the text of the message.
-//   */
-  // public String getText() {
-  //  return getText();
-  //}
-
-//  /**
-//   * Get the type of the message.
-//   */
-  // public Type getType() {
-  //  return type;
-  // }
-
-//  /**
-//   * Query whether this message was generated from a successful
-//   * action; ie, not an {@link Type#ERROR}.
-//   *
-//   * @return true if not an error
-//   */
-//  public boolean isSuccessful() {
-//    return !getType().equals(Type.ERROR);
-//  }
-
-  //
-  // Object methods
-  //
-
-  @Override
-  public String toString() {
-    return this.getText();
-  }
-
-  public String toStringVerbose(){
-    return "{Msg " + getType() + " '" + getText() + "'}";
   }
 
   /**

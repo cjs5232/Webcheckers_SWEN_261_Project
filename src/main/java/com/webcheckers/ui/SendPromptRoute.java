@@ -56,7 +56,7 @@ public class SendPromptRoute implements Route {
 
         //Check if the user has already sent a request to this specific opponent
         boolean alreadyPromptedUser = false;
-        List<Message> existingPrompts = opponentPlayer.getPrompts();
+        List<DisappearingMessage> existingPrompts = opponentPlayer.getPrompts();
         for(Message m : existingPrompts){
             if(m.toString().contains(currentUser)){
                 alreadyPromptedUser = true;
@@ -70,14 +70,14 @@ public class SendPromptRoute implements Route {
                 response.redirect("/game");
             }
 
-            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info(opponent + " is currently playing. Try again later."));
+            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info(opponent + " is currently playing. Try again later.", 1));
 
             response.redirect("/");
             return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }
         //Only can send 1 prompt
         else if(alreadyPromptedUser){
-            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("You have already sent a request to " + opponent));
+            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("You have already sent a request to " + opponent, 1));
 
             response.redirect("/");
             return templateEngine.render(new ModelAndView(vm , "home.ftl"));
@@ -85,9 +85,10 @@ public class SendPromptRoute implements Route {
         //Send the prompt
         else{
 
-            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("Prompt sent to " + opponent));
+            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("Prompt sent to " + opponent, 1));
 
             opponentPlayer.promptForGame(currentUser);
+            currentUserPlayer.setWaitingOn(opponentPlayer);
             response.redirect("/");
             return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }

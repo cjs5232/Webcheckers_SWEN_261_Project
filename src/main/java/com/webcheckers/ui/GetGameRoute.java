@@ -81,29 +81,7 @@ public class GetGameRoute implements Route {
         refGame = new Game(refPlayer, otherPlayer);
         WebServer.GLOBAL_GAME_CONTROLLER.addGame(refGame);
         otherPlayer.promptForGame(currentUser);
-        
 
-
-        //Wait on the other user to accept the prompt, timeout after 30 seconds
-
-        boolean accepted = true;
-
-        /**
-        try{
-          synchronized(otherPlayer){
-            otherPlayer.wait(30000);
-          }
-        }
-        catch(InterruptedException ex){
-        }
-        */
-
-        if(!accepted){
-          synchronized(otherPlayer){
-            otherPlayer.removePrompt(currentUser);
-          }
-          return templateEngine.render(new ModelAndView(vm , "home.ftl"));
-        }
         LOG.info("PUTTING CURRENT USER");
         vm.put("player1", currentUser);
         vm.put("currentUser", currentUser);
@@ -124,12 +102,8 @@ public class GetGameRoute implements Route {
       vm.put("player2", currentUser);
       refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUser);
     }
-
-    //vm.put("currentUser", currentUser);
     
-    
-
-    // Should not always be play, should determine from input
+    //TODO: Should not always be play, should determine from input
     vm.put("viewMode", "play");
 
     //Place the board from the created game in the view model

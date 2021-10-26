@@ -77,6 +77,33 @@ public class GetHomeRoute implements Route {
 
       List<DisappearingMessage> toRemove = new ArrayList<>();
 
+      if(currentUserPlayer.getWaitingOn() != null){
+
+        Player waitingOn = currentUserPlayer.getWaitingOn();
+
+        long start = System.currentTimeMillis();
+        long end = start+10000;
+
+        Thread t = new Thread(() -> {
+          while(!waitingOn.isPlaying() && System.currentTimeMillis() < end){
+            //Do nothing
+          }
+          //Have to figure out which one killed the while loop
+          if(waitingOn.isPlaying()){
+            
+            //Find the active prompt 'from' the other user
+            for(Message m : currentUserPlayer.getPrompts()){
+              if(m.toString().contains(waitingOn.toString())){
+                response.redirect("/acceptPrompt?prompt=" + m);
+                return;
+              }
+            }
+          }
+        });
+
+        t.start();
+      }
+
       if(!disappearingMessages.isEmpty()){
       
         for(Iterator<DisappearingMessage> iterator = disappearingMessages.iterator(); iterator.hasNext();){
@@ -92,10 +119,23 @@ public class GetHomeRoute implements Route {
         vm.put("disappearingMessages", disappearingMessagesToShow);
       }
 
-      List<Message> gamePrompts = currentUserPlayer.getPrompts();
+      List<DisappearingMessage> toDisplay = new ArrayList<>();
+      List<DisappearingMessage> toRemovePrompts = new ArrayList<>();
+      List<DisappearingMessage> gamePrompts = currentUserPlayer.getPrompts();
       if(!gamePrompts.isEmpty()){
-        vm.put("activePrompts", gamePrompts);
+        for(DisappearingMessage dm : gamePrompts){
+          if(dm.getRemainingDisplays() != 0){
+            toDisplay.add(dm);
+          }
+          else{
+            toRemovePrompts.add(dm);
+          }
+        } 
       }
+
+      if(toDisplay.isEmpty()) toDisplay = null;
+      currentUserPlayer.removeOldPrompts(toRemovePrompts);
+      vm.put("activePrompts", toDisplay);
 
       if(loggedInPlayers != null && (loggedInPlayers.size() != 1)) {
 

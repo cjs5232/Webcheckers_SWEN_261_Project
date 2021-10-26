@@ -37,4 +37,10 @@
 </div>
 </body>
 
+<script>
+  window.onload = function(){
+    document.getElementById("name").focus();
+  }
+</script>
+
 </html>

@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import javax.swing.RowFilter;
+
 import com.webcheckers.util.Game;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
@@ -49,10 +51,6 @@ public class AcceptPromptRoute implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
       LOG.finer("GetAcceptRoute is invoked.");
-      //
-
-      
-
 
       Map<String, Object> vm = new HashMap<>();
       vm.put("title", "Match");
@@ -62,17 +60,18 @@ public class AcceptPromptRoute implements Route {
 
       //Find the opponent from the "user" passed from the hyperlink generated in home.ftl
       String prompt = request.queryParams("prompt");
-      String[] words = prompt.split(" ");
-      Player opponent = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(words[0]);
+      String[] promptSplit = prompt.split(" ");
+      Player opponent = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(promptSplit[0]);
+      
 
       //Game game = new Game(refPlayer, opponent);
       //WebServer.GLOBAL_GAME_CONTROLLER.addGame(game);
       
-      // render the View
-      
-      response.redirect("/game?otherUser=" + words[0]);
+      //Render the View
+      response.redirect("/game?otherUser=" + opponent.toString());
+
+      //Remove the request from the user's list
+      refPlayer.removePrompt(opponent.toString());
       return null;
-     
     }
-    
 }
