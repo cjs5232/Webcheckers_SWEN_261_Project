@@ -18,6 +18,8 @@ public class Position {
         if(row >= 0 && row < 8 && cell >=0 && cell < 8) {
             this.row = row;
             this.cell = cell;
+        } else {
+            throw new IndexOutOfBoundsException();
         }
     }
 
