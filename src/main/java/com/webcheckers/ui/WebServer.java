@@ -212,7 +212,7 @@ public class WebServer {
     get(SEND_PROMPT_URL, new SendPromptRoute(templateEngine));
 
     //Shows the Accept Game page (not fully implemented yet)
-    get(ACCEPT_URL, new GetAcceptRoute(templateEngine));
+    get(ACCEPT_URL, new AcceptPromptRoute(templateEngine));
 
     //
     LOG.config("WebServer is initialized.");

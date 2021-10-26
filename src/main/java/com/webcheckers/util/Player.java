@@ -31,6 +31,11 @@ public class Player {
         return this.name;
     }
 
+    public void startGame (Player player, Player opponent) {
+        Game game = new Game(player, opponent);
+        WebServer.GLOBAL_GAME_CONTROLLER.addGame(game);
+    }
+
     /**
      * @param promptingPlayer the player requesting a game
      */

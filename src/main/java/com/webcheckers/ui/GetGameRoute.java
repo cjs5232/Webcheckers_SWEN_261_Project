@@ -68,22 +68,27 @@ public class GetGameRoute implements Route {
 
     //If the player does not already have an active game
     if(!WebServer.GLOBAL_GAME_CONTROLLER.isPlayerPlaying(currentUser)){
-
+      LOG.info(currentUser + " USER NOT IN GAME");
       //Grab the other player's name
-      String otherPlayerName = request.queryParams("user");
+      String otherPlayerName = request.queryParams("otherUser");
       if(otherPlayerName != null){
         LOG.info("user param pulled with value: " + otherPlayerName);
-        vm.put("otherUser", otherPlayerName);
+        vm.put("player2", otherPlayerName);
 
         //Get the other player by reference of their name
         Player otherPlayer =  WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(otherPlayerName);
 
+        refGame = new Game(refPlayer, otherPlayer);
+        WebServer.GLOBAL_GAME_CONTROLLER.addGame(refGame);
         otherPlayer.promptForGame(currentUser);
+        
+
 
         //Wait on the other user to accept the prompt, timeout after 30 seconds
 
-        boolean accepted = false;
+        boolean accepted = true;
 
+        /**
         try{
           synchronized(otherPlayer){
             otherPlayer.wait(30000);
@@ -91,6 +96,7 @@ public class GetGameRoute implements Route {
         }
         catch(InterruptedException ex){
         }
+        */
 
         if(!accepted){
           synchronized(otherPlayer){
@@ -98,20 +104,30 @@ public class GetGameRoute implements Route {
           }
           return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }
-        
+        LOG.info("PUTTING CURRENT USER");
+        vm.put("player1", currentUser);
+        vm.put("currentUser", currentUser);
         //If the other player accepts, create a new game
         refGame = new Game(refPlayer, otherPlayer);
       }
       else{
         LOG.info("user param did not pull");
-        vm.put("otherUser", "Other Player");
+        vm.put("player2", "Other Player");
       }
     }
     else{
+      String otherPlayerName = request.queryParams("otherUser");
+      Player otherPlayer =  WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(otherPlayerName);
+      LOG.info("USER IN GAME");
+      vm.put("currentUser", currentUser);
+      vm.put("player1", otherPlayer);
+      vm.put("player2", currentUser);
       refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUser);
     }
 
-    vm.put("currentUser", currentUser);
+    //vm.put("currentUser", currentUser);
+    
+    
 
     // Should not always be play, should determine from input
     vm.put("viewMode", "play");
@@ -120,6 +136,7 @@ public class GetGameRoute implements Route {
     vm.put("board", refGame.getBoard()); 
     
     // render the View
+    
     return templateEngine.render(new ModelAndView(vm , "game.ftl"));
   }
 }

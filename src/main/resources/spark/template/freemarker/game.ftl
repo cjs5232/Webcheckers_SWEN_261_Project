@@ -12,8 +12,8 @@
     "currentUser" : "${currentUser}",
     "viewMode" : "${viewMode}",
     "modeOptions" : ${modeOptionsAsJSON!'{}'},
-    "redPlayer" : "${currentUser}",
-    "whitePlayer" : "${otherUser}",
+    "redPlayer" : "${player1}",
+    "whitePlayer" : "${player2}",
     "activeColor" : "RED"
   };
   </script>

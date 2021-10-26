@@ -48,7 +48,7 @@ public class SendPromptRoute implements Route {
         //Grab the currentUser attribute, and find the Player object from it
         String currentUser = request.session().attribute("currentUser").toString();
         Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
-        vm.put("currentUser", currentUser);
+        vm.put("player1", currentUser);
 
         //Find the opponent from the "user" passed from the hyperlink generated in home.ftl
         String opponent = request.queryParams("user");
@@ -65,6 +65,10 @@ public class SendPromptRoute implements Route {
 
         //We do not want to send the opponent a prompt if they are currently playing
         if(opponentPlayer.isPlaying()){
+
+            if (currentUserPlayer.isPlaying()) {
+                response.redirect("/game");
+            }
 
             currentUserPlayer.addDisappearingMessage(DisappearingMessage.info(opponent + " is currently playing. Try again later."));
 

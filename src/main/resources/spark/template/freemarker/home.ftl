@@ -46,7 +46,7 @@
         <h3>Game Requests<h3>
         <ul title="Game Requests">
           <#list activePrompts as prompt>
-            <a id="accept" href="/acceptPrompt"><li>${prompt}</li></a>
+            <a id="accept" href="/acceptPrompt?prompt=${prompt}"><li>${prompt}</li></a>
           </#list>
         </ul>
       </#if>
