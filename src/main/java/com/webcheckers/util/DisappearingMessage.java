@@ -20,7 +20,8 @@ public final class DisappearingMessage extends Message {
    * The amount of times a DisappearingMessage can appear before it hides/disappears.
    * - Davis Pitts (dep2550)
    */
-  private static int MAX_SHOWS = 3;
+  private int maximum_appears;
+  final private static int DEFAULT_MAXIMUM_APPEARS = 3;
 
   //Store how many times the message has been shown to the user
   private int showNum;
@@ -37,7 +38,7 @@ public final class DisappearingMessage extends Message {
    * @return a new {@link DisappearingMessage}
    */
   public static DisappearingMessage error(final String message) {
-    return new DisappearingMessage(message, Type.ERROR);
+    return new DisappearingMessage(message, Type.ERROR, 3);
   }
 
   /**
@@ -48,20 +49,31 @@ public final class DisappearingMessage extends Message {
    * @return a new {@link DisappearingMessage}
    */
   public static DisappearingMessage info(final String message, int showNumTemplate) {
-    MAX_SHOWS = showNumTemplate;
-    return new DisappearingMessage(message, Type.INFO);
+    return new DisappearingMessage(message, Type.INFO, showNumTemplate);
   }
 
   /**
-   * Create a new message.
+   * Create a new disappearing message.
+   *
+   * @param message  the text of the message
+   * @param type  the type of message
+   * @param appear_count  the amount of times the message should appear before disappearing
+   */
+  private DisappearingMessage(final String message, final Type type, final int appear_count) {
+    super(message, type);
+    this.showNum = 0;
+    this.maximum_appears = appear_count;
+    LOG.finer(this + " created.");
+  }
+
+  /**
+   * Create a new disappearing message.
    *
    * @param message  the text of the message
    * @param type  the type of message
    */
   private DisappearingMessage(final String message, final Type type) {
-    super(message, type);
-    this.showNum = 0;
-    LOG.finer(this + " created.");
+    this(message, type, DEFAULT_MAXIMUM_APPEARS);
   }
 
   /**
@@ -70,7 +82,7 @@ public final class DisappearingMessage extends Message {
    */
   public int getRemainingDisplays(){
     showNum++;
-    return(MAX_SHOWS - showNum);
+    return(maximum_appears - showNum);
   }
 
 }
