@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
-public final class Message {
+public class Message {
   private static final Logger LOG = Logger.getLogger(Message.class.getName());
 
   //
@@ -70,7 +70,7 @@ public final class Message {
    * @param message  the text of the message
    * @param type  the type of message
    */
-  private Message(final String message, final Type type) {
+  Message(final String message, final Type type) {
     this.text = message;
     this.type = type;
     LOG.finer(this + " created.");

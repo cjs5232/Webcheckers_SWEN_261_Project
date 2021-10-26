@@ -13,8 +13,14 @@ import java.util.logging.Logger;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
-public final class DisappearingMessage {
+public final class DisappearingMessage extends Message {
   private static final Logger LOG = Logger.getLogger(DisappearingMessage.class.getName());
+
+  /**
+   * The amount of times a DisappearingMessage can appear before it hides/disappears.
+   * - Davis Pitts (dep2550)
+   */
+  private static final int MAX_SHOWS = 3;
 
   //Store how many times the message has been shown to the user
   private int showNum;
@@ -49,19 +55,19 @@ public final class DisappearingMessage {
   // Inner Types
   //
 
-  /**
-   * The type of {@link DisappearingMessage}; either information or an error.
-   */
-  public enum Type {
-    INFO, ERROR
-  }
+//  /**
+//   * The type of {@link DisappearingMessage}; either information or an error.
+//   */
+//  public enum Type {
+//    INFO, ERROR
+//  }
 
   //
   // Attributes
   //
 
-  private final String text;
-  private final Type type;
+  //private final String text;
+  //private final Type type;
 
   //
   // Constructor
@@ -74,9 +80,8 @@ public final class DisappearingMessage {
    * @param type  the type of message
    */
   private DisappearingMessage(final String message, final Type type) {
+    super(message, type);
     this.showNum = 0;
-    this.text = message;
-    this.type = type;
     LOG.finer(this + " created.");
   }
 
@@ -84,29 +89,29 @@ public final class DisappearingMessage {
   // Public methods
   //
 
-  /**
-   * Get the text of the message.
-   */
-  public String getText() {
-    return text;
-  }
+//  /**
+//   * Get the text of the message.
+//   */
+  // public String getText() {
+  //  return getText();
+  //}
 
-  /**
-   * Get the type of the message.
-   */
-  public Type getType() {
-    return type;
-  }
+//  /**
+//   * Get the type of the message.
+//   */
+  // public Type getType() {
+  //  return type;
+  // }
 
-  /**
-   * Query whether this message was generated from a successful
-   * action; ie, not an {@link Type#ERROR}.
-   *
-   * @return true if not an error
-   */
-  public boolean isSuccessful() {
-    return !type.equals(Type.ERROR);
-  }
+//  /**
+//   * Query whether this message was generated from a successful
+//   * action; ie, not an {@link Type#ERROR}.
+//   *
+//   * @return true if not an error
+//   */
+//  public boolean isSuccessful() {
+//    return !getType().equals(Type.ERROR);
+//  }
 
   //
   // Object methods
@@ -114,11 +119,11 @@ public final class DisappearingMessage {
 
   @Override
   public String toString() {
-    return text;
+    return this.getText();
   }
 
   public String toStringVerbose(){
-    return "{Msg " + type + " '" + text + "'}";
+    return "{Msg " + getType() + " '" + getText() + "'}";
   }
 
   /**
@@ -127,7 +132,7 @@ public final class DisappearingMessage {
    */
   public int getRemainingDisplays(){
     showNum++;
-    return(3 - showNum);
+    return(MAX_SHOWS - showNum);
   }
 
 }
