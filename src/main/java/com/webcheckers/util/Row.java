@@ -6,6 +6,12 @@ import java.util.Iterator;
 public class Row implements Iterable<Space>{
 
     /**
+     * The amount of spaces in a row.
+     * - Davis Pitts (dep2550)
+     */
+    private static final int SPACE_COUNT = 8;
+
+    /**
      * Declaration for row index and spaces within the row
      */
     private int index;
@@ -19,7 +25,7 @@ public class Row implements Iterable<Space>{
      */
     public Row(int index, ArrayList<Space> spaces){
         this.index = index;
-        for(int i = 0; i < 8; i++){
+        for(int i = 0; i < SPACE_COUNT; i++){
             if(index % 2 == i % 2 )
                 spaces.add(new Space(i, null));
             else if(index == 3 || index == 4)
