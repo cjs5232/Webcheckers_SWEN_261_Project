@@ -39,4 +39,9 @@ public class Space {
     public Piece getPiece(){
         return this.piece;
     }
+
+    /**
+     * @param piece The new piece
+     */
+    public void setPiece(Piece piece) { this.piece = piece; }
 }

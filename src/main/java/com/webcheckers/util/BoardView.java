@@ -29,6 +29,13 @@ public class BoardView implements Iterable<Row> {
     }
 
     /**
+     * @param index The index of a row
+     *
+     * @return The row at a given index
+     */
+    public Row getRow(int index){ return rows.get(index); }
+
+    /**
      * @return An iteration of rows
      */
     @Override

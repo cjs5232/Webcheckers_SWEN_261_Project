@@ -49,4 +49,18 @@ public class Piece {
     public Color getColor() {
         return this.color;
     }
+
+    /**
+     * @param type The type of piece
+     *
+     * @see Type
+     */
+    public void setType(Type type) { this.type = type; }
+
+    /**
+     * @param color The color of piece
+     *
+     * @see Color
+     */
+    public void setColor(Color color) { this.color = color; }
 }

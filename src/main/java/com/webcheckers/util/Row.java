@@ -39,6 +39,13 @@ public class Row implements Iterable<Space>{
     }
 
     /**
+     * @param index The index of a space
+     *
+     * @return The space at a given index
+     */
+    public Space getSpace(int index){ return spaces.get(index); }
+
+    /**
      * @return The index of the row
      */
     public int getIndex(){
