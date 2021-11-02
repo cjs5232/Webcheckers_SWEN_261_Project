@@ -20,8 +20,7 @@ public final class DisappearingMessage extends Message {
    * The amount of times a DisappearingMessage can appear before it hides/disappears.
    * - Davis Pitts (dep2550)
    */
-  private int maximum_appears;
-  final private static int DEFAULT_MAXIMUM_APPEARS = 3;
+  private int maximumAppears;
 
   //Store how many times the message has been shown to the user
   private int showNum;
@@ -62,18 +61,8 @@ public final class DisappearingMessage extends Message {
   private DisappearingMessage(final String message, final Type type, final int appear_count) {
     super(message, type);
     this.showNum = 0;
-    this.maximum_appears = appear_count;
+    this.maximumAppears = appear_count;
     LOG.finer(this + " created.");
-  }
-
-  /**
-   * Create a new disappearing message.
-   *
-   * @param message  the text of the message
-   * @param type  the type of message
-   */
-  private DisappearingMessage(final String message, final Type type) {
-    this(message, type, DEFAULT_MAXIMUM_APPEARS);
   }
 
   /**
@@ -82,7 +71,7 @@ public final class DisappearingMessage extends Message {
    */
   public int getRemainingDisplays(){
     showNum++;
-    return(maximum_appears - showNum);
+    return(maximumAppears - showNum);
   }
 
 }

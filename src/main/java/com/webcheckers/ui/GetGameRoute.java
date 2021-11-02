@@ -96,13 +96,14 @@ public class GetGameRoute implements Route {
     }
     else{
       String otherPlayerName = request.queryParams("otherUser");
-      Player otherPlayer =  WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(otherPlayerName);
       refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(otherPlayerName);
       LOG.info("USER IN GAME");
-      //vm.put("currentUser", currentUser);
+
+      vm.put("currentUser", currentUser);
       vm.put("redPlayer", refGame.getPlayers()[0]);
       vm.put("whitePlayer", refGame.getPlayers()[1]);
       vm.put("currentPlayer", refPlayer);
+      
       refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUser);
     }
     

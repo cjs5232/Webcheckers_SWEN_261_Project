@@ -60,6 +60,7 @@ public class SendPromptRoute implements Route {
         for(Message m : existingPrompts){
             if(m.toString().contains(currentUser)){
                 alreadyPromptedUser = true;
+                LOG.info("User has already been prompted.");
             }
         }
 
@@ -70,14 +71,14 @@ public class SendPromptRoute implements Route {
                 response.redirect("/game");
             }
 
-            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info(opponent + " is currently playing. Try again later.", 1));
+            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info(opponent + " is currently playing. Try again later.", 2));
 
             response.redirect("/");
             return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }
         //Only can send 1 prompt
         else if(alreadyPromptedUser){
-            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("You have already sent a request to " + opponent, 1));
+            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("You have already sent a request to " + opponent, 2));
 
             response.redirect("/");
             return templateEngine.render(new ModelAndView(vm , "home.ftl"));
@@ -85,7 +86,7 @@ public class SendPromptRoute implements Route {
         //Send the prompt
         else{
 
-            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("Prompt sent to " + opponent, 1));
+            currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("Prompt sent to " + opponent, 2));
 
             opponentPlayer.promptForGame(currentUser);
             currentUserPlayer.setWaitingOn(opponentPlayer);

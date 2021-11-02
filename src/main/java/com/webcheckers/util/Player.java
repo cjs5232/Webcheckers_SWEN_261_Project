@@ -30,6 +30,8 @@ public class Player {
         this.opponent = null;
     }
 
+    //Getters and Setters
+
     public int getPlayerStatus() {
         return this.playerStatus;
     }
@@ -42,6 +44,10 @@ public class Player {
         this.opponent = opponent;
     }
 
+    public Player getOppoent() {
+        return this.opponent;
+    }
+
     public String getName(){
         return this.name;
     }
@@ -50,12 +56,46 @@ public class Player {
         return this.id;
     }
 
+    /**
+     * @param p the player to wait on (to accept or timeout a prompt)
+     */
+    public void setWaitingOn(Player p){
+        this.waitingOnAccept = p;
+    }
+
+    public Player getWaitingOn(){
+        return this.waitingOnAccept;
+    }
+
+    /**
+     * Remove the player that is being waited on
+     */
+    public void clearWaitingOn(){
+        this.waitingOnAccept = null;
+    }
+
+    /**
+     * @return all of a user's messages
+     */
+    public List<DisappearingMessage> getDisappearingMessages(){
+        return this.disappearingMessages;
+    }
+
+    /**
+     * @return game requests
+     */
+    public List<DisappearingMessage> getPrompts(){
+        return this.promptMessages;
+    }
+
+    //Other functions    
+
     @Override
     public String toString(){
         return this.name;
     }
 
-    public void startGame (Player player, Player opponent) {
+    public void startGame(Player player, Player opponent) {
         Game game = new Game(player, opponent);
         WebServer.GLOBAL_GAME_CONTROLLER.addGame(game);
     }
@@ -86,13 +126,6 @@ public class Player {
     }
 
     /**
-     * @return game requests
-     */
-    public List<DisappearingMessage> getPrompts(){
-        return this.promptMessages;
-    }
-
-    /**
      * 
      * @param m the DisappearingMessage to add to the user's home screen
      */
@@ -108,35 +141,10 @@ public class Player {
     }
 
     /**
-     * @return all of a user's messages
-     */
-    public List<DisappearingMessage> getDisappearingMessages(){
-        return this.disappearingMessages;
-    }
-
-    /**
      * @return whether or not the user is currently in a game
      */
     public boolean isPlaying(){
         return WebServer.GLOBAL_GAME_CONTROLLER.isPlayerPlaying(this.toString());
-    }
-
-    /**
-     * @param p the player to wait on (to accept or timeout a prompt)
-     */
-    public void setWaitingOn(Player p){
-        this.waitingOnAccept = p;
-    }
-
-    public Player getWaitingOn(){
-        return this.waitingOnAccept;
-    }
-
-    /**
-     * Remove the player that is being waited on
-     */
-    public void clearWaitingOn(){
-        this.waitingOnAccept = null;
     }
 
 }
