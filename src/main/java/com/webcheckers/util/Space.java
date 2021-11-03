@@ -7,6 +7,7 @@ public class Space {
      */
     private int cellIdx;
     private Piece piece;
+    private Boolean isValid;
 
     /**
      * Initialize a row given an index and spaces
@@ -17,6 +18,7 @@ public class Space {
     public Space(int cellIdx, Piece piece){
         this.cellIdx = cellIdx;
         this.piece = piece;
+        isValid = true;
     }
 
     /**
@@ -27,10 +29,17 @@ public class Space {
     }
 
     /**
+     * Change if a space is valid
+     */
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }
+
+    /**
      * @return If it is a valid cell to put a piece in
      */
-    public boolean isValid(int row) {
-        return row + cellIdx % 2 == 0 && this.piece == null;
+    public boolean isValid() {
+        return isValid;
     }
 
     /**
