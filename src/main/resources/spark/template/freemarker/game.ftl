@@ -62,11 +62,12 @@
         <div class="game-board">
           <table id="game-board">
               <tbody>
+              <#assign row_var = 0>
               <#list board.iterator() as row>
                 <tr data-row="${row.index}">
                 <#list row.iterator() as space>
                   <td data-cell="${space.cellIdx}"
-                      <#if space.isValid() >
+                      <#if space.isValid(row_var) >
                       class="Space"
                       </#if>
                       >
@@ -80,6 +81,7 @@
                   </td>
                 </#list>
                 </tr>
+                <#assign row_var++>
               </#list>
               </tbody>
           </table>

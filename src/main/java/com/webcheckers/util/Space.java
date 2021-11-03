@@ -38,8 +38,8 @@ public class Space {
     /**
      * @return If it is a valid cell to put a piece in
      */
-    public boolean isValid() {
-        return isValid;
+    public boolean isValid(int row) {
+        return (row + cellIdx) % 2 == 1;
     }
 
     /**
