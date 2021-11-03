@@ -55,7 +55,6 @@
           <fieldset id="game-toolbar">
             <legend>Controls</legend>
             <div class="toolbar"></div>
-              <td class="move">move</td>
           </fieldset>
 
         </div>
