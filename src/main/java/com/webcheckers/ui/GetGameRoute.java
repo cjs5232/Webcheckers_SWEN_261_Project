@@ -109,7 +109,7 @@ public class GetGameRoute implements Route {
     }
     
     //TODO: Should not always be play, should determine from input
-    vm.put("viewMode", "play");
+    vm.put("viewMode", "PLAY");
 
     //Place the board from the created game in the view model
     vm.put("board", refGame.getBoard()); 
