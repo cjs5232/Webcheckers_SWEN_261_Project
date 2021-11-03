@@ -45,7 +45,11 @@ public class AcceptPromptRoute implements Route {
       vm.put("title", "Match");
 
       String currentUser = request.session().attribute("currentUser").toString();
+      System.out.println("Current user: " + currentUser);
       Player refPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
+
+      //Store the currentUser in the vm
+      vm.put("currentUser", currentUser);
 
       //Find the opponent from the "user" passed from the hyperlink generated in home.ftl
       String prompt = request.queryParams("prompt");

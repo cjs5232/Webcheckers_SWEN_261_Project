@@ -63,6 +63,7 @@ public class GetGameRoute implements Route {
 
     String currentUser = request.session().attribute("currentUser").toString();
     Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
+    vm.put("currentUser", currentUser);
 
     //Create a dummy Game object, this will be filled in later
     Game refGame = new Game(new Player("foo"), new Player("bar"));
@@ -100,7 +101,6 @@ public class GetGameRoute implements Route {
       refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(otherPlayer);
       LOG.info("USER IN GAME");
 
-      vm.put("currentUser", currentUser);
       vm.put("redPlayer", refGame.getPlayers()[0]);
       vm.put("whitePlayer", refGame.getPlayers()[1]);
       vm.put("currentPlayer", currentUserPlayer);
