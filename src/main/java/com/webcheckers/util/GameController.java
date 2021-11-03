@@ -29,11 +29,18 @@ public class GameController {
     }
 
     /**
+     * @return the list of all active games
+     */
+    public List<Game> getGames(){
+        return this.gameList;
+    }
+
+    /**
      * 
      * @param queryPlayerName the player to inquire about
      * @return a true/false value based on whether or not the user has an active game
      */
-    public boolean isPlayerPlaying(String queryPlayerName){
+    public boolean isPlayerPlaying(Player queryPlayer){
 
         //For each game in the list
         for(Game g : gameList){
@@ -41,7 +48,7 @@ public class GameController {
             Player[] gPlayerList = g.getPlayers();
             //Check if the player list contains the queried player
             for(Player p : gPlayerList){
-                if(p.getName().equals(queryPlayerName)) return true;
+                if(p.getName().equals(queryPlayer.toString())) return true;
             }
         }
         return false;
@@ -57,10 +64,17 @@ public class GameController {
     }
 
     /**
+     * @param player the player to remove from the queue
+     */
+    public void removeFromQueue(Player player) {
+        queue.remove(player);
+    }
+
+    /**
      * @param player the Player class of the player
      * see if the player is in the queue and check if they can be removed
      */
-    public boolean inQueue(Player player) {
+    public boolean isPlayerInQueue(Player player) {
         if (queue.size() > 1 && queue.get(0) == player) {
             Player opponent = queue.get(1);
             //update data
@@ -71,10 +85,7 @@ public class GameController {
             queue.remove(player);
         }
         //check if in queue
-        if (queue.contains(player)) {
-            return true;
-        }
-        return false;
+        return(queue.contains(player));
     }
 
 
@@ -82,14 +93,14 @@ public class GameController {
      * @param queryPlayerName the name of the player who's game you wish to retrieve
      * @return the active game of the queried player
      */
-    public Game getGameOfPlayer(String queryPlayerName){
+    public Game getGameOfPlayer(Player queryPlayer){
         //For each game in the list
         for(Game g : gameList){
             //Get all players in said game
             Player[] gPlayerList = g.getPlayers();
             for(Player p : gPlayerList){
                 //Return the game if the player is in the list
-                if(p.getName().equals(queryPlayerName)) return g;
+                if(p.getName().equals(queryPlayer.toString())) return g;
             }
         }
 

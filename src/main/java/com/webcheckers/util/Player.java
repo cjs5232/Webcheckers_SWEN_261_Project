@@ -144,7 +144,7 @@ public class Player {
      * @return whether or not the user is currently in a game
      */
     public boolean isPlaying(){
-        return WebServer.GLOBAL_GAME_CONTROLLER.isPlayerPlaying(this.toString());
+        return WebServer.GLOBAL_GAME_CONTROLLER.isPlayerPlaying(this);
     }
 
 }

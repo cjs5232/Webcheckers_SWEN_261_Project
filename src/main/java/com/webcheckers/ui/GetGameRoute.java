@@ -62,13 +62,13 @@ public class GetGameRoute implements Route {
     vm.put("message", WELCOME_MSG);
 
     String currentUser = request.session().attribute("currentUser").toString();
-    Player refPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
+    Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
 
     //Create a dummy Game object, this will be filled in later
     Game refGame = new Game(new Player("foo"), new Player("bar"));
 
     //If the player does not already have an active game
-    if(!WebServer.GLOBAL_GAME_CONTROLLER.isPlayerPlaying(currentUser)){
+    if(!WebServer.GLOBAL_GAME_CONTROLLER.isPlayerPlaying(currentUserPlayer)){
       LOG.info(currentUser + " USER NOT IN GAME");
       //Grab the other player's name
       String otherPlayerName = request.queryParams("otherUser");
@@ -78,16 +78,16 @@ public class GetGameRoute implements Route {
         //Get the other player by reference of their name
         Player otherPlayer =  WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(otherPlayerName);
 
-        refGame = new Game(refPlayer, otherPlayer);
+        refGame = new Game(currentUserPlayer, otherPlayer);
         WebServer.GLOBAL_GAME_CONTROLLER.addGame(refGame);
         otherPlayer.promptForGame(currentUser);
 
         LOG.info("PUTTING CURRENT USER");
         vm.put("redPlayer", refGame.getPlayers()[0]);
         vm.put("whitePlayer", refGame.getPlayers()[1]);
-        vm.put("currentPlayer", refPlayer);
+        vm.put("currentPlayer", currentUserPlayer);
         //If the other player accepts, create a new game
-        refGame = new Game(refPlayer, otherPlayer);
+        refGame = new Game(currentUserPlayer, otherPlayer);
       }
       else{
         LOG.info("user param did not pull");
@@ -96,15 +96,16 @@ public class GetGameRoute implements Route {
     }
     else{
       String otherPlayerName = request.queryParams("otherUser");
-      refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(otherPlayerName);
+      Player otherPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(otherPlayerName);
+      refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(otherPlayer);
       LOG.info("USER IN GAME");
 
       vm.put("currentUser", currentUser);
       vm.put("redPlayer", refGame.getPlayers()[0]);
       vm.put("whitePlayer", refGame.getPlayers()[1]);
-      vm.put("currentPlayer", refPlayer);
+      vm.put("currentPlayer", currentUserPlayer);
       
-      refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUser);
+      refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer);
     }
     
     //TODO: Should not always be play, should determine from input
