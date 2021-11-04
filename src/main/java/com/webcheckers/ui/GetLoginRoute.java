@@ -55,6 +55,9 @@ public class GetLoginRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Login");
 
+    //Pass error message to the view if it exists
+    vm.put("addUserError", request.session().attribute("addUserError"));
+
     // display a user message in the Home page
     vm.put("message", LOGIN_MSG);
 

@@ -66,11 +66,11 @@
               <#list board.iterator() as row>
                 <tr data-row="${row.index}">
                 <#list row.iterator() as space>
-                  <td data-cell="${space.cellIdx}"
-                      <#if space.isValid(row_var) >
+                  <td data-cell="${space.cellIdx}" 
+                      <#if space.isValid(row_var)>
                       class="Space"
                       </#if>
-                      >
+                  >
                   <#if space.piece??>
                     <div class="Piece"
                         id="piece-${row.index}-${space.cellIdx}"

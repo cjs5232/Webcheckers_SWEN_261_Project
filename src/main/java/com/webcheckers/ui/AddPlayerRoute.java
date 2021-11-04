@@ -52,6 +52,7 @@ public class AddPlayerRoute implements Route {
      * @return
      *   the rendered HTML for the Home page
      */
+
     @Override
     public Object handle(Request request, Response response) {
 
@@ -81,6 +82,9 @@ public class AddPlayerRoute implements Route {
           vm.put("message", WELCOME_MSG);
           vm.put("currentUser", newPlayerName);
 
+          //Clear the error message from the session
+          request.session().attribute("addUserError", null);
+
           // Return the user to the home page
           response.redirect("/");
           return templateEngine.render(new ModelAndView(vm , "home.ftl"));
@@ -97,6 +101,9 @@ public class AddPlayerRoute implements Route {
 
           //Display the error message to the user
           vm.put("addUserError", successfulAddPlayer);
+          session.attribute("addUserError", successfulAddPlayer);
+
+          response.redirect("/login");
 
           // Return the user to the login page
           return templateEngine.render(new ModelAndView(vm , "login.ftl"));
