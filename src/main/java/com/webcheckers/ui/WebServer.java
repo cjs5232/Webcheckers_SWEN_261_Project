@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import com.google.gson.Gson;
 import com.webcheckers.util.GameController;
 import com.webcheckers.util.PlayerController;
+import com.webcheckers.util.ValidateMoveRoute;
 
 import spark.TemplateEngine;
 
@@ -105,6 +106,11 @@ public class WebServer {
   public static final String QUEUE_URL = "/queue";
 
   /**
+   * The URL pattern to validate a move
+   */
+  public static final String VALIDATE_MOVE_URL = "/validateMove";
+
+  /**
    * "/favicon.ico" is the default place that a browser will look for for the 'display icon'
    * that is placed next to a webpage. The default access to said icon is a GET request.
    */
@@ -200,6 +206,9 @@ public class WebServer {
     //Finished with sign-in
     get(ADD_PLAYER_URL, new GetHomeRoute(templateEngine));
 
+    //Shows the Validate Move page
+    post(VALIDATE_MOVE_URL, new ValidateMoveRoute());
+
     //Starts the signout
     post(LOGOUT_URL, new RemovePlayerRoute(templateEngine));
     //Finished with sign-in
@@ -224,6 +233,7 @@ public class WebServer {
 
     //
     LOG.config("WebServer is initialized.");
+    LOG.info("Gson object from class: " + gson.getClass() + "is initialized");
   }
 
 }
