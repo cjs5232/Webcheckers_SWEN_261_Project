@@ -19,6 +19,7 @@ public class Game {
         this.activeColor = Color.RED;
         this.gameBoard = new BoardView(new ArrayList<>());
 
+
     }
 
     /** 
@@ -33,6 +34,13 @@ public class Game {
      */
     public Player[] getPlayers(){
         return new Player[]{redPlayer, whitePlayer};
+    }
+
+    /**
+     * If the activecolor is red, set it to white, and vice versa
+     */
+    public void swapActiveColor(){
+        activeColor = activeColor == Color.RED ? Color.WHITE : Color.RED;
     }
 
     /**
@@ -63,25 +71,15 @@ public class Game {
         // must be your piece and placed on a black empty square
         if(start.getColor() != team && x2 + y2 % 2 == 0 && end != null){ return false; }
 
-        // basic move
-        if(team == Piece.Color.RED){
-            if(changeX == 1 || changeX == -1){
-                if(changeY == -1 || (changeY == 1 && type == Piece.Type.KING)){
-                    // moves the piece
-                    gameBoard.getRow(y2).getSpace(x2).setPiece(gameBoard.getRow(y1).getSpace(x1).getPiece());
-                    gameBoard.getRow(y1).getSpace(x1).setPiece(null);
-                    return true;
-                }
-            }
-        } else {
-            if(changeX == 1 || changeX == -1){
-                if(changeY == 1 || (changeY == -1 && type == Piece.Type.KING)){
-                    // moves the piece
-                    gameBoard.getRow(y2).getSpace(x2).setPiece(gameBoard.getRow(y1).getSpace(x1).getPiece());
-                    gameBoard.getRow(y1).getSpace(x1).setPiece(null);
-                    return true;
-                }
-            }
+        
+        //Int for inversion - since vertical moves are inverted for White/Red respectively, we can use a simple inversion ( * -1) to combine the statements
+        //  -1 for White, 1 for Red
+        int inversion = team == Piece.Color.RED ? -1 : 1;
+
+        if( (changeX == 1 || changeX == -1 )  && ( (changeY == -1*inversion) || ( (changeY == 1*inversion) && (type == Piece.Type.KING) ) )){
+            gameBoard.getRow(y2).getSpace(x2).setPiece(gameBoard.getRow(y1).getSpace(x1).getPiece());
+            gameBoard.getRow(y1).getSpace(x1).setPiece(null);
+            return true;
         }
         return false;
     }
