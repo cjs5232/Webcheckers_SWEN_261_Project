@@ -19,7 +19,7 @@ public class Game {
         this.activeColor = Color.RED;
         this.gameBoard = new BoardView(new ArrayList<>());
 
-        
+
     }
 
     /** 
@@ -74,7 +74,7 @@ public class Game {
         
         //Int for inversion - since vertical moves are inverted for White/Red respectively, we can use a simple inversion ( * -1) to combine the statements
         //  -1 for White, 1 for Red
-        int inversion = team == Piece.Color.RED ? 1 : -1;
+        int inversion = team == Piece.Color.RED ? -1 : 1;
 
         if( (changeX == 1 || changeX == -1 )  && ( (changeY == -1*inversion) || ( (changeY == 1*inversion) && (type == Piece.Type.KING) ) )){
             gameBoard.getRow(y2).getSpace(x2).setPiece(gameBoard.getRow(y1).getSpace(x1).getPiece());
