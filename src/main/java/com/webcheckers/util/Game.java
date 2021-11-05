@@ -44,6 +44,13 @@ public class Game {
     }
 
     /**
+     * @return the active color of the game
+     */
+    public Color getActiveColor(){
+        return activeColor;
+    }
+
+    /**
      * @param move The desired move
      * @param player The current player
      *

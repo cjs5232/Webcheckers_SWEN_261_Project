@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.webcheckers.util.CheckTurnRoute;
 import com.webcheckers.util.GameController;
 import com.webcheckers.util.PlayerController;
 import com.webcheckers.util.ValidateMoveRoute;
@@ -111,6 +112,11 @@ public class WebServer {
   public static final String VALIDATE_MOVE_URL = "/validateMove";
 
   /**
+   * The URL pattern to check if it is a player's turn or not
+   */
+  public static final String CHECK_TURN_URL = "/checkTurn";
+
+  /**
    * "/favicon.ico" is the default place that a browser will look for for the 'display icon'
    * that is placed next to a webpage. The default access to said icon is a GET request.
    */
@@ -208,6 +214,9 @@ public class WebServer {
 
     //Shows the Validate Move page
     post(VALIDATE_MOVE_URL, new ValidateMoveRoute());
+
+    //Shows the Check Turn page
+    post(CHECK_TURN_URL, new CheckTurnRoute());
 
     //Starts the signout
     post(LOGOUT_URL, new RemovePlayerRoute(templateEngine));
