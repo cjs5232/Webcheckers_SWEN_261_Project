@@ -89,6 +89,11 @@ public class GetGameRoute implements Route {
         vm.put("currentPlayer", currentUserPlayer);
         //If the other player accepts, create a new game
         refGame = new Game(currentUserPlayer, otherPlayer);
+
+        //New game created, let's see what tf this looks like...
+        LOG.info("NEW GAME CREATED");
+        System.out.println(refGame.getBoard().printBoardPretty());
+
       }
       else{
         LOG.info("user param did not pull");

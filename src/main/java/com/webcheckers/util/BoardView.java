@@ -2,13 +2,14 @@ package com.webcheckers.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class BoardView implements Iterable<Row> {
 
     /**
      * Declaration for rows within the board
      */
-    private ArrayList<Row> rows;
+    private List<Row> rows = new ArrayList<>();
 
     /**
      * The amount of row to generate.
@@ -21,7 +22,7 @@ public class BoardView implements Iterable<Row> {
      * @param rows The rows contained within the board
      *
      */
-    public BoardView(ArrayList<Row> rows){
+    public BoardView(List<Row> rows){
         for(int i = 0; i < ROW_COUNT; i++){
             rows.add(new Row(i, new ArrayList<>()));
         }
@@ -34,6 +35,16 @@ public class BoardView implements Iterable<Row> {
      * @return The row at a given index
      */
     public Row getRow(int index){ return rows.get(index); }
+
+    public String printBoardPretty(){
+        StringBuilder sb = new StringBuilder();
+        //Column numbers
+        sb.append("\n    0 1 2 3 4 5 6 7\n");
+        for(Row row : rows){
+            sb.append(rows.indexOf(row) + " " + row.toString() + "\n");
+        }
+        return sb.toString();
+    }
 
     /**
      * @return An iteration of rows

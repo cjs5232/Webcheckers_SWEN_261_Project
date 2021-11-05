@@ -63,4 +63,9 @@ public class Piece {
      * @see Color
      */
     public void setColor(Color color) { this.color = color; }
+
+    @Override
+    public String toString(){
+        return this.color == Color.RED ? "R" : "W";
+    }
 }

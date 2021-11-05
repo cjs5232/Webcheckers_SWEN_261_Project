@@ -18,6 +18,8 @@ public class Game {
         this.whitePlayer = whitePlayer;
         this.activeColor = Color.RED;
         this.gameBoard = new BoardView(new ArrayList<>());
+
+        
     }
 
     /** 

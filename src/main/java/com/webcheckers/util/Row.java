@@ -52,6 +52,17 @@ public class Row implements Iterable<Space>{
         return this.index;
     }
 
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("[ ");
+        for(Space space : spaces){
+            sb.append(space + " ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
     /**
      * @return An iteration of spaces
      */
