@@ -14,10 +14,10 @@ define(function(require){
    */
   function Move(start, end) {
     // validate
-    if (! start instanceof Position) {
+    if (!(start instanceof Position)) {
       throw new Error('start (' + start + ') is not a Position.');
     }
-    if (! end instanceof Position) {
+    if (!(end instanceof Position)) {
       throw new Error('end (' + end + ') is not a Position.');
     }
     //

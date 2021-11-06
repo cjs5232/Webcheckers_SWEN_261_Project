@@ -41,6 +41,11 @@ public class Space {
         return this.piece;
     }
 
+    @Override
+    public String toString(){
+        return this.piece == null ? "_" : this.piece.toString();
+    }
+
     /**
      * @param piece The new piece
      */
