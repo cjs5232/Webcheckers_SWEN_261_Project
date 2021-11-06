@@ -14,7 +14,7 @@
     "modeOptions" : ${modeOptionsAsJSON!'{}'},
     "redPlayer" : "${redPlayer.name}",
     "whitePlayer" : "${whitePlayer.name}",
-    "activeColor" : "RED"
+    "activeColor" : "${activeColor}"
   };
   </script>
 </head>

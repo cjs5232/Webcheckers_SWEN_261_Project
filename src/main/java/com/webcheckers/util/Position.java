@@ -23,6 +23,11 @@ public class Position {
         }
     }
 
+    @Override
+    public String toString(){
+        return "(" + row + ", " + cell + ")";
+    }
+
     /**
      * @return The row index of this position
      */

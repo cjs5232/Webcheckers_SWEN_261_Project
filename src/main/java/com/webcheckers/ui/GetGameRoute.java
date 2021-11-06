@@ -87,8 +87,7 @@ public class GetGameRoute implements Route {
         vm.put("redPlayer", refGame.getPlayers()[0]);
         vm.put("whitePlayer", refGame.getPlayers()[1]);
         vm.put("currentPlayer", currentUserPlayer);
-        //If the other player accepts, create a new game
-        refGame = new Game(currentUserPlayer, otherPlayer);
+        vm.put("activeColor", refGame.getActiveColor());
 
         //New game created, let's see what tf this looks like...
         LOG.info("NEW GAME CREATED");
@@ -101,14 +100,13 @@ public class GetGameRoute implements Route {
       }
     }
     else{
-      String otherPlayerName = request.queryParams("otherUser");
-      Player otherPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(otherPlayerName);
-      refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(otherPlayer);
+      refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer);
       LOG.info("USER IN GAME");
 
       vm.put("redPlayer", refGame.getPlayers()[0]);
       vm.put("whitePlayer", refGame.getPlayers()[1]);
       vm.put("currentPlayer", currentUserPlayer);
+      vm.put("activeColor", refGame.getActiveColor().toString());
       
       refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer);
     }

@@ -1,4 +1,4 @@
-package com.webcheckers.util;
+package com.webcheckers.util.gamehelpers;
 
 import spark.Request;
 import spark.Response;
@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.webcheckers.ui.WebServer;
+import com.webcheckers.util.Game;
+import com.webcheckers.util.Player;
 import com.webcheckers.util.Piece.Color;
 
 /**

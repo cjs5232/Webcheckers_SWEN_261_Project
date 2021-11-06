@@ -6,10 +6,11 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
-import com.webcheckers.util.CheckTurnRoute;
 import com.webcheckers.util.GameController;
 import com.webcheckers.util.PlayerController;
-import com.webcheckers.util.ValidateMoveRoute;
+import com.webcheckers.util.gamehelpers.CheckTurnRoute;
+import com.webcheckers.util.gamehelpers.SubmitTurnRoute;
+import com.webcheckers.util.gamehelpers.ValidateMoveRoute;
 
 import spark.TemplateEngine;
 
@@ -117,6 +118,11 @@ public class WebServer {
   public static final String CHECK_TURN_URL = "/checkTurn";
 
   /**
+   * The URL pattern to Submit a turn
+   */
+  public static final String SUBMIT_TURN_URL = "/submitTurn";
+
+  /**
    * "/favicon.ico" is the default place that a browser will look for for the 'display icon'
    * that is placed next to a webpage. The default access to said icon is a GET request.
    */
@@ -207,16 +213,15 @@ public class WebServer {
     //FavIcon
     get(FAVICON_URL, new GetFavIconRoute());
 
+    //Routes for AJax requests
+    post(VALIDATE_MOVE_URL, new ValidateMoveRoute());
+    post(CHECK_TURN_URL, new CheckTurnRoute());
+    post(SUBMIT_TURN_URL, new SubmitTurnRoute());
+
     //Starts the sign-in
     post(ADD_PLAYER_URL, new AddPlayerRoute(templateEngine));
     //Finished with sign-in
     get(ADD_PLAYER_URL, new GetHomeRoute(templateEngine));
-
-    //Shows the Validate Move page
-    post(VALIDATE_MOVE_URL, new ValidateMoveRoute());
-
-    //Shows the Check Turn page
-    post(CHECK_TURN_URL, new CheckTurnRoute());
 
     //Starts the signout
     post(LOGOUT_URL, new RemovePlayerRoute(templateEngine));

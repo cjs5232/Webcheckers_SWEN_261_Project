@@ -1,4 +1,4 @@
-package com.webcheckers.util;
+package com.webcheckers.util.gamehelpers;
 
 import spark.Request;
 import spark.Response;
@@ -13,7 +13,14 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.webcheckers.ui.WebServer;
-import com.webcheckers.util.Piece.Color;
+import com.webcheckers.util.Game;
+import com.webcheckers.util.Message;
+import com.webcheckers.util.Move;
+import com.webcheckers.util.Piece;
+import com.webcheckers.util.Player;
+import com.webcheckers.util.Position;
+import com.webcheckers.util.Row;
+import com.webcheckers.util.Space;
 
 /**
  * The UI Controller to GET the Home page.
@@ -29,7 +36,7 @@ public class ValidateMoveRoute implements Route {
     /**
      * Flag for turning on verbose deubgging/console logging
      */
-    private final boolean verboseDebug = true;
+    private final boolean verboseDebug = false;
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -84,11 +91,15 @@ public class ValidateMoveRoute implements Route {
         //Get the start and end positions
         int rowNumStart = jsonTree.getAsJsonObject().get("start").getAsJsonObject().get("row").getAsInt();
         int colNumStart = jsonTree.getAsJsonObject().get("start").getAsJsonObject().get("cell").getAsInt();
+        Position start = new Position(rowNumStart, colNumStart);
 
         if(verboseDebug) LOG.info("Start position: " + rowNumStart + ", " + colNumStart);
 
         int rowNumEnd = jsonTree.getAsJsonObject().get("end").getAsJsonObject().get("row").getAsInt();
         int colNumEnd = jsonTree.getAsJsonObject().get("end").getAsJsonObject().get("cell").getAsInt();
+        Position end = new Position(rowNumEnd, colNumEnd);
+
+        Move combinedMove = new Move(start, end);
 
         if(verboseDebug) LOG.info("End position: " + rowNumEnd + ", " + colNumEnd);
 
@@ -107,14 +118,13 @@ public class ValidateMoveRoute implements Route {
         Row startRow = gameBoard.getBoard().getRow(rowNumStart);
         Space startSpace = startRow.getSpace(colNumStart);
         Piece startPiece = startSpace.getPiece();
-        Color pieceColor = startPiece.getColor();
-
-        //Determine inversion ratio
-        int inversion = pieceColor == Piece.Color.RED ? -1 : 1;
 
         Message responseMessage;
 
-        if( (changeX == 1 || changeX == -1 )  && ( (changeY == -1*inversion) || ( (changeY == 1*inversion) && (startPiece.getType() == Piece.Type.KING) ) )) responseMessage = Message.info("OK");
+        if(gameBoard.isMoveValid(combinedMove, startPiece)){
+            gameBoard.setPendingMove(new Move(new Position(rowNumStart, colNumStart), new Position(rowNumEnd, colNumEnd)));
+            responseMessage = Message.info("OK");
+        } 
         else responseMessage = Message.error("Invalid move");
 
         return gson.toJson(responseMessage);

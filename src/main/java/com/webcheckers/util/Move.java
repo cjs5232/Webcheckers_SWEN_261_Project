@@ -8,6 +8,8 @@ public class Move {
     private Position start;
     private Position end;
 
+    private int distance;
+
     /**
      * Initialize a move given a starting position and an ending position
      * @param start The position of the piece before the move
@@ -17,6 +19,7 @@ public class Move {
     public Move(Position start, Position end){
         this.start = start;
         this.end = end;
+        this.distance = Math.abs(start.getRow() - end.getRow()) + Math.abs(start.getCell() - end.getCell());
     }
 
     /**
@@ -31,5 +34,9 @@ public class Move {
      */
     public Position getEnd() {
         return end;
+    }
+
+    public int getDistance() {
+        return distance;
     }
 }
