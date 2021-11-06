@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import com.google.gson.Gson;
 import com.webcheckers.ui.WebServer;
 import com.webcheckers.util.Game;
+import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 import com.webcheckers.util.Piece.Color;
 
@@ -44,7 +45,9 @@ public class CheckTurnRoute implements Route {
         Player redPlayer = players[0];
         Player whitePlayer = players[1];
 
-        return gson.toJson((player == redPlayer && gameBoard.getActiveColor() == Color.RED) || (player == whitePlayer && gameBoard.getActiveColor() == Color.WHITE));
+        boolean myTurn = (player == redPlayer && gameBoard.getActiveColor() == Color.RED) || (player == whitePlayer && gameBoard.getActiveColor() == Color.WHITE);
+        String jsonString = gson.toJson(Message.info(Boolean.toString(myTurn)));
+        return jsonString;
     }
     
 }

@@ -37,7 +37,7 @@ public class GetGameRoute implements Route {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
     
-    LOG.config("GetGameRoute is initialized.");
+    if (WebServer.DEBUG_FLAG) LOG.config("GetGameRoute is initialized.");
   }
 
   /**
@@ -53,7 +53,7 @@ public class GetGameRoute implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
-    LOG.info("GetGameRoute is invoked.");
+    if (WebServer.DEBUG_FLAG) LOG.info("GetGameRoute is invoked.");
     //
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Game");
@@ -70,11 +70,11 @@ public class GetGameRoute implements Route {
 
     //If the player does not already have an active game
     if(!WebServer.GLOBAL_GAME_CONTROLLER.isPlayerPlaying(currentUserPlayer)){
-      LOG.info(currentUser + " USER NOT IN GAME");
+      if (WebServer.DEBUG_FLAG) LOG.info(currentUser + " USER NOT IN GAME");
       //Grab the other player's name
       String otherPlayerName = request.queryParams("otherUser");
       if(otherPlayerName != null){
-        LOG.info("user param pulled with value: " + otherPlayerName);
+        if (WebServer.DEBUG_FLAG) LOG.info("user param pulled with value: " + otherPlayerName);
 
         //Get the other player by reference of their name
         Player otherPlayer =  WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(otherPlayerName);
@@ -83,25 +83,25 @@ public class GetGameRoute implements Route {
         WebServer.GLOBAL_GAME_CONTROLLER.addGame(refGame);
         otherPlayer.promptForGame(currentUser);
 
-        LOG.info("PUTTING CURRENT USER");
+        if (WebServer.DEBUG_FLAG) LOG.info("PUTTING CURRENT USER");
         vm.put("redPlayer", refGame.getPlayers()[0]);
         vm.put("whitePlayer", refGame.getPlayers()[1]);
         vm.put("currentPlayer", currentUserPlayer);
         vm.put("activeColor", refGame.getActiveColor());
 
         //New game created, let's see what tf this looks like...
-        LOG.info("NEW GAME CREATED");
-        System.out.println(refGame.getBoard().printBoardPretty());
+        if (WebServer.DEBUG_FLAG) LOG.info("NEW GAME CREATED");
+        if (WebServer.DEBUG_FLAG) System.out.println(refGame.getBoard().printBoardPretty());
 
       }
       else{
-        LOG.info("user param did not pull");
+        if (WebServer.DEBUG_FLAG) LOG.info("user param did not pull");
         vm.put("player2", "Other Player");
       }
     }
     else{
       refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer);
-      LOG.info("USER IN GAME");
+      if (WebServer.DEBUG_FLAG) LOG.info("USER IN GAME");
 
       vm.put("redPlayer", refGame.getPlayers()[0]);
       vm.put("whitePlayer", refGame.getPlayers()[1]);

@@ -128,6 +128,11 @@ public class WebServer {
    */
   private static final String FAVICON_URL = "/favicon.ico";
 
+  /**
+   * Controls debug messages for the server - if true, debug messages will be printed to the console
+   */
+  public static final boolean DEBUG_FLAG = false;
+
   //
   // Attributes
   //
@@ -246,8 +251,8 @@ public class WebServer {
     get(ACCEPT_URL, new AcceptPromptRoute(templateEngine));
 
     //
-    LOG.config("WebServer is initialized.");
-    LOG.info("Gson object from class: " + gson.getClass() + "is initialized");
+    if (DEBUG_FLAG) LOG.config("WebServer is initialized.");
+    if (DEBUG_FLAG) LOG.info("Gson object from class: " + gson.getClass() + "is initialized");
   }
 
 }

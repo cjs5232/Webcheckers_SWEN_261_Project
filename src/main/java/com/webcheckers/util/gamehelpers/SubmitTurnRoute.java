@@ -26,7 +26,7 @@ public class SubmitTurnRoute implements Route {
     /**
      * Flag for turning on verbose deubgging/console logging
      */
-    private final boolean verboseDebug = true;
+    private final boolean verboseDebug = false;
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -40,7 +40,7 @@ public class SubmitTurnRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        LOG.info("SubmitTurnRoute is invoked.");
+        if(verboseDebug) LOG.info("SubmitTurnRoute is invoked.");
 
         //Get the Player object from the request, and determine the Game object
         Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());
@@ -48,11 +48,11 @@ public class SubmitTurnRoute implements Route {
         Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
         
         if(gameBoard.getPendingMove() == null) {
-            LOG.warning("No pending move to submit for player: " + player.toString());
+            if(verboseDebug) LOG.warning("No pending move to submit for player: " + player.toString());
             return(gson.toJson(Message.error("No pending move to submit.")));
         } 
         else{
-            LOG.info("Submitting turn for player: " + player.toString());
+            if(verboseDebug) LOG.info("Submitting turn for player: " + player.toString());
             boolean success = gameBoard.validateAndMove(gameBoard.getPendingMove(), player);
             request.session().attribute("currentUser", player.toString());
             return(success ? gson.toJson(Message.info("Move submitted successfully.")) : gson.toJson(Message.error("Pending move was not valid.")));
