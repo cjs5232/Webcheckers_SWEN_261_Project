@@ -121,7 +121,9 @@ public class GetGameRoute implements Route {
     if(refGame.isOver()){
       if (WebServer.DEBUG_FLAG) LOG.info("GAME IS OVER");
       JsonObject gameOver = new JsonObject();
-      gameOver.addProperty("isGameOver", true);
+      JsonObject modeOption = new JsonObject();
+      modeOption.addProperty("isGameOver", true);
+      gameOver.addProperty("modeOption", gson.toJson(modeOption));
       vm.put("modeOptions", gson.toJson(gameOver));
     }
 
