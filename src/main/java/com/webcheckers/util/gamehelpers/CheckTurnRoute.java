@@ -45,9 +45,7 @@ public class CheckTurnRoute implements Route {
         Player redPlayer = players[0];
         Player whitePlayer = players[1];
 
-        boolean myTurn = (player == redPlayer && gameBoard.getActiveColor() == Color.RED) || (player == whitePlayer && gameBoard.getActiveColor() == Color.WHITE);
-        String jsonString = gson.toJson(Message.info(Boolean.toString(myTurn)));
-        return jsonString;
+        return gson.toJson(Message.info(Boolean.toString((player == redPlayer && gameBoard.getActiveColor() == Color.RED) || (player == whitePlayer && gameBoard.getActiveColor() == Color.WHITE))));
     }
     
 }

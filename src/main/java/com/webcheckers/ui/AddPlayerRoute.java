@@ -59,7 +59,7 @@ public class AddPlayerRoute implements Route {
       //Create the session object
       final Session session = request.session();
 
-      LOG.finer("AddPlayerRoute is invoked.");
+      if (WebServer.DEBUG_FLAG) LOG.finer("AddPlayerRoute is invoked.");
 
       //Create the view model
       Map<String, Object> vm = new HashMap<>();  
@@ -74,7 +74,7 @@ public class AddPlayerRoute implements Route {
 
       //If there were no errors
       if(successfulAddPlayer.equals("")){
-          LOG.log(Level.INFO, "Successfully added a new player with name: {0}", newPlayerName);
+          if (WebServer.DEBUG_FLAG) LOG.log(Level.INFO, "Successfully added a new player with name: {0}", newPlayerName);
           session.attribute("currentUser", WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(newPlayerName));
 
           //Re-add attributes from the Home Page
@@ -92,8 +92,8 @@ public class AddPlayerRoute implements Route {
       //If there were errors
       else{
           //Log the errors - done in multiple lines to prevent LOG errors
-          LOG.log(Level.WARNING, "Did not create player with name: {0}", newPlayerName);
-          LOG.log(Level.INFO, "User error: {0}", successfulAddPlayer);
+          if (WebServer.DEBUG_FLAG) LOG.log(Level.WARNING, "Did not create player with name: {0}", newPlayerName);
+          if (WebServer.DEBUG_FLAG) LOG.log(Level.INFO, "User error: {0}", successfulAddPlayer);
 
           //Re-add attributes from login page
           vm.put("title", "Login");

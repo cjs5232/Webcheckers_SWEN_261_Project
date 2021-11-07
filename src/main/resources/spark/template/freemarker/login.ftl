@@ -26,7 +26,11 @@
   
     <form method="POST" action="/addPlayer">
         <label for="name">Username:</label>
-        <input name="name" id="name">
+        <#if username??>
+          <input name="name" value="${username}" />
+        <#else>
+          <input name="name" id="name">
+        </#if>
 
         <input type="submit" value="Submit"/>
     </form>

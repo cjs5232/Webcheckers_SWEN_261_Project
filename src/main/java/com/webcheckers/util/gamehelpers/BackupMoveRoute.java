@@ -17,16 +17,11 @@ import com.webcheckers.util.Player;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
-public class SubmitTurnRoute implements Route {
+public class BackupMoveRoute implements Route {
 
     //Create a Gson object to convert the Message object to a JSON string
     private final Gson gson = new Gson();
-    private static final Logger LOG = Logger.getLogger(SubmitTurnRoute.class.getName());
-
-    /**
-     * Flag for turning on verbose deubgging/console logging
-     */
-    private final boolean verboseDebug = true;
+    private static final Logger LOG = Logger.getLogger(BackupMoveRoute.class.getName());
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -34,26 +29,19 @@ public class SubmitTurnRoute implements Route {
      * @param templateEngine
      *   the HTML template rendering engine
      */
-    public SubmitTurnRoute() {
-        LOG.config("SubmitTurnRoute is initialized.");
+    public BackupMoveRoute() {
+        LOG.config("BackupMoveRoute is initialized.");
     }
 
     @Override
     public Object handle(Request request, Response response) {
-        if(verboseDebug) LOG.info("SubmitTurnRoute is invoked.");
-
-        //Get the Player object from the request, and determine the Game object
+        if(WebServer.DEBUG_FLAG) LOG.info("BackupMoveRoute is invoked.");
+        
         Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());
-        if(verboseDebug) LOG.info("CurrentUser from AJax call: " + player.toString());
         Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
 
-        gameBoard.removeDeadPieces();
-        gameBoard.swapActiveColor();
-        
-        //See WaitingForTurnValidationState.js for why this should not always be true
-        boolean success = true;
-
-        return(success ? gson.toJson(Message.info("Move submitted successfully.")) : gson.toJson(Message.error("${Error message here}")));
+        gameBoard.undoLastMove();
+        return gson.toJson(Message.info("Move has been undone."));
     }
     
 }

@@ -7,7 +7,9 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.webcheckers.util.GameController;
+import com.webcheckers.util.JsonToMoveConverter;
 import com.webcheckers.util.PlayerController;
+import com.webcheckers.util.gamehelpers.BackupMoveRoute;
 import com.webcheckers.util.gamehelpers.CheckTurnRoute;
 import com.webcheckers.util.gamehelpers.SubmitTurnRoute;
 import com.webcheckers.util.gamehelpers.ValidateMoveRoute;
@@ -123,6 +125,11 @@ public class WebServer {
   public static final String SUBMIT_TURN_URL = "/submitTurn";
 
   /**
+   * The URL pattern to back up a move
+   */
+  public static final String BACKUP_MOVE_URL = "/backupMove";
+
+  /**
    * "/favicon.ico" is the default place that a browser will look for for the 'display icon'
    * that is placed next to a webpage. The default access to said icon is a GET request.
    */
@@ -131,12 +138,13 @@ public class WebServer {
   /**
    * Controls debug messages for the server - if true, debug messages will be printed to the console
    */
-  public static final boolean DEBUG_FLAG = false;
+  public static final boolean DEBUG_FLAG = true;
 
   //
   // Attributes
   //
 
+  public static final JsonToMoveConverter jsonParser = new JsonToMoveConverter();
   private final TemplateEngine templateEngine;
   private final Gson gson;
 
@@ -222,6 +230,7 @@ public class WebServer {
     post(VALIDATE_MOVE_URL, new ValidateMoveRoute());
     post(CHECK_TURN_URL, new CheckTurnRoute());
     post(SUBMIT_TURN_URL, new SubmitTurnRoute());
+    post(BACKUP_MOVE_URL, new BackupMoveRoute());
 
     //Starts the sign-in
     post(ADD_PLAYER_URL, new AddPlayerRoute(templateEngine));

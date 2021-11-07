@@ -18,6 +18,7 @@ public class Player {
 
     private final String name;
     private final int id;
+
     private Player opponent;
 
     private List<DisappearingMessage> promptMessages = new ArrayList<>();

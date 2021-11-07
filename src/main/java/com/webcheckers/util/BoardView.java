@@ -30,6 +30,13 @@ public class BoardView implements Iterable<Row> {
     }
 
     /**
+     * Copy constructor
+     */
+    public BoardView(BoardView template){
+        this.rows = template.rows;
+    }
+
+    /**
      * @param index The index of a row
      *
      * @return The row at a given index

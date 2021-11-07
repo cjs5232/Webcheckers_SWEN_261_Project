@@ -9,6 +9,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import spark.Session;
 import spark.TemplateEngine;
 
 import com.webcheckers.util.Game;
@@ -106,16 +107,18 @@ public class GetGameRoute implements Route {
       vm.put("redPlayer", refGame.getPlayers()[0]);
       vm.put("whitePlayer", refGame.getPlayers()[1]);
       vm.put("currentPlayer", currentUserPlayer);
-      vm.put("activeColor", refGame.getActiveColor().toString());
-      
-      refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer);
+      synchronized(refGame){
+        vm.put("activeColor", refGame.getActiveColor());
+      }
     }
     
-    //TODO: Should not always be play, should determine from input
     vm.put("viewMode", "PLAY");
 
     //Place the board from the created game in the view model
-    vm.put("board", refGame.getBoard()); 
+    vm.put("board", refGame.getBoard());
+
+    Session session = request.session();
+    session.attribute("currentUser", currentUser);
     
     // render the View
     

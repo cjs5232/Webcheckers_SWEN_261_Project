@@ -23,7 +23,7 @@ public class GetFavIconRoute implements Route {
     private static final File FAVICON_PATH = new File("src/main/resources/public/img/favicon.ico");
 
     public GetFavIconRoute() {
-        LOG.config("GetFavIconRoute is initialized.");
+        if (WebServer.DEBUG_FLAG) LOG.config("GetFavIconRoute is initialized.");
     }
 
     @Override

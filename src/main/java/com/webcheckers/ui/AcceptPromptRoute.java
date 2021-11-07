@@ -22,7 +22,7 @@ public class AcceptPromptRoute implements Route {
      *   the HTML template rendering engine
      */
     public AcceptPromptRoute(final TemplateEngine templateEngine) {
-      LOG.config("RemovePlayerRoute is initialized.");
+      if (WebServer.DEBUG_FLAG) LOG.config("RemovePlayerRoute is initialized.");
     }
   
     /**
@@ -39,7 +39,7 @@ public class AcceptPromptRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-      LOG.finer("GetAcceptRoute is invoked.");
+      if (WebServer.DEBUG_FLAG) LOG.finer("GetAcceptRoute is invoked.");
 
       Map<String, Object> vm = new HashMap<>();
       vm.put("title", "Match");

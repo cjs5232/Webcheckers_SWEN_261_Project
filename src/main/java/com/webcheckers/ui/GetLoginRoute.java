@@ -55,6 +55,9 @@ public class GetLoginRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Login");
 
+    String namePreFill = request.queryParams("username");
+    vm.put("username", namePreFill);
+
     //Pass error message to the view if it exists
     vm.put("addUserError", request.session().attribute("addUserError"));
 

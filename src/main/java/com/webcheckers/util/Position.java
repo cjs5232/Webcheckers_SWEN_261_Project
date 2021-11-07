@@ -29,6 +29,18 @@ public class Position {
     }
 
     /**
+     * Test if two positions are equivalent
+     */
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Position){
+            Position p = (Position) o;
+            return this.row == p.row && this.cell == p.cell;
+        }
+        return false;
+    }
+
+    /**
      * @return The row index of this position
      */
     public int getRow() {
