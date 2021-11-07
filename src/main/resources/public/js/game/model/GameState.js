@@ -37,6 +37,7 @@ define(function(require){
      * Get an object representing a set of mode-specific options to the Game View.
      */
     this.getModeOptions = function getModeOptions() {
+      console.log('gameData.modeOptions' + JSON.stringify(gameData.modeOptions));
       return gameData.modeOptions;
     };
 

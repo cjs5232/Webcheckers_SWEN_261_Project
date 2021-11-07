@@ -129,6 +129,26 @@ public class Game {
         }
     }
 
+    /**
+     * @return true if the game is won by a player
+     */
+    public boolean isOver(){
+        
+        int redPieces = 0;
+        int whitePieces = 0;
+
+        for(Row r : gameBoard.getRows()){
+            for(Space s : r.getSpaces()){
+                if(s.getPiece() != null){
+                    if(s.getPiece().getColor() == Color.RED) redPieces++;
+                    else whitePieces++;
+                }
+            }
+        }
+
+        return(redPieces == 0 || whitePieces == 0);
+    }
+
     /** 
      * There is a lot of complex logic in here to determine if a move is valid
      * @return true if the move is valid, false otherwise

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.webcheckers.ui.WebServer;
+
 public class BoardView implements Iterable<Row> {
 
     /**
@@ -26,6 +28,12 @@ public class BoardView implements Iterable<Row> {
         for(int i = 0; i < ROW_COUNT; i++){
             rows.add(new Row(i, new ArrayList<>()));
         }
+
+        if(WebServer.EASY_TEST_MODE){
+            rows.get(3).getSpace(2).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE));
+            rows.get(5).getSpace(2).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.RED));
+        }
+
         this.rows = rows;
     }
 
@@ -42,6 +50,11 @@ public class BoardView implements Iterable<Row> {
      * @return The row at a given index
      */
     public Row getRow(int index){ return rows.get(index); }
+
+    /**
+     * @return The List of rows that represent the board
+     */
+    public List<Row> getRows(){ return rows; }
 
     public String printBoardPretty(){
         StringBuilder sb = new StringBuilder();

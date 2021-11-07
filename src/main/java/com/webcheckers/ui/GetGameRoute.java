@@ -12,6 +12,8 @@ import spark.Route;
 import spark.Session;
 import spark.TemplateEngine;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.webcheckers.util.Game;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
@@ -27,6 +29,7 @@ public class GetGameRoute implements Route {
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
   private final TemplateEngine templateEngine;
+  private final Gson gson = new Gson();
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -113,6 +116,14 @@ public class GetGameRoute implements Route {
     }
     
     vm.put("viewMode", "PLAY");
+
+    //If the game is over, tell the server to end the game
+    if(refGame.isOver()){
+      if (WebServer.DEBUG_FLAG) LOG.info("GAME IS OVER");
+      JsonObject gameOver = new JsonObject();
+      gameOver.addProperty("isGameOver", true);
+      vm.put("modeOptions", gson.toJson(gameOver));
+    }
 
     //Place the board from the created game in the view model
     vm.put("board", refGame.getBoard());

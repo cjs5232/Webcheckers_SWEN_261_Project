@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.webcheckers.util.GameController;
-import com.webcheckers.util.JsonToMoveConverter;
 import com.webcheckers.util.PlayerController;
 import com.webcheckers.util.gamehelpers.BackupMoveRoute;
 import com.webcheckers.util.gamehelpers.CheckTurnRoute;
@@ -140,11 +139,14 @@ public class WebServer {
    */
   public static final boolean DEBUG_FLAG = true;
 
+  /**
+   * Controls easy testing mode board generation
+   */
+  public static final boolean EASY_TEST_MODE = true;
+
   //
   // Attributes
   //
-
-  public static final JsonToMoveConverter jsonParser = new JsonToMoveConverter();
   private final TemplateEngine templateEngine;
   private final Gson gson;
 
