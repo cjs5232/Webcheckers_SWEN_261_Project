@@ -1,8 +1,10 @@
 package com.webcheckers.ui;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import spark.ModelAndView;
@@ -12,8 +14,6 @@ import spark.Route;
 import spark.Session;
 import spark.TemplateEngine;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.webcheckers.util.Game;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
@@ -29,7 +29,6 @@ public class GetGameRoute implements Route {
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
   private final TemplateEngine templateEngine;
-  private final Gson gson = new Gson();
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -120,11 +119,13 @@ public class GetGameRoute implements Route {
     //If the game is over, tell the server to end the game
     if(refGame.isOver()){
       if (WebServer.DEBUG_FLAG) LOG.info("GAME IS OVER");
-      JsonObject gameOver = new JsonObject();
-      JsonObject modeOption = new JsonObject();
-      modeOption.addProperty("isGameOver", true);
-      gameOver.addProperty("modeOption", gson.toJson(modeOption));
-      vm.put("modeOptions", gson.toJson(gameOver));
+
+      Set<String> modeOptions = new HashSet<>();
+      modeOptions.add("isGameOver");
+      vm.put("modeOptions", modeOptions);
+    }
+    else{
+      vm.put("modeOptions", "");
     }
 
     //Place the board from the created game in the view model
