@@ -15,6 +15,7 @@ import spark.Route;
 import spark.TemplateEngine;
 
 import com.webcheckers.util.DisappearingMessage;
+import com.webcheckers.util.Game;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 
@@ -74,6 +75,12 @@ public class GetHomeRoute implements Route {
       Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
       List<DisappearingMessage> disappearingMessages = currentUserPlayer.getDisappearingMessages();
       List<DisappearingMessage> disappearingMessagesToShow = new ArrayList<>();
+
+      Game refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer);
+
+      if(refGame != null && refGame.isOver()){
+        WebServer.GLOBAL_GAME_CONTROLLER.handlePlayerExitGame(refGame.getId(), currentUserPlayer);
+      }
 
       List<DisappearingMessage> toRemove = new ArrayList<>();
 

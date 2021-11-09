@@ -12,6 +12,7 @@ import spark.Route;
 import spark.Session;
 import spark.TemplateEngine;
 
+import com.google.gson.JsonObject;
 import com.webcheckers.util.Game;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
@@ -111,8 +112,23 @@ public class GetGameRoute implements Route {
         vm.put("activeColor", refGame.getActiveColor());
       }
     }
+
+    //Add game ID to the view model
+    vm.put("gameID", String.format("%010d", refGame.getId()));
     
     vm.put("viewMode", "PLAY");
+
+    //If the game is over, tell the server to end the game
+    if(refGame.isOver()){
+      if (WebServer.DEBUG_FLAG) LOG.info("GAME IS OVER");
+
+      JsonObject modeOptions = new JsonObject();
+      modeOptions.addProperty("isGameOver", "true");
+      vm.put("modeOptionsAsJSON", modeOptions);
+    }
+    else{
+      vm.put("modeOptionsAsJSON", "{}");
+    }
 
     //Place the board from the created game in the view model
     vm.put("board", refGame.getBoard());

@@ -16,6 +16,7 @@ public class JsonToMoveConverter {
     public static Move convert(String rawUri) {
         //Dedoded data will be formatted in json:
         //actionData={"start":{"row":5,"cell":0},"end":{"row":4,"cell":1}}
+
         String decodedData = "";
         try{
             decodedData = java.net.URLDecoder.decode(rawUri, "UTF-8");
@@ -27,6 +28,11 @@ public class JsonToMoveConverter {
         }
         catch (UnsupportedEncodingException ex){
             LOG.warning("UnsupportedEncodingException: " + ex.getMessage());
+        }
+
+        if(decodedData.contains("gameID=")){
+            decodedData = decodedData.substring(decodedData.indexOf("{"));
+            
         }
 
         //Create a JsonReader to read the decoded data

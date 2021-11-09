@@ -7,15 +7,15 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script> var params = new URLSearchParams(window.location.search); var otherUser = params.get('otherUser'); </script>
   <script>
-  window.gameData = {
-    "gameID" : ${gameID!'null'},
-    "currentUser" : "${currentPlayer.name}",
-    "viewMode" : "${viewMode}",
-    "modeOptions" : ${modeOptionsAsJSON!'{}'},
-    "redPlayer" : "${redPlayer.name}",
-    "whitePlayer" : "${whitePlayer.name}",
-    "activeColor" : "${activeColor}"
-  };
+    window.gameData = {
+      "gameID" : ${gameID!'null'},
+      "currentUser" : "${currentPlayer.name}",
+      "viewMode" : "${viewMode}",
+      "modeOptions" : ${modeOptionsAsJSON!'{}'},
+      "redPlayer" : "${redPlayer.name}",
+      "whitePlayer" : "${whitePlayer.name}",
+      "activeColor" : "${activeColor}"
+    };
   </script>
 </head>
 <body>

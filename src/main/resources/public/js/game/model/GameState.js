@@ -44,6 +44,7 @@ define(function(require){
      * Get a single mode-specific option value from the name.
      */
     this.getModeOption = function getModeOption(optionName) {
+      console.log('GameState.getModeOption of ' + optionName + ': ' + gameData.modeOptions[optionName]);
       return gameData.modeOptions[optionName];
     };
 
