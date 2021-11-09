@@ -61,11 +61,9 @@ public class PlayerController {
      */
     public Player getPlayerByName(String playerName){
         //Create an iterator to move through the entire map
-        Iterator<Map.Entry<Integer, Player> > iterator = playerMap.entrySet().iterator();
 
-        while(iterator.hasNext()){
-            Map.Entry<Integer, Player> entry = iterator.next();
-            if(entry.getValue().toString().equals(playerName)){
+        for (Map.Entry<Integer, Player> entry : playerMap.entrySet()) {
+            if (entry.getValue().toString().equals(playerName)) {
                 return entry.getValue();
             }
         }
@@ -82,10 +80,8 @@ public class PlayerController {
         ArrayList<Player> loggedInPlayers = new ArrayList<>();
 
         //Create an iterator to move through the entire map
-        Iterator<Map.Entry<Integer, Player> > iterator = playerMap.entrySet().iterator();
 
-        while(iterator.hasNext()){
-            Map.Entry<Integer, Player> entry = iterator.next();
+        for (Map.Entry<Integer, Player> entry : playerMap.entrySet()) {
             loggedInPlayers.add(entry.getValue());
         }
 
@@ -104,11 +100,9 @@ public class PlayerController {
         ArrayList<Player> loggedInPlayers = new ArrayList<>();
 
         //Create an iterator to move through the entire map
-        Iterator<Map.Entry<Integer, Player> > iterator = playerMap.entrySet().iterator();
 
-        while(iterator.hasNext()){
-            Map.Entry<Integer, Player> entry = iterator.next();
-            if(!entry.getValue().toString().equals(ignoredPlayer)){
+        for (Map.Entry<Integer, Player> entry : playerMap.entrySet()) {
+            if (!entry.getValue().toString().equals(ignoredPlayer)) {
                 loggedInPlayers.add(entry.getValue());
             }
         }
