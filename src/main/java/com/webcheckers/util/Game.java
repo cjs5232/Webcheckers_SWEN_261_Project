@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import com.webcheckers.ui.WebServer;
@@ -21,6 +22,8 @@ public class Game {
     private static final Logger LOG = Logger.getLogger(Game.class.getName());
 
     private BoardView gameBoard;
+    
+    private int id;
 
     private boolean backingUp = false;
 
@@ -30,14 +33,49 @@ public class Game {
     private Deque<Boolean> lastMovesCapture = new ArrayDeque<>();
     private Deque<Boolean> lastMovePromotion = new ArrayDeque<>();
 
+    private List<Player> exited;
+
     private int nonCaptureMoves = 0;
 
     public Game(Player redPlayer, Player whitePlayer){
 
+        this.id = new Random().nextInt(Integer.MAX_VALUE);
+        this.exited = new ArrayList<>();
+        
         this.redPlayer = redPlayer;
         this.whitePlayer = whitePlayer;
         this.activeColor = Color.RED;
         this.gameBoard = new BoardView(new ArrayList<>());
+    }
+
+    /**
+     * Increment playersExited
+     */
+    public void playerExited(Player p){
+        if(!exited.contains(p)){
+            exited.add(p);
+        }
+    }
+
+    /**
+     * @return the number of players who have exited the game
+     */
+    public List<Player> getPlayersExited(){
+        return exited;
+    }
+
+    /**
+     * @return the id of the game
+     */
+    public int getId(){
+        return this.id;
+    }
+
+    /**
+     * Handles setting a new id for the game when the first one was already taken
+     */
+    public void setNewId(){
+        this.id = new Random().nextInt(Integer.MAX_VALUE);
     }
 
     /** 

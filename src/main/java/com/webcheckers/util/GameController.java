@@ -9,15 +9,31 @@ public class GameController {
     List<Game> gameList;
     List<Player> queue;
 
+    List<Integer> takenIds;
+
     public GameController(){
         gameList = new ArrayList<>();
         queue = new ArrayList<>();
+        takenIds = new ArrayList<>();
     }
 
     /**
      * @param g the new game to be tracked by the controller
      */
     public void addGame(Game g){
+
+        //Get the id of the game to be added
+        int newGameId = g.getId();
+
+        //Change it until it's unique
+        while(takenIds.contains(newGameId)){
+            g.setNewId();
+        }
+
+        //Add the ID to the list of taken IDs
+        takenIds.add(g.getId());
+
+        //Add the game to the list of games
         this.gameList.add(g);
     }
 
@@ -25,7 +41,11 @@ public class GameController {
      * @param g the game to remove (no longer active)
      */
     public void removeGame(Game g){
-        this.gameList.remove(g);
+        //Remove the ID and the game if it's in the controller
+        if(gameList.contains(g)){
+            takenIds.remove(Integer.valueOf(g.getId()));
+            gameList.remove(g);
+        }
     }
 
     /**
@@ -61,6 +81,21 @@ public class GameController {
     public void putInQueue(Player newPlayer) {
         queue.add(newPlayer);
         newPlayer.setPlayerStatus(1);
+    }
+
+    public void handlePlayerExitGame(int id, Player p){
+        Game toRemove = null;
+        for(Game g : gameList){
+            if(g.getId() == id){
+                g.playerExited(p);
+            }
+            if(g.getPlayersExited().size() == 2){
+                toRemove = g;
+            }
+        }
+        if(toRemove != null){
+            removeGame(toRemove);
+        }
     }
 
     /**

@@ -1,10 +1,8 @@
 package com.webcheckers.ui;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import spark.ModelAndView;
@@ -14,6 +12,7 @@ import spark.Route;
 import spark.Session;
 import spark.TemplateEngine;
 
+import com.google.gson.JsonObject;
 import com.webcheckers.util.Game;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
@@ -113,6 +112,9 @@ public class GetGameRoute implements Route {
         vm.put("activeColor", refGame.getActiveColor());
       }
     }
+
+    //Add game ID to the view model
+    vm.put("gameID", String.format("%010d", refGame.getId()));
     
     vm.put("viewMode", "PLAY");
 
@@ -120,12 +122,12 @@ public class GetGameRoute implements Route {
     if(refGame.isOver()){
       if (WebServer.DEBUG_FLAG) LOG.info("GAME IS OVER");
 
-      Set<String> modeOptions = new HashSet<>();
-      modeOptions.add("isGameOver");
-      vm.put("modeOptions", modeOptions);
+      JsonObject modeOptions = new JsonObject();
+      modeOptions.addProperty("isGameOver", "true");
+      vm.put("modeOptionsAsJSON", modeOptions);
     }
     else{
-      vm.put("modeOptions", "");
+      vm.put("modeOptionsAsJSON", "{}");
     }
 
     //Place the board from the created game in the view model

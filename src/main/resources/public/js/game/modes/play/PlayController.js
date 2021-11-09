@@ -196,7 +196,7 @@ define(function(require){
   PlayController.prototype.exitGame = function exitGame() {
     window.location = '/';
   };
-
+  
   /**
    * Exit the game by navigating to the Home page.
    */
