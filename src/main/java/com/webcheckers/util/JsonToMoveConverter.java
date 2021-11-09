@@ -30,6 +30,7 @@ public class JsonToMoveConverter {
             LOG.warning("UnsupportedEncodingException: " + ex.getMessage());
         }
 
+        //For some reason the gameID is being passed with the call, not sure why, but we need to remove it from the string
         if(decodedData.contains("gameID=")){
             decodedData = decodedData.substring(decodedData.indexOf("{"));
             
@@ -63,6 +64,8 @@ public class JsonToMoveConverter {
         int rowNumEnd = jsonTree.getAsJsonObject().get("end").getAsJsonObject().get("row").getAsInt();
         int colNumEnd = jsonTree.getAsJsonObject().get("end").getAsJsonObject().get("cell").getAsInt();
         Position end = new Position(rowNumEnd, colNumEnd);
+
+        if(WebServer.DEBUG_FLAG) LOG.info("End position: " + rowNumEnd + ", " + colNumEnd);
 
         return (new Move(start, end));
     }

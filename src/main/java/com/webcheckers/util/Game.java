@@ -11,7 +11,11 @@ import com.webcheckers.ui.WebServer;
 import com.webcheckers.util.Piece.Color;
 
 public class Game {
-   
+
+    //Gets the logger object
+    private static final Logger LOG = Logger.getLogger(Game.class.getName());
+
+    //Stores player objects and the active color whos turn it is
     private Player redPlayer;
     private Player whitePlayer;
     private Color activeColor;
@@ -19,26 +23,41 @@ public class Game {
     //Positions of captured pieces
     private Position capture;
 
-    private static final Logger LOG = Logger.getLogger(Game.class.getName());
-
+    //Stores the board
     private BoardView gameBoard;
     
+    //Game ID, different for each game
     private int id;
 
+    //Flag for if a move is being reversed or not - controls that captures will not be performed
     private boolean backingUp = false;
 
+    //Overrides if the game is over, used in resignation
     private boolean overrideOverFlag = false;
 
+    //A list of positions to remove pieces from when the call is made
     private List<Position> toRemove = new ArrayList<>();
 
+    //A list of last moves in order to be undone
     private Deque<Move> lastMoves = new ArrayDeque<>();
+
+    //Stores boolean values that reflect whether or not the last move was a capture or not
     private Deque<Boolean> lastMovesCapture = new ArrayDeque<>();
+
+    //Stores boolean values that reflect whether or not the last move was a promotion or not
     private Deque<Boolean> lastMovePromotion = new ArrayDeque<>();
 
+    //Stores which players have exited the game
     private List<Player> exited;
 
+    //Allows only one non-capturing move to be made in one turn
     private int nonCaptureMoves = 0;
 
+    /**
+     * Constructor for the game class
+     * @param redPlayer The red player
+     * @param whitePlayer The white player
+     */
     public Game(Player redPlayer, Player whitePlayer){
 
         this.id = new Random().nextInt(Integer.MAX_VALUE);
@@ -104,7 +123,13 @@ public class Game {
         else{
             this.activeColor = Color.RED;
         }
+
+        //Resets the non-capturing move counter at change of turn
         nonCaptureMoves = 0;
+        //Resets the last-move vars at change of turn
+        lastMoves = new ArrayDeque<>();
+        lastMovesCapture = new ArrayDeque<>();
+        lastMovePromotion = new ArrayDeque<>();
     }
 
     /**
@@ -128,6 +153,9 @@ public class Game {
         toRemove.clear();
     }
 
+    /**
+     * Remove a position from the list: it will not be killed when the call is made
+     */
     public void removeDeadPieceFromList(Position p){
 
         if (WebServer.DEBUG_FLAG) LOG.info("Dead piece list before removal: " + toRemove);
@@ -147,25 +175,28 @@ public class Game {
      */
     public void undoLastMove(){
 
+        //Moves should be undone 'last first'
         Move lastMove = lastMoves.removeFirst();
 
+        //Get the positions involved in the move 
         Position lastMoveStart = lastMove.getStart();
         Position lastMoveEnd = lastMove.getEnd();
 
+        //Create a new Move with the opposite start and end positions
         Move inverseLastMove = new Move(lastMoveEnd, lastMoveStart);
 
+        //Set the backing up flag temporarily to true
         backingUp = true;
+        //Execute the reverse move
         executeMove(inverseLastMove);
+        //Reset the backing up flag
         backingUp = false;
 
-        if (!lastMovesCapture.removeFirst().booleanValue()) {
-            nonCaptureMoves--;
-            System.out.println("reach 1");
-        }
+        //If a player is undoing their only non-capturing move, the count should be reset
+        if (!lastMovesCapture.removeFirst().booleanValue()) nonCaptureMoves--;
         else{
             Position middle = new Position((lastMoveStart.getRow() + lastMoveEnd.getRow()) / 2, (lastMoveStart.getCell() + lastMoveEnd.getCell()) / 2);
             removeDeadPieceFromList(middle);
-            System.out.println("reach 2");
         }
     }
 
@@ -174,9 +205,11 @@ public class Game {
      */
     public boolean isOver(){
         
+        //Count of pieces still on the board
         int redPieces = 0;
         int whitePieces = 0;
 
+        //Iterate through the board and count the number of each color of pieces
         for(Row r : gameBoard.getRows()){
             for(Space s : r.getSpaces()){
                 if(s.getPiece() != null){
@@ -186,7 +219,8 @@ public class Game {
             }
         }
 
-        return(redPieces == 0 || whitePieces == 0 || overrideOverFlag == true);
+        //If either player has no pieces left, or the override flag is active, the game is over
+        return(redPieces == 0 || whitePieces == 0 || overrideOverFlag);
     }
 
     /** 
@@ -225,7 +259,7 @@ public class Game {
         //  -1 for White, 1 for Red
         int inversion = piece.getColor() == Piece.Color.RED ? 1 : -1;
 
-        //Yeah this is one return statement....
+        //A bit of a mess, but functional
         if( (changeX == 1 || changeX == -1 )  && ( (changeY == -1*inversion) || ( (changeY == 1*inversion) && (piece.getType() == Piece.Type.KING) ) ) //Check for simple, non capturing moves
            || ( (changeX == 2 || changeX == -2) && ( (changeY == -2*inversion) || ( (changeY == 2*inversion) && (piece.getType() == Piece.Type.KING) ) ) && midPiece1 != null)) //Check for single capturing move
         {
@@ -257,11 +291,15 @@ public class Game {
         int endColumn = move.getEnd().getCell();
         int endRow = move.getEnd().getRow();
 
+        //Get the piece at the start position
         Piece piece = gameBoard.getRow(startRow).getSpace(startColumn).getPiece();
 
+        //If the move is an 'undo', do not add the move to the list
         if(!backingUp) lastMoves.offerFirst(move);
         else{
+            //Gets the boolean value as to whether or not the last move was a promotion
             boolean undoPromotion = lastMovePromotion.removeFirst();
+            //If it was, set it back to a single piece
             if(undoPromotion) piece.setType(Piece.Type.SINGLE);
         }
         
@@ -283,9 +321,13 @@ public class Game {
             }
         }
 
+        //Check for promotion at the end of every turn
         checkForPromotion(new Position(endRow, endColumn), piece);
     }
 
+    /**
+     * Sets the resignation flag to true
+     */
     public void resign(){
         overrideOverFlag = true;   
     }

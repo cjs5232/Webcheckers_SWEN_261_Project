@@ -56,6 +56,9 @@ public class BoardView implements Iterable<Row> {
      */
     public List<Row> getRows(){ return rows; }
 
+    /**
+     * @return A visually pleasing string representation of the board as text, may be useful for JUnit testing
+     */
     public String printBoardPretty(){
         StringBuilder sb = new StringBuilder();
         //Column numbers

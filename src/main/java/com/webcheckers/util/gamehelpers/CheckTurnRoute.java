@@ -38,13 +38,16 @@ public class CheckTurnRoute implements Route {
     public Object handle(Request request, Response response) {
         //Invoking not logged due to console spamming
         
+        //Get the player object and their game
         Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());
         Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
 
+        //Get the list of players in the game
         Player[] players = gameBoard.getPlayers();
         Player redPlayer = players[0];
         Player whitePlayer = players[1];
 
+        //Boolean logic to determine if it is the player's turn
         return gson.toJson(Message.info(Boolean.toString((player == redPlayer && gameBoard.getActiveColor() == Color.RED) || (player == whitePlayer && gameBoard.getActiveColor() == Color.WHITE))));
     }
     

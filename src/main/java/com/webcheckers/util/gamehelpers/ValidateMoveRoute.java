@@ -48,18 +48,23 @@ public class ValidateMoveRoute implements Route {
         //Get the data from the request
         String rawUri = request.body();
 
+        //Parse the data from JSON to a Move object
         Move combinedMove = JsonToMoveConverter.convert(rawUri);
         if(combinedMove == null) {
             responseMessage = Message.error("Invalid move");
             return gson.toJson(responseMessage);
         }
 
+        //Get the individual move aspects from the combined move
         int rowNumStart = combinedMove.getStart().getRow();
         int colNumStart = combinedMove.getStart().getCell();
         int rowNumEnd = combinedMove.getEnd().getRow();
         int colNumEnd = combinedMove.getEnd().getCell();
 
-        if(WebServer.DEBUG_FLAG) LOG.info("End position: " + rowNumEnd + ", " + colNumEnd);
+        if(WebServer.DEBUG_FLAG) {
+            LOG.info("Start Position: " + rowNumStart + ", " + colNumStart);
+            LOG.info("End position: " + rowNumEnd + ", " + colNumEnd);
+        }
 
         //Calculate the difference between the start and end positions
         int changeX = rowNumEnd - rowNumStart;
@@ -77,6 +82,7 @@ public class ValidateMoveRoute implements Route {
         Space startSpace = startRow.getSpace(colNumStart);
         Piece startPiece = startSpace.getPiece();
 
+        //Generate a response message based on the validity of the move
         responseMessage = gameBoard.isMoveValid(combinedMove, startPiece);
         if(responseMessage.getType() == Message.Type.INFO) {
             gameBoard.executeMove(new Move(new Position(rowNumStart, colNumStart), new Position(rowNumEnd, colNumEnd)));

@@ -69,27 +69,43 @@ public class GetHomeRoute implements Route {
 
     //If the user is logged in
     if(request.session().attributes().contains("currentUser")){
+
+      //Get the current user
       String currentUser = request.session().attribute("currentUser").toString();
       vm.put("currentUser", currentUser);
 
+      //Get the player object from the name
       Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
-      List<DisappearingMessage> disappearingMessages = currentUserPlayer.getDisappearingMessages();
-      List<DisappearingMessage> disappearingMessagesToShow = new ArrayList<>();
 
+      //Get a list of all active DisappearingMessages
+      List<DisappearingMessage> disappearingMessages = currentUserPlayer.getDisappearingMessages();
+      //List to hold DisappearingMessages that should be shown to the user
+      List<DisappearingMessage> disappearingMessagesToShow = new ArrayList<>();
+      //List to hold expired DisappearingMessages
+      List<DisappearingMessage> toRemove = new ArrayList<>();
+
+      //Get the game of the user
       Game refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer);
 
+      //If the user has an active game, and they are on the home page, they exited/resigned
       if(refGame != null && refGame.isOver()){
         WebServer.GLOBAL_GAME_CONTROLLER.handlePlayerExitGame(refGame.getId(), currentUserPlayer);
       }
 
-      List<DisappearingMessage> toRemove = new ArrayList<>();
-
+      //If the user has a pending outgoing prompt
       if(currentUserPlayer.getWaitingOn() != null){
 
+        //The player who the prompt was sent to
         Player waitingOn = currentUserPlayer.getWaitingOn();
 
+        //Time to wait for the prompt to expire in seconds
+        int waitTimeSeconds = 60;
+
+        //Start time of the prompt
         long start = System.currentTimeMillis();
-        long end = start+10000;
+
+        //End time for the prompt
+        long end = start+(waitTimeSeconds*1000);
 
         Thread t = new Thread(() -> {
           while(!waitingOn.isPlaying() && System.currentTimeMillis() < end){

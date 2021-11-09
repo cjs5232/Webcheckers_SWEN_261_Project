@@ -37,9 +37,11 @@ public class BackupMoveRoute implements Route {
     public Object handle(Request request, Response response) {
         if(WebServer.DEBUG_FLAG) LOG.info("BackupMoveRoute is invoked.");
         
+        //Get the player object, and their game
         Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());
         Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
 
+        //Undo the last move, will never error out
         gameBoard.undoLastMove();
         return gson.toJson(Message.info("Move has been undone."));
     }

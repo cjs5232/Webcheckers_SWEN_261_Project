@@ -37,9 +37,11 @@ public class ResignRoute implements Route {
     public Object handle(Request request, Response response) {
         if(WebServer.DEBUG_FLAG) LOG.config("ResignRoute is invoked.");
         
+        //Get the player object and their game
         Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());
         Game refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
 
+        //This should never happen, but just in case
         if(refGame.isOver()){
             return(gson.toJson(Message.error("Cannot resign. Game is over.")));
         }
