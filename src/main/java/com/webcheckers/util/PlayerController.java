@@ -22,7 +22,7 @@ public class PlayerController {
         int hashId = newPlayer.getId();
 
         if(!newPlayer.getName().matches("^[a-zA-Z0-9\\s]+$")){
-            return "Name contained invalid characters.";
+            return "Name contained invalid characters.<br />Valid characters are letters (uppercase and lowercase), numbers, and whitespace.";
         }
 
         Player previous = playerMap.putIfAbsent(hashId, newPlayer);
