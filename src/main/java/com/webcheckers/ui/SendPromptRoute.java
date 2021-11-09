@@ -67,7 +67,7 @@ public class SendPromptRoute implements Route {
         //We do not want to send the opponent a prompt if they are currently playing
         if(opponentPlayer.isPlaying()){
 
-            if (currentUserPlayer.isPlaying()) {
+            if (currentUserPlayer.isPlaying() && !WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer).getPlayersExited().contains(currentUserPlayer)) {
                 response.redirect("/game");
             }
 
