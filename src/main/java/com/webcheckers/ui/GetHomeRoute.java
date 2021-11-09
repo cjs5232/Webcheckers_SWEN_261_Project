@@ -213,9 +213,10 @@ public class GetHomeRoute implements Route {
     vm.put("message", WELCOME_MSG);
 
     //If the user did not load home from "/", redirect them on the next refresh cycle
-    if(!request.url().equals("http://localhost:4567/")){
-      response.redirect("/");
-    }
+    // This was a constant redirection loop.
+//    if(!request.url().equals("http://localhost:4567/")){
+//      response.redirect("/");
+//    }
     
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
