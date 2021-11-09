@@ -27,6 +27,8 @@ public class Game {
 
     private boolean backingUp = false;
 
+    private boolean overrideOverFlag = false;
+
     private List<Position> toRemove = new ArrayList<>();
 
     private Deque<Move> lastMoves = new ArrayDeque<>();
@@ -184,7 +186,7 @@ public class Game {
             }
         }
 
-        return(redPieces == 0 || whitePieces == 0);
+        return(redPieces == 0 || whitePieces == 0 || overrideOverFlag == true);
     }
 
     /** 
@@ -284,4 +286,7 @@ public class Game {
         checkForPromotion(new Position(endRow, endColumn), piece);
     }
 
+    public void resign(){
+        overrideOverFlag = true;   
+    }
 }
