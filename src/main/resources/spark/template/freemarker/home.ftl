@@ -21,7 +21,7 @@
     <#include "message.ftl" />
 
     <!-- TODO: future content on the Home:
-            to start games,
+            -- to start games, --
             spectating active games,
             or replay archived games
     -->
