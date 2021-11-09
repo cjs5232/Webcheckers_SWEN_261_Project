@@ -25,13 +25,12 @@ public class PlayerController {
             return "Name contained invalid characters.";
         }
 
-        //TODO: Convert to playerMap.computeIfAbsent()
-        if(!playerMap.containsKey(hashId)){
-            playerMap.put(hashId, newPlayer);
-            return "";
-        }
-        else{
+        Player previous = playerMap.putIfAbsent(hashId, newPlayer);
+
+        if (previous != null) {
             return "User with this name already exists.";
+        } else {
+            return "";
         }
     }
 
