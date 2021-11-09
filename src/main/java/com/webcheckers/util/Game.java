@@ -70,12 +70,36 @@ public class Game {
     }
 
     /**
+     * @return The piece at position P
+     * @param p The position to get the piece from
+     */
+    public Piece getPieceAtPosition(Position p){
+        return gameBoard.getRow(p.getRow()).getSpace(p.getCell()).getPiece();
+    }
+
+    /**
      * Increment playersExited
      */
     public void playerExited(Player p){
         if(!exited.contains(p)){
             exited.add(p);
         }
+    }
+
+    /**
+     * @return the end position of the last move the player made
+     */
+    public Position getLastMoveEndPosition(){
+        Deque<Move> lastMoveCopy = new ArrayDeque<>(lastMoves);
+        Move lastMove = lastMoveCopy.removeFirst();
+        return(lastMove.getEnd());
+    }
+
+    /**
+     * @return the number of non capturing moves already made in a given turn
+     */
+    public int getNonCapturingMoves(){
+        return nonCaptureMoves;
     }
 
     /**
@@ -171,6 +195,49 @@ public class Game {
     }
 
     /**
+     * @param p The position to check
+     * @return True if the piece at position p can make further moves, false otherwise
+     */
+    public boolean positionHasOtherMoves(Position p){
+
+        //If the user has made a non capturing move, they cannot make any more moves
+        if(nonCaptureMoves >0) return false;
+
+        int startRowP = p.getRow();
+        int startColP = p.getCell();
+
+        //Check if the piece is a king, if it can, there will be more moves
+        boolean isPieceKing = this.gameBoard.getRow(startRowP).getSpace(startColP).getPiece().getType() == Piece.Type.KING;
+
+        //Get the piece's color
+        Piece.Color pieceColor = this.gameBoard.getRow(startRowP).getSpace(startColP).getPiece().getColor();
+        Piece.Color otherColor;
+
+        if(pieceColor == Piece.Color.RED) otherColor = Piece.Color.WHITE;
+        else otherColor = Piece.Color.RED;
+
+        Position northWest = (startRowP - 1 >= 0 && startColP -1 >=0) ? new Position(startRowP - 1, startColP - 1) : null;
+        Position northWest2 = (startRowP - 2 >= 0 && startColP -2 >=0) ? new Position(startRowP - 2, startColP - 2) : null;
+
+        Position northEast = (startRowP - 1 >= 0 && startColP + 1 < 8) ? new Position(startRowP - 1, startColP + 1) : null;
+        Position northEast2 = (startRowP - 2 >= 0 && startColP + 2 < 8) ? new Position(startRowP - 2, startColP + 2) : null;
+        
+        Position southWest = (startRowP + 1 < 8 && startColP - 1 >= 0) ? new Position(startRowP + 1, startColP - 1) : null;
+        Position southWest2 = (startRowP + 2 < 8 && startColP - 2 >= 0) ? new Position(startRowP + 2, startColP - 2) : null;
+
+        Position southEast = (startRowP + 1 < 8 && startColP + 1 < 8) ? new Position(startRowP + 1, startColP + 1) : null;
+        Position southEast2 = (startRowP + 2 < 8 && startColP + 2 < 8) ? new Position(startRowP + 2, startColP + 2) : null;
+
+        //Red piece, north moves as single, white piece, south moves as single
+        return(
+            ((pieceColor == Piece.Color.WHITE || isPieceKing) && southEast != null && getPieceAtPosition(southEast) != null && getPieceAtPosition(southEast).getColor().equals(otherColor) && getPieceAtPosition(southEast2) == null) ||
+            ((pieceColor == Piece.Color.WHITE || isPieceKing) && southWest != null && getPieceAtPosition(southWest) != null && getPieceAtPosition(southWest).getColor().equals(otherColor) && getPieceAtPosition(southWest2) == null) ||
+            ((pieceColor == Piece.Color.RED || isPieceKing) && northEast != null && getPieceAtPosition(northEast) != null && getPieceAtPosition(northEast).getColor().equals(otherColor) && getPieceAtPosition(northEast2) == null) ||
+            ((pieceColor == Piece.Color.RED || isPieceKing) && northWest != null && getPieceAtPosition(northWest) != null && getPieceAtPosition(northWest).getColor().equals(otherColor) && getPieceAtPosition(northWest2) == null)
+        );
+    }
+
+    /**
      * Undo the last move, including putting back the captured piece (if there was one)
      */
     public void undoLastMove(){
@@ -239,6 +306,8 @@ public class Game {
         int changeX = end.getCell() - start.getCell();
 
         int distance = move.getDistance();
+
+        if(distance == 2 && positionHasOtherMoves(start)) return Message.error("You cannot make a capturing move from a position with capturing moves available.");
 
         if(WebServer.DEBUG_FLAG){
             LOG.info("MoveDistance: " + distance);

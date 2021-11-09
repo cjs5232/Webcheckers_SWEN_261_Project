@@ -11,6 +11,7 @@ import com.webcheckers.ui.WebServer;
 import com.webcheckers.util.Game;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
+import com.webcheckers.util.Position;
 
 /**
  * The UI Controller to GET the Home page.
@@ -42,15 +43,23 @@ public class SubmitTurnRoute implements Route {
         if(WebServer.DEBUG_FLAG) LOG.info("CurrentUser from AJax call: " + player.toString());
         Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
 
-        //Remove all captured pieces from the board
-        gameBoard.removeDeadPieces();
-        //End the player's turn
-        gameBoard.swapActiveColor();
-        
-        //See WaitingForTurnValidationState.js for why this should not always be true
-        boolean success = true;
+        Position lastMoveEndPos = gameBoard.getLastMoveEndPosition();
 
-        return(success ? gson.toJson(Message.info("Move submitted successfully.")) : gson.toJson(Message.error("${Error message here}")));
+        if(WebServer.DEBUG_FLAG) LOG.info("LastMoveEndPos: " + lastMoveEndPos.toString());
+
+        //See WaitingForTurnValidationState.js for why this should not always be true
+        boolean hasMoreMoves = gameBoard.positionHasOtherMoves(lastMoveEndPos); 
+
+        if(WebServer.DEBUG_FLAG) LOG.info("HasMoreMoves: " + hasMoreMoves);
+
+        if(!hasMoreMoves){
+            //Remove all captured pieces from the board
+            gameBoard.removeDeadPieces();
+            //End the player's turn
+            gameBoard.swapActiveColor();
+        }
+
+        return(hasMoreMoves ? gson.toJson(Message.error("You have more moves to make.")) : gson.toJson(Message.info("Move submitted successfully.")));
     }
     
 }
