@@ -2,14 +2,19 @@ package com.webcheckers.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
+import com.webcheckers.ui.WebServer;
 
 public class GameController {
     
+    private static final Logger LOG = Logger.getLogger(GameController.class.getName());
+    
     //Store list of all active games
-    List<Game> gameList;
-    List<Player> queue;
+    private List<Game> gameList;
+    private List<Player> queue;
 
-    List<Integer> takenIds;
+    private List<Integer> takenIds;
 
     public GameController(){
         gameList = new ArrayList<>();
@@ -94,6 +99,7 @@ public class GameController {
             }
         }
         if(toRemove != null){
+            if(WebServer.DEBUG_FLAG) LOG.config("Game " + toRemove.getId() + " has been removed from the controller");
             removeGame(toRemove);
         }
     }

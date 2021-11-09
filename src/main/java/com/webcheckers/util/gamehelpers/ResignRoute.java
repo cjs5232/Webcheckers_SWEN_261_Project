@@ -17,11 +17,11 @@ import com.webcheckers.util.Player;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
-public class BackupMoveRoute implements Route {
+public class ResignRoute implements Route {
 
     //Create a Gson object to convert the Message object to a JSON string
     private final Gson gson = new Gson();
-    private static final Logger LOG = Logger.getLogger(BackupMoveRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(ResignRoute.class.getName());
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -29,21 +29,26 @@ public class BackupMoveRoute implements Route {
      * @param templateEngine
      *   the HTML template rendering engine
      */
-    public BackupMoveRoute() {
-        LOG.config("BackupMoveRoute is initialized.");
+    public ResignRoute() {
+        LOG.config("ResignRoute is initialized.");
     }
 
     @Override
     public Object handle(Request request, Response response) {
-        if(WebServer.DEBUG_FLAG) LOG.info("BackupMoveRoute is invoked.");
+        if(WebServer.DEBUG_FLAG) LOG.config("ResignRoute is invoked.");
         
-        //Get the player object, and their game
+        //Get the player object and their game
         Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());
-        Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
+        Game refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
 
-        //Undo the last move, will never error out
-        gameBoard.undoLastMove();
-        return gson.toJson(Message.info("Move has been undone."));
+        //This should never happen, but just in case
+        if(refGame.isOver()){
+            return(gson.toJson(Message.error("Cannot resign. Game is over.")));
+        }
+        else{
+            refGame.resign();
+            return(gson.toJson(Message.info("You have resigned.")));
+        }
     }
     
 }

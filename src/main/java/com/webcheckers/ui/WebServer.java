@@ -10,6 +10,7 @@ import com.webcheckers.util.GameController;
 import com.webcheckers.util.PlayerController;
 import com.webcheckers.util.gamehelpers.BackupMoveRoute;
 import com.webcheckers.util.gamehelpers.CheckTurnRoute;
+import com.webcheckers.util.gamehelpers.ResignRoute;
 import com.webcheckers.util.gamehelpers.SubmitTurnRoute;
 import com.webcheckers.util.gamehelpers.ValidateMoveRoute;
 
@@ -129,6 +130,11 @@ public class WebServer {
   public static final String BACKUP_MOVE_URL = "/backupMove";
 
   /**
+   * The URL pattern to resign a game
+   */
+  public static final String RESIGN_URL = "/resignGame";
+
+  /**
    * "/favicon.ico" is the default place that a browser will look for for the 'display icon'
    * that is placed next to a webpage. The default access to said icon is a GET request.
    */
@@ -233,6 +239,7 @@ public class WebServer {
     post(CHECK_TURN_URL, new CheckTurnRoute());
     post(SUBMIT_TURN_URL, new SubmitTurnRoute());
     post(BACKUP_MOVE_URL, new BackupMoveRoute());
+    post(RESIGN_URL, new ResignRoute());
 
     //Starts the sign-in
     post(ADD_PLAYER_URL, new AddPlayerRoute(templateEngine));

@@ -24,11 +24,6 @@ public class SubmitTurnRoute implements Route {
     private static final Logger LOG = Logger.getLogger(SubmitTurnRoute.class.getName());
 
     /**
-     * Flag for turning on verbose deubgging/console logging
-     */
-    private final boolean verboseDebug = true;
-
-    /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
      *
      * @param templateEngine
@@ -40,14 +35,16 @@ public class SubmitTurnRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        if(verboseDebug) LOG.info("SubmitTurnRoute is invoked.");
+        if(WebServer.DEBUG_FLAG) LOG.info("SubmitTurnRoute is invoked.");
 
         //Get the Player object from the request, and determine the Game object
         Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());
-        if(verboseDebug) LOG.info("CurrentUser from AJax call: " + player.toString());
+        if(WebServer.DEBUG_FLAG) LOG.info("CurrentUser from AJax call: " + player.toString());
         Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
 
+        //Remove all captured pieces from the board
         gameBoard.removeDeadPieces();
+        //End the player's turn
         gameBoard.swapActiveColor();
         
         //See WaitingForTurnValidationState.js for why this should not always be true
