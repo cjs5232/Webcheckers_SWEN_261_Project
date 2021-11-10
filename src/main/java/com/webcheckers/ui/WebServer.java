@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import com.google.gson.Gson;
 import com.webcheckers.util.GameController;
 import com.webcheckers.util.PlayerController;
+import com.webcheckers.util.Queue;
 import com.webcheckers.util.gamehelpers.BackupMoveRoute;
 import com.webcheckers.util.gamehelpers.CheckTurnRoute;
 import com.webcheckers.util.gamehelpers.ResignRoute;
@@ -65,6 +66,12 @@ public class WebServer {
    * Defines one GameController
    */
   public static final GameController GLOBAL_GAME_CONTROLLER = new GameController();
+
+  /**
+   * Defines one Queue
+   */
+  public static final Queue GLOBAL_QUEUE = new Queue();
+
 
   /**
    * The URL pattern to request the Home page.

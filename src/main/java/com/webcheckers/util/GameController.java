@@ -12,13 +12,11 @@ public class GameController {
     
     //Store list of all active games
     private List<Game> gameList;
-    private List<Player> queue;
 
     private List<Integer> takenIds;
 
     public GameController(){
         gameList = new ArrayList<>();
-        queue = new ArrayList<>();
         takenIds = new ArrayList<>();
     }
 
@@ -79,15 +77,6 @@ public class GameController {
         return false;
     }
 
-    /**
-     * @param newPlayer the Player class of the new player
-     * add the player to the queue
-     */
-    public void putInQueue(Player newPlayer) {
-        queue.add(newPlayer);
-        newPlayer.setPlayerStatus(1);
-    }
-
     public void handlePlayerExitGame(int id, Player p){
         Game toRemove = null;
         for(Game g : gameList){
@@ -103,32 +92,6 @@ public class GameController {
             removeGame(toRemove);
         }
     }
-
-    /**
-     * @param player the player to remove from the queue
-     */
-    public void removeFromQueue(Player player) {
-        queue.remove(player);
-    }
-
-    /**
-     * @param player the Player class of the player
-     * see if the player is in the queue and check if they can be removed
-     */
-    public boolean isPlayerInQueue(Player player) {
-        if (queue.size() > 1 && queue.get(0) == player) {
-            Player opponent = queue.get(1);
-            //update data
-            player.setOpponent(opponent);
-            opponent.setOpponent(player);
-            //Remove players from queue
-            queue.remove(opponent);
-            queue.remove(player);
-        }
-        //check if in queue
-        return(queue.contains(player));
-    }
-
 
     /**
      * @param queryPlayerName the name of the player who's game you wish to retrieve

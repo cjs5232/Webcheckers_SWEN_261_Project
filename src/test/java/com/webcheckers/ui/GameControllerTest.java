@@ -81,22 +81,4 @@ public class GameControllerTest {
         assertSame(null, gc.getGameOfPlayer(p3));
         assertSame(null, gc.getGameOfPlayer(p4));
     }
-
-    @Test
-    void testPlayerQueue(){
-        pc.addPlayer(p3);
-
-        //Add the game
-        gc.putInQueue(p3);
-
-        //Make sure the player is in the queue
-        assertTrue(gc.isPlayerInQueue(p3));
-
-        //Remove the game
-        gc.removeFromQueue(p3);
-
-        //Make sure the player is not in the queue
-        assertFalse(gc.isPlayerInQueue(p3));
-    }
-
 }
