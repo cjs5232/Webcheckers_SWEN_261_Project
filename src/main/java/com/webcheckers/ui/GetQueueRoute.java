@@ -11,6 +11,7 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+import com.webcheckers.util.Game;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 
@@ -20,9 +21,7 @@ import com.webcheckers.util.Player;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
 public class GetQueueRoute implements Route {
-  private static final Logger LOG = Logger.getLogger(GetQueueRoute.class.getName());
-
-  private static final Message WAIT_MSG = Message.info("Please wait until someone else wants to play.");
+  private static final Logger LOG = Logger.getLogger(GetQueueRoute.class.getName()); 
 
   private final TemplateEngine templateEngine;
 
@@ -51,22 +50,37 @@ public class GetQueueRoute implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
-    LOG.info("GetQueueRoute is invoked.");
+    //Invoking not logged due to console spamming
     //
     Map<String, Object> vm = new HashMap<>();
-    vm.put("title", "Queue");
-
-    // display a user message in the Home page
-    vm.put("message", WAIT_MSG);
+    vm.put("title", "Queue");  
 
     //put necessary info into page.
     String userName = request.session().attribute("currentUser").toString();
     Player currentUser = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(userName);
     vm.put("currentUser", currentUser);
-    vm.put("gameController", WebServer.GLOBAL_GAME_CONTROLLER);
 
-    //update info
-    WebServer.GLOBAL_GAME_CONTROLLER.putInQueue(currentUser);
+    //Adds the user to the queue if they are not already in it
+    if(WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUser) == null){
+      WebServer.GLOBAL_QUEUE.addPlayer(currentUser);
+    }
+
+    //Display a message to the user
+    vm.put("message", Message.info("Welcome, " + userName +  ", there are " + Integer.toString((WebServer.GLOBAL_QUEUE.getNumberOfPlayers() - 1))  + " other players in the queue..."));
+
+    if(WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUser) != null){
+      Game g = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUser);
+      Player opponent = g.getPlayers()[0] == currentUser ? g.getPlayers()[1] : g.getPlayers()[0];
+      response.redirect("/game?otherUser=" + opponent.toString());
+    }
+    else{
+      Game g = WebServer.GLOBAL_QUEUE.createNewGame();
+      if(g != null){
+          Player opponent = g.getPlayers()[0] == currentUser ? g.getPlayers()[1] : g.getPlayers()[0];
+          response.redirect("/game?otherUser=" + opponent.toString());
+      }
+    }
+
     // render the View
 
     return templateEngine.render(new ModelAndView(vm , "queue.ftl"));
