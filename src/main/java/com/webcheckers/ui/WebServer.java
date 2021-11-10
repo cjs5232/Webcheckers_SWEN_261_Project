@@ -142,6 +142,26 @@ public class WebServer {
   public static final String RESIGN_URL = "/resignGame";
 
   /**
+   * The URL pattern to browse a game to spectate
+   */
+  public static final String SPECTATE_BROWSE_URL = "/spectateBrowse";
+
+  /**
+   * The URL pattern to spectate a game
+   */
+  public static final String SPECTATE_URL = "/spectate";
+
+  /**
+   * The URL pattern for checking a turn while spectating a game
+   */
+  public static final String SPECTATE_CHECK_TURN_URL = "/spectator/checkTurn";
+
+  /**
+   * The URL pattern for stopping spectating a game
+   */
+  public static final String STOP_WATCHING_URL = "/spectator/stopWatching";
+
+  /**
    * "/favicon.ico" is the default place that a browser will look for for the 'display icon'
    * that is placed next to a webpage. The default access to said icon is a GET request.
    */
@@ -247,6 +267,14 @@ public class WebServer {
     post(SUBMIT_TURN_URL, new SubmitTurnRoute());
     post(BACKUP_MOVE_URL, new BackupMoveRoute());
     post(RESIGN_URL, new ResignRoute());
+
+    //View games that can be spectated
+    get(SPECTATE_BROWSE_URL, new GetSpectateBrowseRoute(templateEngine));
+
+    //View a game
+    post(SPECTATE_CHECK_TURN_URL, new CheckTurnRoute());
+    get(SPECTATE_URL, new GetSpectateRoute(templateEngine));
+    get(STOP_WATCHING_URL, new StopWatchingRoute(templateEngine));
 
     //Starts the sign-in
     post(ADD_PLAYER_URL, new AddPlayerRoute(templateEngine));

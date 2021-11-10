@@ -21,6 +21,13 @@ public class Player {
 
     private Player opponent;
 
+    //Used for spectating, will store the last turn's color to check against current turn's color
+    private Piece.Color lastKnownTurn;
+
+    private boolean isSpectating;
+    private Game spectatingGame;
+    private boolean announceSpectatorWinOnNextRefresh;
+
     private List<DisappearingMessage> promptMessages = new ArrayList<>();
     private List<DisappearingMessage> disappearingMessages = new ArrayList<>();
 
@@ -29,9 +36,74 @@ public class Player {
         this.id = name.hashCode();
         this.playerStatus = 0;
         this.opponent = null;
+        this.lastKnownTurn = null;
+        this.isSpectating = false;
+        this.spectatingGame = null;
     }
 
     //Getters and Setters
+
+
+    /**
+     * Sets the flag to announce the winner of the game on the next refresh
+     */
+    public void setAnnounceSpectatorWinOnNextRefresh(boolean b){
+        this.announceSpectatorWinOnNextRefresh = b;
+    }
+
+    /**
+     * Returns the flag to announce the winner of the game on the next refresh
+     * @return boolean
+     */
+    public boolean getAnnounceSpectatorWinOnNextRefresh(){
+        return this.announceSpectatorWinOnNextRefresh;
+    }
+
+    /**
+     * Sets the game that is currently being spectated
+     */
+    public void setSpectatingGame(Game game){
+        this.spectatingGame = game;
+    }
+
+    /**
+     * Returns the game that is currently being spectated
+     * @return Game
+     */
+    public Game getSpectatingGame(){
+        return this.spectatingGame;
+    }
+
+    /**
+     * Sets whether or not the user is spectating a game
+     * @param spectating
+     */
+    public void setSpectating(boolean spectating) {
+        isSpectating = spectating;
+    }
+
+    /**
+     * Gets whether or not the user is spectating a game
+     * @return if the user is spectating or not
+     */
+    public boolean isSpectating() {
+        return isSpectating;
+    }
+
+    /**
+     * Sets the last known turn color
+     */
+    public void setLastKnownTurnColor(Piece.Color color){
+        lastKnownTurn = color;
+    }
+
+    /**
+     * Gets the last known turn color
+     * @return the last known turn color
+     */
+    public Piece.Color getLastKnownTurnColor(){
+        return lastKnownTurn;
+    }
 
     public int getPlayerStatus() {
         return this.playerStatus;

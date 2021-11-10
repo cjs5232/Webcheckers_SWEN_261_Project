@@ -58,6 +58,15 @@ public class GameController {
         return this.gameList;
     }
 
+    public Game getGameById(int id){
+        for(Game g : gameList){
+            if(g.getId() == id){
+                return g;
+            }
+        }
+        return null;
+    }
+
     /**
      * 
      * @param queryPlayerName the player to inquire about

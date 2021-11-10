@@ -86,6 +86,10 @@ public class Game {
         }
     }
 
+    public String getPlayersPretty(){
+        return redPlayer.getName() + " vs. " + whitePlayer.getName();
+    }
+
     /**
      * @return the end position of the last move the player made
      */
@@ -117,6 +121,14 @@ public class Game {
     }
 
     /**
+     * This method is mainly used to get game IDs for spectating
+     * @return the id of the game as a string
+     */
+    public String getIdAsString(){
+        return Integer.toString(this.id);
+    }
+
+    /**
      * Handles setting a new id for the game when the first one was already taken
      */
     public void setNewId(){
@@ -135,6 +147,29 @@ public class Game {
      */
     public Player[] getPlayers(){
         return new Player[]{redPlayer, whitePlayer};
+    }
+
+    /**
+     * Return the winner of the game as a Player
+     * @return the winner of the game
+     */
+    public Player getWinner(){
+        
+        //Count of pieces still on the board
+        int redPieces = 0;
+        int whitePieces = 0;
+
+        //Iterate through the board and count the number of each color of pieces
+        for(Row r : gameBoard.getRows()){
+            for(Space s : r.getSpaces()){
+                if(s.getPiece() != null){
+                    if(s.getPiece().getColor() == Color.RED) redPieces++;
+                    else whitePieces++;
+                }
+            }
+        }
+
+        return whitePieces < redPieces ? redPlayer : whitePlayer;
     }
 
     /**

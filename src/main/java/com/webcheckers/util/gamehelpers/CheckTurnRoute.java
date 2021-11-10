@@ -40,15 +40,35 @@ public class CheckTurnRoute implements Route {
         
         //Get the player object and their game
         Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());
-        Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
+
+        Game refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
+
+        if(player.isSpectating()){
+            //Get the spectating game
+            refGame = player.getSpectatingGame();
+
+            //If the game is over, return the winner as a message
+            if(refGame.isOver()){
+                if(!player.getAnnounceSpectatorWinOnNextRefresh()){
+                    player.setAnnounceSpectatorWinOnNextRefresh(true);
+                    return gson.toJson(Message.info("true"));
+                }
+                else{
+                    return gson.toJson(Message.info("Game is over, " + refGame.getWinner().toString() + " won!"));
+                }  
+            }
+
+            //Otherwise, return a boolean value on whether the turn has changed or not
+            return player.getLastKnownTurnColor() == refGame.getActiveColor() ? gson.toJson(Message.info("false")) : gson.toJson(Message.info("true"));
+        }
 
         //Get the list of players in the game
-        Player[] players = gameBoard.getPlayers();
+        Player[] players = refGame.getPlayers();
         Player redPlayer = players[0];
         Player whitePlayer = players[1];
 
         //Boolean logic to determine if it is the player's turn
-        return gson.toJson(Message.info(Boolean.toString((player == redPlayer && gameBoard.getActiveColor() == Color.RED) || (player == whitePlayer && gameBoard.getActiveColor() == Color.WHITE))));
+        return gson.toJson(Message.info(Boolean.toString((player == redPlayer && refGame.getActiveColor() == Color.RED) || (player == whitePlayer && refGame.getActiveColor() == Color.WHITE))));
     }
     
 }
