@@ -1,6 +1,7 @@
 package com.webcheckers.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -13,11 +14,46 @@ public class GameController {
     //Store list of all active games
     private List<Game> gameList;
 
+    //Store list of completed games
+    private List<Game> completedGameList;
+
     private List<Integer> takenIds;
 
     public GameController(){
         gameList = new ArrayList<>();
+        completedGameList = new ArrayList<>();
         takenIds = new ArrayList<>();
+    }
+
+    /**
+     * Adds a game to the completed game list
+     * @param game the game to be added
+     */
+    public void addCompletedGame(Game g){
+        if(!completedGameList.contains(g)){
+            completedGameList.add(g);
+        }
+    }
+
+    /**
+     * @return the list of completed games
+     */
+    public List<Game> getCompletedGameList(){
+        return completedGameList;
+    }
+
+    /**
+     * @return the list of past games for a Player
+     * @param p the player to be checked
+     */
+    public List<Game> getCompletedGameListForUser(Player p){
+        List<Game> completedGames = new ArrayList<>();
+        for(Game g : completedGameList){
+            if( Arrays.asList(g.getPlayers()).contains(p)){
+                completedGames.add(g);
+            }
+        }
+        return completedGames;
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.webcheckers.util;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 import com.webcheckers.ui.WebServer;
@@ -31,18 +33,56 @@ public class Player {
     private List<DisappearingMessage> promptMessages = new ArrayList<>();
     private List<DisappearingMessage> disappearingMessages = new ArrayList<>();
 
+    //Stores the move history for a game being replayed
+    private Deque<Move> moveHistoryForReplay = new ArrayDeque<>();
+    private int replayGameID;
+
     public Player(String name){
         this.name = name;
         this.id = name.hashCode();
         this.playerStatus = 0;
         this.opponent = null;
+
+        //Spectating functionality
         this.lastKnownTurn = null;
         this.isSpectating = false;
         this.spectatingGame = null;
+
+        //Replay functionality
+        this.moveHistoryForReplay = null;
+        this.replayGameID = 0;
     }
 
     //Getters and Setters
 
+    /**
+     * @param id the id of the game that is being replayed
+     */
+    public void setReplayGameID(int id){
+        this.replayGameID = id;
+    }
+
+    /**
+     * @return the id of the game that is being replayed
+     */
+    public int getReplayGameID(){
+        return this.replayGameID;
+    }
+
+    /**
+     * @return the list of moves to be made in a replay
+     */
+    public Deque<Move> getMoveHistoryForReplay() {
+        return moveHistoryForReplay;
+    }
+
+    /**
+     * Sets the list of moves that should be made in a replay
+     * @param moveHistoryForReplay the list of moves to copy in construction
+     */
+    public void setMoveHistoryForReplay(Deque<Move> moveHistoryForReplay) {
+        this.moveHistoryForReplay = new ArrayDeque<>(moveHistoryForReplay);
+    }
 
     /**
      * Sets the flag to announce the winner of the game on the next refresh

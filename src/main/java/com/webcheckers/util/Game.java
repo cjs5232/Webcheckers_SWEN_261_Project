@@ -38,8 +38,18 @@ public class Game {
     //A list of positions to remove pieces from when the call is made
     private List<Position> toRemove = new ArrayList<>();
 
+    private List<Move> moveHistory = new ArrayList<>();
+
     //A list of last moves in order to be undone
     private Deque<Move> lastMoves = new ArrayDeque<>();
+
+    //Stores boolean values that reflect whether a move in a replay was a capture or not
+    private Deque<Boolean> lastMoveCaptureReplay = new ArrayDeque<>();
+
+    private Deque<Piece.Type> lastMoveCaptureTypeReplay = new ArrayDeque<>();
+
+    //Stores whether or not the last move made in a replay was a promotion
+    private Deque<Boolean> lastMovePromotionReplay = new ArrayDeque<>();
 
     //Stores boolean values that reflect whether or not the last move was a capture or not
     private Deque<Boolean> lastMovesCapture = new ArrayDeque<>();
@@ -47,11 +57,20 @@ public class Game {
     //Stores boolean values that reflect whether or not the last move was a promotion or not
     private Deque<Boolean> lastMovePromotion = new ArrayDeque<>();
 
+    private List<Position> turnPreviouslyOccupied = new ArrayList<>();
+
     //Stores which players have exited the game
     private List<Player> exited;
 
     //Allows only one non-capturing move to be made in one turn
     private int nonCaptureMoves = 0;
+
+    //Used for replays
+    private boolean replayBoardSet = false;
+    private boolean replayMode;
+
+    //Stores index of move currently being replayed
+    private int replayIndex = 0;
 
     /**
      * Constructor for the game class
@@ -67,6 +86,69 @@ public class Game {
         this.whitePlayer = whitePlayer;
         this.activeColor = Color.RED;
         this.gameBoard = new BoardView(new ArrayList<>());
+    }
+    
+    public void resetTurnOccupied(){
+        this.turnPreviouslyOccupied = new ArrayList<>();
+    }
+
+    /**
+     * @return Whether or not there are next moves to go to in the replay
+     */
+    public boolean replayHasNext(){
+        return replayIndex < moveHistory.size();
+    }
+
+    /**
+     * @return Whether or not there are previous moves to go to in the replay
+     */
+    public boolean replayHasPrevious(){
+        return replayIndex > 0;
+    }
+
+    /**
+     * Incremements the replay index (next turn replay)
+     */
+    public void replayNext(){
+        Move toMove = moveHistory.get(replayIndex);
+        Piece atStart = gameBoard.getRow(toMove.getStart().getRow()).getSpace(toMove.getStart().getCell()).getPiece();
+        
+        replayMode = true;
+        isMoveValid(toMove, atStart);
+        executeMove(toMove);
+        nonCaptureMoves = 0;
+        removeDeadPieces();
+        replayMode = false;
+
+        replayIndex++;
+    }
+
+    public void replayPrevious(){
+        replayMode = true;
+        undoLastMove();
+        replayMode = false;
+        replayIndex--;
+    }
+
+    /**
+     * @param boardSetFlag Whether or not the board has been set for a replay
+     */
+    public void setReplayBoardSet(boolean boardSetFlag){
+        replayBoardSet = boardSetFlag;
+    }
+
+    /**
+     * @return Whether or not the board has been set for a replay
+     */
+    public boolean getReplayBoardSet(){
+        return replayBoardSet;
+    }
+
+    /**
+     * @param flagVal the value to set the overrideOverFlag to
+     */
+    public void setOverrideOverFlag(boolean flagVal){
+        this.overrideOverFlag = flagVal;
     }
 
     /**
@@ -135,6 +217,16 @@ public class Game {
         this.id = new Random().nextInt(Integer.MAX_VALUE);
     }
 
+    /**
+     * @param board the board to set
+     */
+    public void setBoard(BoardView board){
+        if(!replayBoardSet){
+            this.gameBoard = new BoardView(board);
+        }
+        replayBoardSet = true;
+    }
+
     /** 
      * @return the board object of the game
      */
@@ -192,6 +284,13 @@ public class Game {
     }
 
     /**
+     * @param c The color to set the active color to
+     */
+    public void setActiveColor(Color c){
+        this.activeColor = c;
+    }
+
+    /**
      * @return the active color of the game
      */
     public Color getActiveColor(){
@@ -229,6 +328,18 @@ public class Game {
         if (WebServer.DEBUG_FLAG) LOG.info("Dead piece list after removal: " + toRemove);
     }
 
+    public boolean alreadyVisited(Position p){
+        for(Position po : turnPreviouslyOccupied){
+            if(p.getRow() == po.getRow() && p.getCell() == po.getCell()){
+                return true;
+            }
+            else{
+                LOG.info("Positions " + po + " and " + p + " are not equal");
+            }
+        }
+        return false;
+    }
+
     /**
      * @param p The position to check
      * @return True if the piece at position p can make further moves, false otherwise
@@ -262,13 +373,13 @@ public class Game {
 
         Position southEast = (startRowP + 1 < 8 && startColP + 1 < 8) ? new Position(startRowP + 1, startColP + 1) : null;
         Position southEast2 = (startRowP + 2 < 8 && startColP + 2 < 8) ? new Position(startRowP + 2, startColP + 2) : null;
-
+        
         //Red piece, north moves as single, white piece, south moves as single
         return(
-            ((pieceColor == Piece.Color.WHITE || isPieceKing) && southEast != null && getPieceAtPosition(southEast) != null && getPieceAtPosition(southEast).getColor().equals(otherColor) && getPieceAtPosition(southEast2) == null) ||
-            ((pieceColor == Piece.Color.WHITE || isPieceKing) && southWest != null && getPieceAtPosition(southWest) != null && getPieceAtPosition(southWest).getColor().equals(otherColor) && getPieceAtPosition(southWest2) == null) ||
-            ((pieceColor == Piece.Color.RED || isPieceKing) && northEast != null && getPieceAtPosition(northEast) != null && getPieceAtPosition(northEast).getColor().equals(otherColor) && getPieceAtPosition(northEast2) == null) ||
-            ((pieceColor == Piece.Color.RED || isPieceKing) && northWest != null && getPieceAtPosition(northWest) != null && getPieceAtPosition(northWest).getColor().equals(otherColor) && getPieceAtPosition(northWest2) == null)
+            ((pieceColor == Piece.Color.WHITE || isPieceKing) && southEast != null && southEast2 != null && getPieceAtPosition(southEast) != null && getPieceAtPosition(southEast).getColor().equals(otherColor) && getPieceAtPosition(southEast2) == null && !alreadyVisited(southEast2)) ||
+            ((pieceColor == Piece.Color.WHITE || isPieceKing) && southWest != null && southWest2 != null && getPieceAtPosition(southWest) != null && getPieceAtPosition(southWest).getColor().equals(otherColor) && getPieceAtPosition(southWest2) == null && !alreadyVisited(southWest2)) ||
+            ((pieceColor == Piece.Color.RED || isPieceKing) && northEast != null && northEast2 != null && getPieceAtPosition(northEast) != null && getPieceAtPosition(northEast).getColor().equals(otherColor) && getPieceAtPosition(northEast2) == null && !alreadyVisited(northEast2)) ||
+            ((pieceColor == Piece.Color.RED || isPieceKing) && northWest != null && northWest2 != null && getPieceAtPosition(northWest) != null && getPieceAtPosition(northWest).getColor().equals(otherColor) && getPieceAtPosition(northWest2) == null && !alreadyVisited(northWest2))
         );
     }
 
@@ -279,6 +390,8 @@ public class Game {
 
         //Moves should be undone 'last first'
         Move lastMove = lastMoves.removeFirst();
+
+        if (!replayMode) moveHistory.remove(lastMove);
 
         //Get the positions involved in the move 
         Position lastMoveStart = lastMove.getStart();
@@ -294,11 +407,26 @@ public class Game {
         //Reset the backing up flag
         backingUp = false;
 
+        boolean putPieceBack;
+        if(replayMode){
+            putPieceBack = lastMoveCaptureReplay.removeFirst().booleanValue();
+            lastMoveCaptureTypeReplay.getFirst();
+        }
+        else{
+            putPieceBack = lastMovesCapture.removeFirst().booleanValue();
+        }
+
         //If a player is undoing their only non-capturing move, the count should be reset
-        if (!lastMovesCapture.removeFirst().booleanValue()) nonCaptureMoves--;
+        if (!putPieceBack) nonCaptureMoves--;
         else{
             Position middle = new Position((lastMoveStart.getRow() + lastMoveEnd.getRow()) / 2, (lastMoveStart.getCell() + lastMoveEnd.getCell()) / 2);
-            removeDeadPieceFromList(middle);
+            if(replayMode){
+                gameBoard.getRow(middle.getRow()).getSpace(middle.getCell()).setPiece(new Piece(lastMoveCaptureTypeReplay.getFirst(), getActiveColor()));
+            }
+            else{
+                removeDeadPieceFromList(middle);
+            }
+            
         }
     }
 
@@ -322,7 +450,7 @@ public class Game {
         }
 
         //If either player has no pieces left, or the override flag is active, the game is over
-        return(redPieces == 0 || whitePieces == 0 || overrideOverFlag);
+        return((redPieces == 0 || whitePieces == 0) || overrideOverFlag);
     }
 
     /** 
@@ -336,6 +464,9 @@ public class Game {
         //Start and end positions of the piece
         Position start = move.getStart();
         Position end = move.getEnd();
+
+        turnPreviouslyOccupied.add(start);
+        turnPreviouslyOccupied.add(end);
 
         int changeY = end.getRow() - start.getRow();
         int changeX = end.getCell() - start.getCell();
@@ -378,9 +509,20 @@ public class Game {
     public void checkForPromotion(Position end, Piece p){
         if(p.getType() == Piece.Type.SINGLE && (end.getRow() == 0 || end.getRow() == 7)){
             p.setType(Piece.Type.KING);
-            lastMovePromotion.offerFirst(true);
+            if(replayMode){
+                lastMovePromotionReplay.offerFirst(true);
+            }
+            else{
+                lastMovePromotion.offerFirst(true);
+            }
+            
         }
-        lastMovePromotion.offerFirst(false);
+        if(replayMode){
+            lastMovePromotionReplay.offerFirst(false);
+        }
+        else{
+            lastMovePromotion.offerFirst(false);
+        }
     }
 
     /**
@@ -389,6 +531,8 @@ public class Game {
      */
     public void executeMove(Move move){ 
         
+        System.out.println("reach 2");
+
         // variables for move indices
         int startColumn = move.getStart().getCell();
         int startRow = move.getStart().getRow();
@@ -397,14 +541,27 @@ public class Game {
 
         //Get the piece at the start position
         Piece piece = gameBoard.getRow(startRow).getSpace(startColumn).getPiece();
+        if(WebServer.DEBUG_FLAG){
+            LOG.info("Piece at start pos: " + piece);
+        }
 
         //If the move is an 'undo', do not add the move to the list
-        if(!backingUp) lastMoves.offerFirst(move);
+        if(!backingUp) {
+            lastMoves.offerFirst(move);
+            if (!replayMode) moveHistory.add(move);
+        }
         else{
-            //Gets the boolean value as to whether or not the last move was a promotion
-            boolean undoPromotion = lastMovePromotion.removeFirst();
-            //If it was, set it back to a single piece
-            if(undoPromotion) piece.setType(Piece.Type.SINGLE);
+            if(replayMode){
+                boolean undoPromotion = lastMovePromotionReplay.removeFirst();
+                if(undoPromotion) piece.setType(Piece.Type.SINGLE);
+            }
+            else{
+                //Gets the boolean value as to whether or not the last move was a promotion
+                boolean undoPromotion = lastMovePromotion.removeFirst();
+                //If it was, set it back to a single piece
+                if(undoPromotion) piece.setType(Piece.Type.SINGLE);
+            }
+            
         }
         
         //Set the end piece
@@ -414,13 +571,27 @@ public class Game {
         gameBoard.getRow(move.getStart().getRow()).getSpace(move.getStart().getCell()).setPiece(null);
 
         if(!backingUp){
+
             //Remove captured pieces
             if(capture != null) {
                 toRemove.add(new Position(capture.getRow(), capture.getCell()));
-                lastMovesCapture.offerFirst(true);   
+                if(replayMode){
+                    lastMoveCaptureReplay.offerFirst(true);
+                    lastMoveCaptureTypeReplay.offerFirst(gameBoard.getRow(capture.getRow()).getSpace(capture.getCell()).getPiece().getType());
+                }
+                else{
+                    lastMovesCapture.offerFirst(true);
+                }
+                   
             }
             else{
-                lastMovesCapture.offerFirst(false);
+                if(replayMode){
+                    lastMoveCaptureReplay.offerFirst(false);
+                    lastMoveCaptureTypeReplay.offerFirst(Piece.Type.SINGLE);
+                }
+                else{
+                    lastMovesCapture.offerFirst(false);
+                }
                 nonCaptureMoves++;
             }
         }
@@ -434,5 +605,9 @@ public class Game {
      */
     public void resign(){
         overrideOverFlag = true;   
+    }
+
+    public List<Move> getMoveHistoryForReplay() {
+        return moveHistory;
     }
 }

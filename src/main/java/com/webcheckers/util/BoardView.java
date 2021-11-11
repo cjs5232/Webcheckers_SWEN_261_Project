@@ -41,7 +41,7 @@ public class BoardView implements Iterable<Row> {
      * Copy constructor
      */
     public BoardView(BoardView template){
-        this.rows = template.rows;
+        this.rows = new ArrayList<>(template.getRows());
     }
 
     /**

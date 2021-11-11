@@ -5,7 +5,8 @@
       <a href="#" onclick="event.preventDefault(); signout.submit();">Log out [${currentUser}]</a>
     </form> |
     <a href="/queue">Find Game</a> |
-    <a href=/spectateBrowse>Spectate a Game</a>
+    <a href=/spectateBrowse>Spectate a Game</a> |
+    <a href="/replayBrowse">Replay a Game</a>
   <#else>
     <a href="/login">Sign in</a>
   </#if>

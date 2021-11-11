@@ -11,6 +11,8 @@ import com.webcheckers.util.PlayerController;
 import com.webcheckers.util.Queue;
 import com.webcheckers.util.gamehelpers.BackupMoveRoute;
 import com.webcheckers.util.gamehelpers.CheckTurnRoute;
+import com.webcheckers.util.gamehelpers.ReplayNextTurnRoute;
+import com.webcheckers.util.gamehelpers.ReplayPreviousTurnRoute;
 import com.webcheckers.util.gamehelpers.ResignRoute;
 import com.webcheckers.util.gamehelpers.SubmitTurnRoute;
 import com.webcheckers.util.gamehelpers.ValidateMoveRoute;
@@ -142,6 +144,26 @@ public class WebServer {
   public static final String RESIGN_URL = "/resignGame";
 
   /**
+   * The URL pattern to browse past games to replay
+   */
+  public static final String REPLAY_BROWSE_URL = "/replayBrowse";
+
+  /**
+   * The URL pattern to replay a game
+   */
+  public static final String REPLAY_URL = "/replay";
+
+  /**
+   * The URL pattern to advance the move in replay mode
+   */
+  public static final String REPLAY_NEXT_URL = "/replay/nextTurn";
+
+  /**
+   * The URL pattern to undo a move in replay mode
+   */
+  public static final String REPLAY_PREVIOUS_URL = "/replay/previousTurn";
+
+  /**
    * The URL pattern to browse a game to spectate
    */
   public static final String SPECTATE_BROWSE_URL = "/spectateBrowse";
@@ -268,10 +290,18 @@ public class WebServer {
     post(BACKUP_MOVE_URL, new BackupMoveRoute());
     post(RESIGN_URL, new ResignRoute());
 
-    //View games that can be spectated
+    //Browse games that can be replayed
+    get(REPLAY_BROWSE_URL, new GetReplayBrowseRoute(templateEngine));
+
+    //Replay a game
+    get(REPLAY_URL, new GetReplayRoute(templateEngine));
+    post(REPLAY_NEXT_URL, new ReplayNextTurnRoute());
+    post(REPLAY_PREVIOUS_URL, new ReplayPreviousTurnRoute());
+
+    //Browse games that can be spectated
     get(SPECTATE_BROWSE_URL, new GetSpectateBrowseRoute(templateEngine));
 
-    //View a game
+    //Spectate a game
     post(SPECTATE_CHECK_TURN_URL, new CheckTurnRoute());
     get(SPECTATE_URL, new GetSpectateRoute(templateEngine));
     get(STOP_WATCHING_URL, new StopWatchingRoute(templateEngine));

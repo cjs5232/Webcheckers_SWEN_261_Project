@@ -130,6 +130,8 @@ public class GetGameRoute implements Route {
       vm.put("modeOptionsAsJSON", "{}");
     }
 
+    refGame.resetTurnOccupied();
+
     //Place the board from the created game in the view model
     vm.put("board", refGame.getBoard());
 
