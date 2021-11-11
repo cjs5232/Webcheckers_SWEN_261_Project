@@ -21,8 +21,8 @@ public class PlayerController {
         
         int hashId = newPlayer.getId();
 
-        if(!newPlayer.getName().matches("^[a-zA-Z0-9\\s]+$")){
-            return "Name contained invalid characters.<br />Valid characters are letters (uppercase and lowercase), numbers, and whitespace.";
+        if(!newPlayer.getName().matches("^[a-zA-Z0-9\\_]+$")){
+            return "Name contained invalid characters.<br />Valid characters are letters (uppercase and lowercase), and numbers.";
         }
 
         Player previous = playerMap.putIfAbsent(hashId, newPlayer);
