@@ -333,6 +333,8 @@ public class WebServer {
     //Shows the Accept Game page (not fully implemented yet)
     get(ACCEPT_URL, new AcceptPromptRoute(templateEngine));
 
+    notFound(new GetNotFoundRoute(templateEngine));
+
     //
     if (DEBUG_FLAG) LOG.config("WebServer is initialized.");
     if (DEBUG_FLAG) LOG.info("Gson object from class: " + gson.getClass() + "is initialized");
