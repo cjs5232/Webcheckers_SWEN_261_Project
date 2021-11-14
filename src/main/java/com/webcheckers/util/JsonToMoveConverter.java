@@ -39,11 +39,8 @@ public class JsonToMoveConverter {
         JsonReader reader = new JsonReader(new java.io.StringReader(decodedData));
         reader.setLenient(true);
 
-        //Create a JsonParser to parse the read data
-        JsonParser parser = new JsonParser();
-
         //Parse the data
-        JsonElement jsonTree = parser.parse(reader).getAsJsonObject();
+        JsonElement jsonTree = JsonParser.parseReader(reader).getAsJsonObject();
 
         //Determine whether or not the json params exist - If they don't, error out immediately
         if(jsonTree.getAsJsonObject().get("start").getAsJsonObject().get("row").equals(JsonNull.INSTANCE) ||
