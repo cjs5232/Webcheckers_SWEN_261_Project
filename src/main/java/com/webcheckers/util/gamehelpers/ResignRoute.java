@@ -35,7 +35,7 @@ public class ResignRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        if(WebServer.DEBUG_FLAG) LOG.config("ResignRoute is invoked.");
+        if(WebServer.DEBUG_FLAG) LOG.info("ResignRoute is invoked.");
         
         //Get the player object and their game
         Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());

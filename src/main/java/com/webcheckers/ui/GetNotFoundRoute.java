@@ -1,6 +1,4 @@
 package com.webcheckers.ui;
-
-import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.HashMap;

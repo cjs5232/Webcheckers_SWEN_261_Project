@@ -578,17 +578,17 @@ public class Game {
             if(WebServer.DEBUG_FLAG) LOG.info("lastMovePromotionReplay(): " + Arrays.toString(lastMovePromotionReplay.toArray()));
             if(replayMode){
                 boolean undoPromotion = lastMovePromotionReplay.removeFirst();
-                if(WebServer.DEBUG_FLAG){
-                    LOG.info("Undo promotion: " + undoPromotion);
-                    
-                }
                 if(undoPromotion) piece.setType(Piece.Type.SINGLE);
             }
             else{
                 //Gets the boolean value as to whether or not the last move was a promotion
                 boolean undoPromotion = lastMovePromotion.removeFirst();
+                
                 //If it was, set it back to a single piece
-                if(undoPromotion) piece.setType(Piece.Type.SINGLE);
+                if(undoPromotion) {
+                    piece.setType(Piece.Type.SINGLE);
+                    promotionDuringTurn = false;
+                }
             }
             
         }
