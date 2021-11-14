@@ -50,9 +50,8 @@ public class ValidateMoveRoute implements Route {
 
         //Parse the data from JSON to a Move object
         Move combinedMove = JsonToMoveConverter.convert(rawUri);
-        if(combinedMove == null) {
-            responseMessage = Message.error("Invalid move");
-            return gson.toJson(responseMessage);
+        if(combinedMove == null) { 
+            return gson.toJson(Message.error("Invalid move."));
         }
 
         //Get the individual move aspects from the combined move

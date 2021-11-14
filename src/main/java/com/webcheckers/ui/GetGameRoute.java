@@ -124,6 +124,7 @@ public class GetGameRoute implements Route {
 
       JsonObject modeOptions = new JsonObject();
       modeOptions.addProperty("isGameOver", "true");
+      modeOptions.addProperty("gameOverMessage", refGame.getGameOverMessage().toString());
       vm.put("modeOptionsAsJSON", modeOptions);
     }
     else{

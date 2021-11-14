@@ -68,7 +68,7 @@ public class CheckTurnRoute implements Route {
         Player whitePlayer = players[1];
 
         //Boolean logic to determine if it is the player's turn
-        return gson.toJson(Message.info(Boolean.toString((player == redPlayer && refGame.getActiveColor() == Color.RED) || (player == whitePlayer && refGame.getActiveColor() == Color.WHITE))));
+        return gson.toJson(Message.info(Boolean.toString((player == redPlayer && refGame.getActiveColor() == Color.RED) || (player == whitePlayer && refGame.getActiveColor() == Color.WHITE) || refGame.isOver())));
     }
     
 }

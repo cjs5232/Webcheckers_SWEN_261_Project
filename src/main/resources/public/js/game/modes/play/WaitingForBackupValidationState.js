@@ -13,7 +13,6 @@ define(function(require){
   // imports
   const PlayModeConstants = require('./PlayModeConstants');
   const AjaxUtils = require('../../util/AjaxUtils');
-  
 
   /**
    * Constructor function.

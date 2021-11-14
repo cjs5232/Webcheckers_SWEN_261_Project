@@ -2,6 +2,7 @@ package com.webcheckers.util;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.Random;
@@ -63,11 +64,15 @@ public class Game {
     private List<Player> exited;
 
     //Allows only one non-capturing move to be made in one turn
-    private int nonCaptureMoves = 0;
+    private boolean madeNonCaptureMove = false;
+
+    private boolean promotionDuringTurn = false;
 
     //Used for replays
     private boolean replayBoardSet = false;
     private boolean replayMode;
+
+    private Player resignedPlayer = null;
 
     //Stores index of move currently being replayed
     private int replayIndex = 0;
@@ -116,11 +121,12 @@ public class Game {
         replayMode = true;
         isMoveValid(toMove, atStart);
         executeMove(toMove);
-        nonCaptureMoves = 0;
+        madeNonCaptureMove = false;
         removeDeadPieces();
         replayMode = false;
 
         replayIndex++;
+        if(WebServer.DEBUG_FLAG) LOG.info("lastMovePromotionReplay: " + Arrays.toString(lastMovePromotionReplay.toArray()));
     }
 
     public void replayPrevious(){
@@ -159,6 +165,10 @@ public class Game {
         return gameBoard.getRow(p.getRow()).getSpace(p.getCell()).getPiece();
     }
 
+    public void setReplayMoveIndex(int index){
+        this.replayIndex = index;
+    }
+
     /**
      * Increment playersExited
      */
@@ -184,8 +194,8 @@ public class Game {
     /**
      * @return the number of non capturing moves already made in a given turn
      */
-    public int getNonCapturingMoves(){
-        return nonCaptureMoves;
+    public boolean getMadeNonCaptureMove(){
+        return madeNonCaptureMove;
     }
 
     /**
@@ -276,7 +286,9 @@ public class Game {
         }
 
         //Resets the non-capturing move counter at change of turn
-        nonCaptureMoves = 0;
+        madeNonCaptureMove = false;
+        //Resets the promotion-turn-ending flag
+        promotionDuringTurn = false;
         //Resets the last-move vars at change of turn
         lastMoves = new ArrayDeque<>();
         lastMovesCapture = new ArrayDeque<>();
@@ -340,6 +352,15 @@ public class Game {
         return false;
     }
 
+    public Message getGameOverMessage(){
+        if(resignedPlayer != null){
+            return Message.info(resignedPlayer.getName() + " resigned the game");
+        }
+        else{
+            return Message.info(getWinner().getName() + " won the game");
+        }   
+    }
+
     /**
      * @param p The position to check
      * @return True if the piece at position p can make further moves, false otherwise
@@ -347,7 +368,7 @@ public class Game {
     public boolean positionHasOtherMoves(Position p){
 
         //If the user has made a non capturing move, they cannot make any more moves
-        if(nonCaptureMoves >0) return false;
+        if(madeNonCaptureMove) return false;
 
         int startRowP = p.getRow();
         int startColP = p.getCell();
@@ -375,11 +396,12 @@ public class Game {
         Position southEast2 = (startRowP + 2 < 8 && startColP + 2 < 8) ? new Position(startRowP + 2, startColP + 2) : null;
         
         //Red piece, north moves as single, white piece, south moves as single
-        return(
+        return((
             ((pieceColor == Piece.Color.WHITE || isPieceKing) && southEast != null && southEast2 != null && getPieceAtPosition(southEast) != null && getPieceAtPosition(southEast).getColor().equals(otherColor) && getPieceAtPosition(southEast2) == null && !alreadyVisited(southEast2)) ||
             ((pieceColor == Piece.Color.WHITE || isPieceKing) && southWest != null && southWest2 != null && getPieceAtPosition(southWest) != null && getPieceAtPosition(southWest).getColor().equals(otherColor) && getPieceAtPosition(southWest2) == null && !alreadyVisited(southWest2)) ||
             ((pieceColor == Piece.Color.RED || isPieceKing) && northEast != null && northEast2 != null && getPieceAtPosition(northEast) != null && getPieceAtPosition(northEast).getColor().equals(otherColor) && getPieceAtPosition(northEast2) == null && !alreadyVisited(northEast2)) ||
-            ((pieceColor == Piece.Color.RED || isPieceKing) && northWest != null && northWest2 != null && getPieceAtPosition(northWest) != null && getPieceAtPosition(northWest).getColor().equals(otherColor) && getPieceAtPosition(northWest2) == null && !alreadyVisited(northWest2))
+            ((pieceColor == Piece.Color.RED || isPieceKing) && northWest != null && northWest2 != null && getPieceAtPosition(northWest) != null && getPieceAtPosition(northWest).getColor().equals(otherColor) && getPieceAtPosition(northWest2) == null && !alreadyVisited(northWest2)) 
+            )&&(!promotionDuringTurn)
         );
     }
 
@@ -417,11 +439,11 @@ public class Game {
         }
 
         //If a player is undoing their only non-capturing move, the count should be reset
-        if (!putPieceBack) nonCaptureMoves--;
+        if (!putPieceBack) madeNonCaptureMove = false;
         else{
             Position middle = new Position((lastMoveStart.getRow() + lastMoveEnd.getRow()) / 2, (lastMoveStart.getCell() + lastMoveEnd.getCell()) / 2);
             if(replayMode){
-                gameBoard.getRow(middle.getRow()).getSpace(middle.getCell()).setPiece(new Piece(lastMoveCaptureTypeReplay.getFirst(), getActiveColor()));
+                gameBoard.getRow(middle.getRow()).getSpace(middle.getCell()).setPiece(new Piece(lastMoveCaptureTypeReplay.getFirst(), getNonActiveColor()));
             }
             else{
                 removeDeadPieceFromList(middle);
@@ -459,7 +481,8 @@ public class Game {
     */
     public Message isMoveValid(Move move, Piece piece){
 
-        if(nonCaptureMoves > 0) return Message.error("You have already made a non-capturing move this turn.");
+        if(madeNonCaptureMove) return Message.error("You have already made a non-capturing move this turn.");
+        if(promotionDuringTurn) return Message.error("You have promoted a piece, your turn is over.");
 
         //Start and end positions of the piece
         Position start = move.getStart();
@@ -514,14 +537,17 @@ public class Game {
             }
             else{
                 lastMovePromotion.offerFirst(true);
+                promotionDuringTurn = true;
             }
             
         }
-        if(replayMode){
-            lastMovePromotionReplay.offerFirst(false);
-        }
         else{
-            lastMovePromotion.offerFirst(false);
+            if(replayMode){
+                lastMovePromotionReplay.offerFirst(false);
+            }
+            else{
+                lastMovePromotion.offerFirst(false);
+            }
         }
     }
 
@@ -530,8 +556,6 @@ public class Game {
      * @param player The current player
      */
     public void executeMove(Move move){ 
-        
-        System.out.println("reach 2");
 
         // variables for move indices
         int startColumn = move.getStart().getCell();
@@ -551,8 +575,13 @@ public class Game {
             if (!replayMode) moveHistory.add(move);
         }
         else{
+            if(WebServer.DEBUG_FLAG) LOG.info("lastMovePromotionReplay(): " + Arrays.toString(lastMovePromotionReplay.toArray()));
             if(replayMode){
                 boolean undoPromotion = lastMovePromotionReplay.removeFirst();
+                if(WebServer.DEBUG_FLAG){
+                    LOG.info("Undo promotion: " + undoPromotion);
+                    
+                }
                 if(undoPromotion) piece.setType(Piece.Type.SINGLE);
             }
             else{
@@ -571,7 +600,6 @@ public class Game {
         gameBoard.getRow(move.getStart().getRow()).getSpace(move.getStart().getCell()).setPiece(null);
 
         if(!backingUp){
-
             //Remove captured pieces
             if(capture != null) {
                 toRemove.add(new Position(capture.getRow(), capture.getCell()));
@@ -592,18 +620,18 @@ public class Game {
                 else{
                     lastMovesCapture.offerFirst(false);
                 }
-                nonCaptureMoves++;
+                madeNonCaptureMove = true;
             }
+            //Check for promotion at the end of every turn
+            checkForPromotion(new Position(endRow, endColumn), piece);
         }
-
-        //Check for promotion at the end of every turn
-        checkForPromotion(new Position(endRow, endColumn), piece);
     }
 
     /**
      * Sets the resignation flag to true
      */
-    public void resign(){
+    public void resign(Player player){
+        resignedPlayer = player;
         overrideOverFlag = true;   
     }
 

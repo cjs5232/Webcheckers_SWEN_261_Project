@@ -62,16 +62,15 @@
         <div class="game-board">
           <table id="game-board">
               <tbody>
-              <#assign row_var = 0>
               <#list board.iterator() as row>
                 <tr data-row="${row.index}">
                 <#list row.iterator() as space>
                   <td data-cell="${space.cellIdx}" 
-                      <#if space.isValid(row_var)>
+                      <#if space.isValid(row.index)>
                       class="Space"
                       </#if>
                   >
-                  <#if space.piece??>
+                  <#if space.getPiece()??>
                     <div class="Piece"
                         id="piece-${row.index}-${space.cellIdx}"
                         data-type="${space.piece.type}"
@@ -81,7 +80,6 @@
                   </td>
                 </#list>
                 </tr>
-                <#assign row_var++>
               </#list>
               </tbody>
           </table>

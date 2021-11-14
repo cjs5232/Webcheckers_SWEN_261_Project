@@ -29,9 +29,30 @@ public class BoardView implements Iterable<Row> {
             rows.add(new Row(i, new ArrayList<>()));
         }
 
-        if(WebServer.EASY_TEST_MODE){
+        //2 piece game, easy win test
+        if(WebServer.TEST_MODE == 1){
             rows.get(3).getSpace(2).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE));
             rows.get(5).getSpace(2).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.RED));
+        }
+        //Double jump
+        else if(WebServer.TEST_MODE == 2){
+            rows.get(7).getSpace(0).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.RED));
+            rows.get(6).getSpace(1).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE));
+            rows.get(4).getSpace(3).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE));
+        }
+        //Triple jump
+        else if(WebServer.TEST_MODE == 3){
+            rows.get(7).getSpace(0).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.RED));
+            rows.get(6).getSpace(1).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE));
+            rows.get(4).getSpace(3).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE));
+            rows.get(2).getSpace(5).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE));
+        }
+        //King (promotion) testing
+        else if(WebServer.TEST_MODE == 4){
+            rows.get(4).getSpace(7).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.RED));
+            rows.get(3).getSpace(6).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE));
+            rows.get(1).getSpace(4).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE));
+            rows.get(1).getSpace(2).setPiece(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE));
         }
 
         this.rows = rows;

@@ -164,6 +164,11 @@ public class WebServer {
   public static final String REPLAY_PREVIOUS_URL = "/replay/previousTurn";
 
   /**
+   * The URL pattern to stop watching a replay
+   */
+  public static final String STOP_REPLAY_URL = "/replay/stopWatching";
+
+  /**
    * The URL pattern to browse a game to spectate
    */
   public static final String SPECTATE_BROWSE_URL = "/spectateBrowse";
@@ -181,7 +186,7 @@ public class WebServer {
   /**
    * The URL pattern for stopping spectating a game
    */
-  public static final String STOP_WATCHING_URL = "/spectator/stopWatching";
+  public static final String STOP_SPECTATE_URL = "/spectator/stopWatching";
 
   /**
    * "/favicon.ico" is the default place that a browser will look for for the 'display icon'
@@ -196,8 +201,14 @@ public class WebServer {
 
   /**
    * Controls easy testing mode board generation
+   * 0 - normal game
+   * 1 - 2 pieces, one for each color
+   * 2 - Double jump
+   * 3 - Triple jump
+   * 4 - Promotion
    */
-  public static final boolean EASY_TEST_MODE = true;
+  
+  public static final Integer TEST_MODE = 4;
 
   //
   // Attributes
@@ -297,6 +308,7 @@ public class WebServer {
     get(REPLAY_URL, new GetReplayRoute(templateEngine));
     post(REPLAY_NEXT_URL, new ReplayNextTurnRoute());
     post(REPLAY_PREVIOUS_URL, new ReplayPreviousTurnRoute());
+    get(STOP_REPLAY_URL, new StopReplayingRoute(templateEngine));
 
     //Browse games that can be spectated
     get(SPECTATE_BROWSE_URL, new GetSpectateBrowseRoute(templateEngine));
@@ -304,7 +316,7 @@ public class WebServer {
     //Spectate a game
     post(SPECTATE_CHECK_TURN_URL, new CheckTurnRoute());
     get(SPECTATE_URL, new GetSpectateRoute(templateEngine));
-    get(STOP_WATCHING_URL, new StopWatchingRoute(templateEngine));
+    get(STOP_SPECTATE_URL, new StopSpectatingRoute(templateEngine));
 
     //Starts the sign-in
     post(ADD_PLAYER_URL, new AddPlayerRoute(templateEngine));

@@ -33,7 +33,6 @@ public class JsonToMoveConverter {
         //For some reason the gameID is being passed with the call, not sure why, but we need to remove it from the string
         if(decodedData.contains("gameID=")){
             decodedData = decodedData.substring(decodedData.indexOf("{"));
-            
         }
 
         //Create a JsonReader to read the decoded data

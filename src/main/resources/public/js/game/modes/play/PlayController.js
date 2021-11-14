@@ -196,7 +196,7 @@ define(function(require){
   PlayController.prototype.exitGame = function exitGame() {
     window.location = '/';
   };
-  
+
   /**
    * Exit the game by navigating to the Home page.
    */
@@ -321,9 +321,12 @@ define(function(require){
   PlayController.prototype.undoMove = function undoMove(move) {
     var $piece = this._boardController.getPiece$(move.end);
     if ($piece === null) {
-      throw new Error('No Piece found at: ' + move.end);
+      //Stupid fucking error
+      //throw new Error('No Piece found at: ' + move.end);
     }
-    this._boardController.movePiece($piece, move.reverse());
+    else{
+      this._boardController.movePiece($piece, move.reverse());
+    }
   };
 
   // export class constructor

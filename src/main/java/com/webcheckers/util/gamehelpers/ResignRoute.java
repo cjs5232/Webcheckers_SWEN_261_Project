@@ -46,7 +46,7 @@ public class ResignRoute implements Route {
             return(gson.toJson(Message.error("Cannot resign. Game is over.")));
         }
         else{
-            refGame.resign();
+            refGame.resign(player);
             return(gson.toJson(Message.info("You have resigned.")));
         }
     }

@@ -137,6 +137,9 @@ define(function(require){
    * Move a Piece DOM element from one space to another.
    */
   BoardController.prototype.movePiece = function movePiece($piece, move) {
+    if($piece === null){
+      return;
+    }
     var $fromCell = $piece.parent();
     var $toCell = this.getSpace$(move.end);
     // hide the DnD visual cue on destination (move 'to') cell

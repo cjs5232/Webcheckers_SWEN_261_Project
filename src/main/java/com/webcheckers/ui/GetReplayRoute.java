@@ -115,7 +115,13 @@ public class GetReplayRoute implements Route {
     vm.put("board", refGame.getBoard());
 
     JsonObject modeOptions = new JsonObject();
-    if(refGame.replayHasNext()) modeOptions.addProperty("hasNext", "true" );
+    if(refGame.replayHasNext()){
+      modeOptions.addProperty("hasNext", "true" );
+    }
+    else{
+      modeOptions.addProperty("gameOverMessage", refGame.getGameOverMessage().toString());
+      modeOptions.addProperty("isGameOver", "true");
+    }
     if(refGame.replayHasPrevious()) modeOptions.addProperty("hasPrevious", "false");
     if(refGame.isOver()) modeOptions.addProperty("isGameOver", "true");
     vm.put("modeOptionsAsJSON", modeOptions);
