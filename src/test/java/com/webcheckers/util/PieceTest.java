@@ -1,12 +1,9 @@
 package com.webcheckers.util;
 
-import com.webcheckers.util.Piece;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
 
 public class PieceTest {
     Piece piece_single_red = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
@@ -16,41 +13,41 @@ public class PieceTest {
 
     @Test
     void TestPieceType() {
-        assertTrue(piece_single_red.getType() == Piece.Type.SINGLE);
-        assertTrue(piece_king_red.getType() == Piece.Type.KING);
+        assertSame(Piece.Type.SINGLE, piece_single_red.getType());
+        assertSame(Piece.Type.KING, piece_king_red.getType());
         // assertTrue(piece_single_white.getType() == Piece.Type.SINGLE);
         // assertTrue(piece_king_white.getType() == Piece.Type.KING);
     }
 
     @Test
     void TestPieceColor() {
-        assertTrue(piece_single_red.getColor() == Piece.Color.RED);
+        assertSame(Piece.Color.RED, piece_single_red.getColor());
         // assertTrue(piece_king_red.getColor() == Piece.Color.RED);
-        assertTrue(piece_single_white.getColor() == Piece.Color.WHITE);
+        assertSame(Piece.Color.WHITE, piece_single_white.getColor());
         // assertTrue(piece_king_white.getColor() == Piece.Color.WHITE);
     }
 
     @Test
     void TestPieceToString() {
-        assertTrue(piece_single_red.toString().equals("R"));
+        assertEquals("R", piece_single_red.toString());
         // assertTrue(piece_king_red.toString().equals("R"));
-        assertTrue(piece_single_white.toString().equals("W"));
+        assertEquals("W", piece_single_white.toString());
         // assertTrue(piece_king_white.toString().equals("W"));
     }
 
     @Test
     void TestPieceSetColor() {
         piece_king_red.setColor(Piece.Color.WHITE);
-        assertTrue(piece_king_red.getColor() == Piece.Color.WHITE);
+        assertSame(Piece.Color.WHITE, piece_king_red.getColor());
         piece_king_red.setColor(Piece.Color.RED);
-        assertTrue(piece_king_red.getColor() == Piece.Color.RED);
+        assertSame(Piece.Color.RED, piece_king_red.getColor());
     }
 
     @Test
     void TestPieceSetType() {
         piece_king_red.setType(Piece.Type.SINGLE);
-        assertTrue(piece_king_red.getType() == Piece.Type.SINGLE);
+        assertSame(Piece.Type.SINGLE, piece_king_red.getType());
         piece_king_red.setType(Piece.Type.KING);
-        assertTrue(piece_king_red.getType() == Piece.Type.KING);
+        assertSame(Piece.Type.KING, piece_king_red.getType());
     }
 }

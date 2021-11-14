@@ -1,10 +1,5 @@
 package com.webcheckers.util;
 
-import com.webcheckers.util.Game;
-import com.webcheckers.util.GameController;
-import com.webcheckers.util.Player;
-import com.webcheckers.util.PlayerController;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

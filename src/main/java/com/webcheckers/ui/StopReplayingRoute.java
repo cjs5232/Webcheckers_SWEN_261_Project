@@ -11,8 +11,6 @@ import com.webcheckers.util.BoardView;
 import com.webcheckers.util.Game;
 import com.webcheckers.util.Player;
 
-import org.eclipse.jetty.http.pathmap.RegexPathSpec;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
