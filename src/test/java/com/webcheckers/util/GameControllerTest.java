@@ -1,4 +1,4 @@
-package com.webcheckers.ui;
+package com.webcheckers.util;
 
 import com.webcheckers.util.Game;
 import com.webcheckers.util.GameController;
