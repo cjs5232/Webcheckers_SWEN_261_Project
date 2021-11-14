@@ -49,13 +49,7 @@ public class CheckTurnRoute implements Route {
 
             //If the game is over, return the winner as a message
             if(refGame.isOver()){
-                if(!player.getAnnounceSpectatorWinOnNextRefresh()){
-                    player.setAnnounceSpectatorWinOnNextRefresh(true);
-                    return gson.toJson(Message.info("true"));
-                }
-                else{
-                    return gson.toJson(Message.info("Game is over, " + refGame.getWinner().toString() + " won!"));
-                }  
+                return gson.toJson(refGame.getGameOverMessage()); 
             }
 
             //Otherwise, return a boolean value on whether the turn has changed or not

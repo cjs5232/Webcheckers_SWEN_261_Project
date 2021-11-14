@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
+import com.google.gson.JsonSyntaxException;
 import com.webcheckers.ui.WebServer;
 
 public class JsonToMoveConverter {
@@ -17,31 +17,39 @@ public class JsonToMoveConverter {
         //Dedoded data will be formatted in json:
         //actionData={"start":{"row":5,"cell":0},"end":{"row":4,"cell":1}}
 
+        if(WebServer.DEBUG_FLAG) LOG.info("Raw URI: " + rawUri);
         String decodedData = "";
         try{
             decodedData = java.net.URLDecoder.decode(rawUri, "UTF-8");
-            //Remove the "actionData=" from the String, as this causes problems with Json parsing
-            decodedData = decodedData.replace("actionData=", "");
-
-            if(WebServer.DEBUG_FLAG) LOG.info("Decoded data: " + decodedData);
             
         }
         catch (UnsupportedEncodingException ex){
             LOG.warning("UnsupportedEncodingException: " + ex.getMessage());
+            return null;
         }
 
+        if(decodedData.equals("")){
+            return null;
+        }
+        
+        //Remove the "actionData=" from the String, as this causes problems with Json parsing
+        decodedData = decodedData.replace("actionData=", "");
         //For some reason the gameID is being passed with the call, not sure why, but we need to remove it from the string
         if(decodedData.contains("gameID=")){
             decodedData = decodedData.substring(decodedData.indexOf("{"));
         }
 
-        //Create a JsonReader to read the decoded data
-        JsonReader reader = new JsonReader(new java.io.StringReader(decodedData));
-        reader.setLenient(true);
+        if(WebServer.DEBUG_FLAG) LOG.info("Decoded data: " + decodedData);
 
+        JsonElement jsonTree;
         //Parse the data
-        JsonElement jsonTree = JsonParser.parseReader(reader).getAsJsonObject();
-
+        try{
+            jsonTree = JsonParser.parseString(decodedData).getAsJsonObject();
+        }
+        catch(JsonSyntaxException ex){
+            return null;
+        }
+        
         //Determine whether or not the json params exist - If they don't, error out immediately
         if(jsonTree.getAsJsonObject().get("start").getAsJsonObject().get("row").equals(JsonNull.INSTANCE) ||
            jsonTree.getAsJsonObject().get("start").getAsJsonObject().get("cell").equals(JsonNull.INSTANCE) ||

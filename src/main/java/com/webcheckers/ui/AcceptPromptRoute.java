@@ -66,7 +66,7 @@ public class AcceptPromptRoute implements Route {
 
       //Remove the request from the user's list
       try{
-        refPlayer.removePrompt(opponent.toString());
+        refPlayer.removePrompt(opponent);
       }
       catch(ConcurrentModificationException ex){
         LOG.finer("ConcurrentModificationException caught from " + AcceptPromptRoute.class.getName() + ". Stacktrace: " + ex.getStackTrace());

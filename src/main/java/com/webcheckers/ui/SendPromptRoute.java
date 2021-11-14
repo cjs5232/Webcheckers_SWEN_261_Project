@@ -88,8 +88,7 @@ public class SendPromptRoute implements Route {
 
             currentUserPlayer.addDisappearingMessage(DisappearingMessage.info("Prompt sent to " + opponent, 2));
 
-            opponentPlayer.promptForGame(currentUser);
-            currentUserPlayer.setWaitingOn(opponentPlayer);
+            opponentPlayer.promptForGame(currentUserPlayer);
             response.redirect("/");
             return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }

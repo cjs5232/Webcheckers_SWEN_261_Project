@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import com.webcheckers.ui.WebServer;
-
 public class Player {
     
     private Player waitingOnAccept;
@@ -29,7 +27,6 @@ public class Player {
 
     private boolean isSpectating;
     private Game spectatingGame;
-    private boolean announceSpectatorWinOnNextRefresh;
 
     private List<DisappearingMessage> promptMessages = new ArrayList<>();
     private List<DisappearingMessage> disappearingMessages = new ArrayList<>();
@@ -87,21 +84,6 @@ public class Player {
     }
 
     /**
-     * Sets the flag to announce the winner of the game on the next refresh
-     */
-    public void setAnnounceSpectatorWinOnNextRefresh(boolean b){
-        this.announceSpectatorWinOnNextRefresh = b;
-    }
-
-    /**
-     * Returns the flag to announce the winner of the game on the next refresh
-     * @return boolean
-     */
-    public boolean getAnnounceSpectatorWinOnNextRefresh(){
-        return this.announceSpectatorWinOnNextRefresh;
-    }
-
-    /**
      * Sets the game that is currently being spectated
      */
     public void setSpectatingGame(Game game){
@@ -133,7 +115,7 @@ public class Player {
     }
 
     /**
-     * Sets the last known turn color
+     * Sets the last known turn color - used in spectating to wait for turn to change
      */
     public void setLastKnownTurnColor(Piece.Color color){
         lastKnownTurn = color;
@@ -161,10 +143,6 @@ public class Player {
 
     public Player getOpponent() {
         return this.opponent;
-    }
-
-    public String getName(){
-        return this.name;
     }
 
     public int getId(){
@@ -204,35 +182,32 @@ public class Player {
     }
 
     //Other functions    
-
     @Override
     public String toString(){
         return this.name;
     }
 
-    public void startGame(Player player, Player opponent) {
-        Game game = new Game(player, opponent);
-        WebServer.GLOBAL_GAME_CONTROLLER.addGame(game);
-    }
-
     /**
      * @param promptingPlayer the player requesting a game
      */
-    public void promptForGame(String promptingPlayer){
-        String promptString = promptingPlayer + " wants to play you in a game. [Click to accept]";
+    public void promptForGame(Player promptingPlayer){
+        promptingPlayer.setWaitingOn(this);
+        String promptString = promptingPlayer.toString() + " wants to play you in a game. [Click to accept]";
         promptMessages.add(DisappearingMessage.info(promptString, 6));
     }
 
     /**
      * @param promptingPlayer the player whose prompt should be removed
      */
-    public void removePrompt(String promptingPlayer){
+    public void removePrompt(Player promptingPlayer){
+        Message promptToRemove = null;
         synchronized(this){
             for(Message m : promptMessages){
-                if(m.toString().contains(promptingPlayer)){
-                    promptMessages.remove(m);
+                if(m.toString().contains(promptingPlayer.toString())){
+                    promptToRemove = m;
                 }
             }
+            promptMessages.remove(promptToRemove);
         }
     }
 

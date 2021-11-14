@@ -21,7 +21,7 @@ public class PlayerController {
         
         int hashId = newPlayer.getId();
 
-        if(!newPlayer.getName().matches("^[a-zA-Z0-9\\_]+$")){
+        if(!newPlayer.toString().matches("^[a-zA-Z0-9\\_]+$")){
             return "Name contained invalid characters.<br />Valid characters are letters (uppercase and lowercase), and numbers.";
         }
 

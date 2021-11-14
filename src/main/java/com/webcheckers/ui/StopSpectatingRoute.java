@@ -59,7 +59,6 @@ public class StopSpectatingRoute implements Route {
         currentUserPlayer.setSpectating(false);
         currentUserPlayer.setLastKnownTurnColor(null);
         currentUserPlayer.setSpectatingGame(null);
-        currentUserPlayer.setAnnounceSpectatorWinOnNextRefresh(false);
 
         response.redirect(WebServer.HOME_URL);
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));

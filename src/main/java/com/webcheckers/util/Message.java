@@ -81,13 +81,6 @@ public class Message {
   //
 
   /**
-   * Get the text of the message.
-   */
-  public String getText() {
-    return text;
-  }
-
-  /**
    * Get the type of the message.
    */
   public Type getType() {

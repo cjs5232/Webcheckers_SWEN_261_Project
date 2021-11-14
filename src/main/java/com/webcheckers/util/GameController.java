@@ -116,7 +116,7 @@ public class GameController {
             Player[] gPlayerList = g.getPlayers();
             //Check if the player list contains the queried player
             for(Player p : gPlayerList){
-                if(p.getName().equals(queryPlayer.toString())) return true;
+                if(p.toString().equals(queryPlayer.toString())) return true;
             }
         }
         return false;
@@ -149,7 +149,7 @@ public class GameController {
             Player[] gPlayerList = g.getPlayers();
             for(Player p : gPlayerList){
                 //Return the game if the player is in the list
-                if(p.getName().equals(queryPlayer.toString())) return g;
+                if(p.toString().equals(queryPlayer.toString())) return g;
             }
         }
 

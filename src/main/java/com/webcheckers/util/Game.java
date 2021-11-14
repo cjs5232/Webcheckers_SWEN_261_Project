@@ -179,7 +179,7 @@ public class Game {
     }
 
     public String getPlayersPretty(){
-        return redPlayer.getName() + " vs. " + whitePlayer.getName();
+        return redPlayer.toString() + " vs. " + whitePlayer.toString();
     }
 
     /**
@@ -354,10 +354,10 @@ public class Game {
 
     public Message getGameOverMessage(){
         if(resignedPlayer != null){
-            return Message.info(resignedPlayer.getName() + " resigned the game");
+            return Message.info(resignedPlayer.toString() + " resigned the game");
         }
         else{
-            return Message.info(getWinner().getName() + " won the game");
+            return Message.info(getWinner().toString() + " won the game");
         }   
     }
 

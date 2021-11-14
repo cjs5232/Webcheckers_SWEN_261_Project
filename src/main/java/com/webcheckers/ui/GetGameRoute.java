@@ -85,7 +85,7 @@ public class GetGameRoute implements Route {
 
         refGame = new Game(currentUserPlayer, otherPlayer);
         WebServer.GLOBAL_GAME_CONTROLLER.addGame(refGame);
-        otherPlayer.promptForGame(currentUser);
+        otherPlayer.promptForGame(currentUserPlayer);
 
         if (WebServer.DEBUG_FLAG) LOG.info("PUTTING CURRENT USER");
         vm.put("redPlayer", refGame.getPlayers()[0]);
@@ -109,7 +109,7 @@ public class GetGameRoute implements Route {
       Player[] players = refGame.getPlayers();
       Player otherPlayer = null;
       for(Player p : players){
-        if(!p.getName().equals(currentUser)){
+        if(!p.toString().equals(currentUser)){
           otherPlayer = p;
         }
       }
