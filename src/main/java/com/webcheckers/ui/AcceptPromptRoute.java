@@ -48,6 +48,11 @@ public class AcceptPromptRoute implements Route {
       System.out.println("Current user: " + currentUser);
       Player refPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
 
+      //Notify player that their prompt is accepted
+      synchronized(refPlayer){
+        refPlayer.notifyAll();
+      }
+
       //Store the currentUser in the vm
       vm.put("currentUser", currentUser);
 

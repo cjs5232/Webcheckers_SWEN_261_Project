@@ -77,6 +77,7 @@ public class GetHomeRoute implements Route {
       //Get the player object from the name
       Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
 
+
       //Get a list of all active DisappearingMessages
       List<DisappearingMessage> disappearingMessages = currentUserPlayer.getDisappearingMessages();
       //List to hold DisappearingMessages that should be shown to the user
@@ -86,6 +87,9 @@ public class GetHomeRoute implements Route {
 
       //Get the game of the user
       Game refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer);
+
+      if(currentUserPlayer.getOpponent() != null && currentUserPlayer.getOpponent().getIsPlaying()) vm.put("activeGame", refGame);
+      else currentUserPlayer.setIsPlaying(false);
 
       //If the user has an active game, and they are on the home page, they exited/resigned
       if(refGame != null && refGame.isOver()){
@@ -99,29 +103,25 @@ public class GetHomeRoute implements Route {
         //The player who the prompt was sent to
         Player waitingOn = currentUserPlayer.getWaitingOn();
 
-        //Time to wait for the prompt to expire in seconds
-        int waitTimeSeconds = 60;
-
-        //Start time of the prompt
-        long start = System.currentTimeMillis();
-
-        //End time for the prompt
-        long end = start+(waitTimeSeconds*1000);
-
         Thread t = new Thread(() -> {
-          while(!waitingOn.isPlaying() && System.currentTimeMillis() < end){
-            //Do nothing
-          }
-          //Have to figure out which one killed the while loop
-          if(waitingOn.isPlaying()){
-            
+          try{
+            synchronized(waitingOn){
+              while(!waitingOn.getIsPlaying()){
+                waitingOn.wait(500);
+              }
+            }
             //Find the active prompt 'from' the other user
             for(Message m : currentUserPlayer.getPrompts()){
               if(m.toString().contains(waitingOn.toString())){
+                currentUserPlayer.addDisappearingMessage(DisappearingMessage.info( waitingOn + " has accepted your request.", 1));
                 response.redirect("/acceptPrompt?prompt=" + m);
                 return;
               }
             }
+          }
+          catch(InterruptedException ex){
+            LOG.warning("Thread was interrupted. Stacktrace: " + ex.getStackTrace());
+            Thread.currentThread().interrupt();
           }
         });
 

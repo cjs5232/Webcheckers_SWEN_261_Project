@@ -21,6 +21,7 @@ public class Player {
     private final String name;
     private final int id;
 
+    private boolean isPlaying;
     private Player opponent;
 
     //Used for spectating, will store the last turn's color to check against current turn's color
@@ -42,6 +43,7 @@ public class Player {
         this.id = name.hashCode();
         this.playerStatus = 0;
         this.opponent = null;
+        this.isPlaying = false;
 
         //Spectating functionality
         this.lastKnownTurn = null;
@@ -157,7 +159,7 @@ public class Player {
         this.opponent = opponent;
     }
 
-    public Player getOppoent() {
+    public Player getOpponent() {
         return this.opponent;
     }
 
@@ -254,10 +256,17 @@ public class Player {
     }
 
     /**
+     * @param isPlaying the flag to set whether or not the user is playing
+     */
+    public void setIsPlaying(boolean isPlaying){
+        this.isPlaying = isPlaying;
+    }
+
+    /**
      * @return whether or not the user is currently in a game
      */
-    public boolean isPlaying(){
-        return WebServer.GLOBAL_GAME_CONTROLLER.isPlayerPlaying(this);
+    public boolean getIsPlaying(){
+        return isPlaying;
     }
 
 }

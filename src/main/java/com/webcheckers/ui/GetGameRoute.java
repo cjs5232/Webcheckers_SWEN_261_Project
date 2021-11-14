@@ -66,6 +66,8 @@ public class GetGameRoute implements Route {
     String currentUser = request.session().attribute("currentUser").toString();
     Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
     vm.put("currentUser", currentUser);
+    currentUserPlayer.setIsPlaying(true);
+    currentUserPlayer.setWaitingOn(null);
 
     //Create a dummy Game object, this will be filled in later
     Game refGame = new Game(new Player("foo"), new Player("bar"));
@@ -103,6 +105,16 @@ public class GetGameRoute implements Route {
     }
     else{
       refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer);
+      
+      Player[] players = refGame.getPlayers();
+      Player otherPlayer = null;
+      for(Player p : players){
+        if(!p.getName().equals(currentUser)){
+          otherPlayer = p;
+        }
+      }
+      currentUserPlayer.setOpponent(otherPlayer);
+
       if (WebServer.DEBUG_FLAG) LOG.info("USER IN GAME");
 
       vm.put("redPlayer", refGame.getPlayers()[0]);
