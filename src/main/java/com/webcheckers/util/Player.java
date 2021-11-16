@@ -187,6 +187,15 @@ public class Player {
         return this.name;
     }
 
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Player){
+            Player p = (Player) o;
+            return this.name.equals(p.name);
+        }
+        return false;
+    }
+
     /**
      * @param promptingPlayer the player requesting a game
      */

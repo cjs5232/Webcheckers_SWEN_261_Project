@@ -146,7 +146,8 @@ public class GetGameRoute implements Route {
     refGame.resetTurnOccupied();
 
     //Place the board from the created game in the view model
-    vm.put("board", refGame.getBoard());
+    if(refGame.getWhitePlayer().equals(currentUserPlayer)) vm.put("board", refGame.getInvertedBoard());
+    else vm.put("board", refGame.getBoard());
 
     Session session = request.session();
     session.attribute("currentUser", currentUser);

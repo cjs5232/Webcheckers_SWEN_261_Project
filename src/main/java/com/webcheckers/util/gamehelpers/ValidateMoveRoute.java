@@ -54,6 +54,16 @@ public class ValidateMoveRoute implements Route {
             return gson.toJson(Message.error("Invalid move."));
         }
 
+        //Get the Player object from the request, and determine the Game object
+        Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());
+        if(WebServer.DEBUG_FLAG) LOG.info("CurrentUser from AJax call: " + player.toString());
+        Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
+
+        //Player is white, move should be inverted to account for flipped board
+        if(gameBoard.getWhitePlayer().equals(player)) {
+            combinedMove.inverseForWhite();
+        }
+
         //Get the individual move aspects from the combined move
         int rowNumStart = combinedMove.getStart().getRow();
         int colNumStart = combinedMove.getStart().getCell();
@@ -70,11 +80,6 @@ public class ValidateMoveRoute implements Route {
         int changeY = colNumEnd - colNumStart;
 
         if(WebServer.DEBUG_FLAG) LOG.info("Change in X: " + changeX + ", Change in Y: " + changeY);
-
-        //Get the Player object from the request, and determine the Game object
-        Player player = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(request.session().attribute("currentUser").toString());
-        if(WebServer.DEBUG_FLAG) LOG.info("CurrentUser from AJax call: " + player.toString());
-        Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
 
         //Get the current player's Piece
         Row startRow = gameBoard.getBoard().getRow(rowNumStart);

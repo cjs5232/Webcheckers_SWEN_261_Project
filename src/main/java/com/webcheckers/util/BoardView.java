@@ -1,6 +1,7 @@
 package com.webcheckers.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -63,6 +64,13 @@ public class BoardView implements Iterable<Row> {
      */
     public BoardView(BoardView template){
         this.rows = new ArrayList<>(template.getRows());
+    }
+
+    public void inverseForWhite(){
+        for(Row row : rows){
+            row.inverseForWhite();
+        }
+        Collections.reverse(rows);
     }
 
     /**
