@@ -53,7 +53,7 @@ public class GetSpectateBrowseRoute implements Route {
   public Object handle(Request request, Response response) {
     //Invoking not logged due to console spam
     
-    //
+    //Create the view model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Spectate");
 

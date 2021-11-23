@@ -26,12 +26,24 @@ public class GetFavIconRoute implements Route {
         if (WebServer.DEBUG_FLAG) LOG.config("GetFavIconRoute is initialized.");
     }
 
+    /**
+     * Render the fav icon.
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   the rendered HTML for the fav icon
+     */
     @Override
     public Object handle(spark.Request request, Response response) throws Exception {
         try {
             InputStream in = null;
-            OutputStream out = null;
+            OutputStream out;
             try {
+                // copy input stream to output stream
                 in = new BufferedInputStream(new FileInputStream(FAVICON_PATH));
                 out = new BufferedOutputStream(response.raw().getOutputStream());
                 response.raw().setContentType(MediaType.ICO.toString());
@@ -40,6 +52,7 @@ public class GetFavIconRoute implements Route {
                 out.flush();
                 return "";
             } finally {
+                // close all streams
                 Closeables.close(in, true);
             }
         } catch (FileNotFoundException ex) {

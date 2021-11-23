@@ -60,7 +60,8 @@ public class GetReplayRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     if (WebServer.DEBUG_FLAG) LOG.info("GetReplayRoute is invoked.");
-    //
+
+    //Create the view model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Replay Browser");
 
