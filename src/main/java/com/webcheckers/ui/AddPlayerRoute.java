@@ -17,9 +17,9 @@ import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the add player page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class AddPlayerRoute implements Route {
     private static final Logger LOG = Logger.getLogger(AddPlayerRoute.class.getName());

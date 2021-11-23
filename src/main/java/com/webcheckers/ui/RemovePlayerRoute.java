@@ -15,9 +15,9 @@ import spark.TemplateEngine;
 import com.webcheckers.util.Message;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to remove the player.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class RemovePlayerRoute implements Route {
     private static final Logger LOG = Logger.getLogger(RemovePlayerRoute.class.getName());
@@ -49,14 +49,12 @@ public class RemovePlayerRoute implements Route {
      * @return
      *   the rendered HTML for the Home page
      */
-
-    
-
     @Override
     public Object handle(Request request, Response response) {
 
       LOG.finer("RemovePlayerRoute is invoked.");
-      //
+
+      //Create the view model
       Map<String, Object> vm = new HashMap<>();
       vm.put("title", "Welcome!");
   

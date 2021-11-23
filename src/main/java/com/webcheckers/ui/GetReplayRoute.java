@@ -22,9 +22,9 @@ import com.webcheckers.util.Player;
 import com.webcheckers.util.Piece.Color;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the replay page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class GetReplayRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetReplayRoute.class.getName());

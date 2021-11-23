@@ -16,7 +16,11 @@ import com.google.common.net.MediaType;
 
 import spark.Response;
 import spark.Route;
-
+/**
+ * The UI Controller to GET the game page.
+ *
+ * @author David Authur Cole
+ */
 public class GetFavIconRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(GetFavIconRoute.class.getName());

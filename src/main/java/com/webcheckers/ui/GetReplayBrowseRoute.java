@@ -17,9 +17,9 @@ import com.webcheckers.util.Game;
 import com.webcheckers.util.Player;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the replay browse page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class GetReplayBrowseRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetReplayBrowseRoute.class.getName());

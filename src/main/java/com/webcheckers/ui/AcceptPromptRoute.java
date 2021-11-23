@@ -12,6 +12,11 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+/**
+ * The UI Controller to GET to accept prompt page.
+ *
+ * @author David Authur Cole
+ */
 public class AcceptPromptRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(AcceptPromptRoute.class.getName());

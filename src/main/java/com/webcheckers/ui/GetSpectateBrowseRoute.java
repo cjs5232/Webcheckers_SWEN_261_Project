@@ -16,9 +16,9 @@ import spark.TemplateEngine;
 import com.webcheckers.util.Game;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET to spectate browse page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class GetSpectateBrowseRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetSpectateBrowseRoute.class.getName());

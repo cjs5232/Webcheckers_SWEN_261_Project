@@ -7,9 +7,9 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the not found page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class GetNotFoundRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetNotFoundRoute.class.getName());
@@ -42,7 +42,8 @@ public class GetNotFoundRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetLoginRoute is invoked.");
-    //
+
+    //Create the view model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "404");
 
