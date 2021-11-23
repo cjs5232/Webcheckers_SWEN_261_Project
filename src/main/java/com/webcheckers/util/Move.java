@@ -1,5 +1,10 @@
 package com.webcheckers.util;
 
+/**
+ * The move class handles checkers moves.
+ *
+ * @author Connor James Stange
+ */
 public class Move {
 
     /**

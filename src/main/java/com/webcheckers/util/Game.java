@@ -11,6 +11,11 @@ import java.util.logging.Logger;
 import com.webcheckers.ui.WebServer;
 import com.webcheckers.util.Piece.Color;
 
+/**
+ * The game class that handles checkers.
+ *
+ * @author David Authur Cole
+ */
 public class Game {
 
     //Gets the logger object

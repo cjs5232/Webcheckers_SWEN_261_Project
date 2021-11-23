@@ -7,6 +7,11 @@ import java.util.logging.Logger;
 
 import com.webcheckers.ui.WebServer;
 
+/**
+ * The game controller class for checkers.
+ *
+ * @author David Authur Cole
+ */
 public class GameController {
     
     private static final Logger LOG = Logger.getLogger(GameController.class.getName());
@@ -27,7 +32,7 @@ public class GameController {
 
     /**
      * Adds a game to the completed game list
-     * @param game the game to be added
+     * @param g the game to be added
      */
     public void addCompletedGame(Game g){
         if(!completedGameList.contains(g)){
@@ -105,7 +110,7 @@ public class GameController {
 
     /**
      * 
-     * @param queryPlayerName the player to inquire about
+     * @param queryPlayer the player to inquire about
      * @return a true/false value based on whether or not the user has an active game
      */
     public boolean isPlayerPlaying(Player queryPlayer){
@@ -139,7 +144,7 @@ public class GameController {
     }
 
     /**
-     * @param queryPlayerName the name of the player who's game you wish to retrieve
+     * @param queryPlayer the name of the player who's game you wish to retrieve
      * @return the active game of the queried player
      */
     public Game getGameOfPlayer(Player queryPlayer){

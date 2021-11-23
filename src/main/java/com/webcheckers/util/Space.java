@@ -1,5 +1,10 @@
 package com.webcheckers.util;
 
+/**
+ * The space class handles checkers spaces.
+ *
+ * @author Connor James Stange
+ */
 public class Space {
 
     /**

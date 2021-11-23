@@ -6,12 +6,17 @@ import java.util.List;
 
 import com.webcheckers.ui.WebServer;
 
+/**
+ * The board view class.
+ *
+ * @author David Authur Cole
+ */
 public class BoardView implements Iterable<Row> {
 
     /**
      * Declaration for rows within the board
      */
-    private List<Row> rows = new ArrayList<>();
+    private List<Row> rows;
 
     /**
      * The amount of row to generate.
@@ -85,7 +90,7 @@ public class BoardView implements Iterable<Row> {
         //Column numbers
         sb.append("\n    0 1 2 3 4 5 6 7\n");
         for(Row row : rows){
-            sb.append(rows.indexOf(row) + " " + row.toString() + "\n");
+            sb.append(rows.indexOf(row)).append(" ").append(row.toString()).append("\n");
         }
         return sb.toString();
     }
