@@ -13,9 +13,9 @@ import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to back up a move.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class BackupMoveRoute implements Route {
 
@@ -25,14 +25,22 @@ public class BackupMoveRoute implements Route {
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-     *
-     * @param templateEngine
-     *   the HTML template rendering engine
      */
     public BackupMoveRoute() {
         LOG.config("BackupMoveRoute is initialized.");
     }
 
+    /**
+     * Render the updated WebCheckers game page by backing up a move.
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   the rendered HTML for the Home page
+     */
     @Override
     public Object handle(Request request, Response response) {
         if(WebServer.DEBUG_FLAG) LOG.info("BackupMoveRoute is invoked.");

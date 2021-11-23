@@ -14,9 +14,9 @@ import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to replay the next turn.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class ReplayNextTurnRoute implements Route {
   private static final Logger LOG = Logger.getLogger(ReplayNextTurnRoute.class.getName());
@@ -24,9 +24,6 @@ public class ReplayNextTurnRoute implements Route {
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-   *
-   * @param templateEngine
-   *   the HTML template rendering engine
    */
   public ReplayNextTurnRoute() {
     //
@@ -35,7 +32,7 @@ public class ReplayNextTurnRoute implements Route {
   }
 
   /**
-   * Render the WebCheckers Home page.
+   * Render the updated WebCheckers game page by replaying the next turn
    *
    * @param request
    *   the HTTP request
@@ -49,6 +46,7 @@ public class ReplayNextTurnRoute implements Route {
   public Object handle(Request request, Response response) {
     if (WebServer.DEBUG_FLAG) LOG.info("GetReplayRoute is invoked.");
 
+    //Get user
     String currentUser = request.session().attribute("currentUser").toString();
     Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
 

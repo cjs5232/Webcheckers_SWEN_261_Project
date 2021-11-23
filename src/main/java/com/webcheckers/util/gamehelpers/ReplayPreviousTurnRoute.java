@@ -15,9 +15,9 @@ import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to replay the previous turn.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class ReplayPreviousTurnRoute implements Route {
   private static final Logger LOG = Logger.getLogger(ReplayPreviousTurnRoute.class.getName());
@@ -35,7 +35,7 @@ public class ReplayPreviousTurnRoute implements Route {
   }
 
   /**
-   * Render the WebCheckers Home page.
+   * Render the updated WebCheckers game page by replaying the previous turn
    *
    * @param request
    *   the HTTP request

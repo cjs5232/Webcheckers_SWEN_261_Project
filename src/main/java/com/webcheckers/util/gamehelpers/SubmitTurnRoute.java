@@ -14,9 +14,9 @@ import com.webcheckers.util.Player;
 import com.webcheckers.util.Position;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to submit a turn.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class SubmitTurnRoute implements Route {
 
@@ -26,14 +26,22 @@ public class SubmitTurnRoute implements Route {
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-     *
-     * @param templateEngine
-     *   the HTML template rendering engine
      */
     public SubmitTurnRoute() {
         LOG.config("SubmitTurnRoute is initialized.");
     }
 
+    /**
+     * Render the updated WebCheckers game page by submitting a turn
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   the rendered HTML for the Home page
+     */
     @Override
     public Object handle(Request request, Response response) {
         if(WebServer.DEBUG_FLAG) LOG.info("SubmitTurnRoute is invoked.");
