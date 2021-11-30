@@ -198,7 +198,7 @@ public class Player {
         String promptString = promptingPlayer + " wants to play you in a game. [Click to accept]";
         promptMessages.add(DisappearingMessage.info(promptString, 6));
     }
-
+    
     /**
      * @param promptingPlayer the player whose prompt should be removed
      */
