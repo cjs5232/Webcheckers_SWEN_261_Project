@@ -45,6 +45,11 @@ public class Move {
         return distance;
     }
 
+    public void inverseForWhite(){
+        this.start.inverseForWhite();
+        this.end.inverseForWhite();
+    }
+
     @Override
     public String toString(){
         return(start.toString() + " -> " + end.toString());

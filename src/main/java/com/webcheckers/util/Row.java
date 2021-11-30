@@ -1,5 +1,6 @@
 package com.webcheckers.util;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,6 +36,10 @@ public class Row implements Iterable<Space>{
         }
         
         this.spaces = spaces;
+    }
+
+    public void inverseForWhite(){
+        Collections.reverse(spaces);
     }
 
     /**

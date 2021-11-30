@@ -2,7 +2,6 @@ package com.webcheckers.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,14 +77,6 @@ public class GetHomeRoute implements Route {
       //Get the player object from the name
       Player currentUserPlayer = WebServer.GLOBAL_PLAYER_CONTROLLER.getPlayerByName(currentUser);
 
-
-      //Get a list of all active DisappearingMessages
-      List<DisappearingMessage> disappearingMessages = currentUserPlayer.getDisappearingMessages();
-      //List to hold DisappearingMessages that should be shown to the user
-      List<DisappearingMessage> disappearingMessagesToShow = new ArrayList<>();
-      //List to hold expired DisappearingMessages
-      List<DisappearingMessage> toRemove = new ArrayList<>();
-
       //Get the game of the user
       Game refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(currentUserPlayer);
 
@@ -98,101 +89,13 @@ public class GetHomeRoute implements Route {
         WebServer.GLOBAL_GAME_CONTROLLER.addCompletedGame(refGame);
       }
 
-      //If the user has a pending outgoing prompt
-      if(currentUserPlayer.getWaitingOn() != null){
+      waitOnPrompt(currentUserPlayer, response);
 
-        //The player who the prompt was sent to
-        Player waitingOn = currentUserPlayer.getWaitingOn();
+      //Add Disappearing Messages to the view model
+      vm.put("disappearingMessages", handleDisappearingMessages(currentUserPlayer, currentUserPlayer.getDisappearingMessages()));
 
-        Thread t = new Thread(() -> {
-          try{
-            synchronized(waitingOn){
-              while(!waitingOn.getIsPlaying()){
-                waitingOn.wait(500);
-              }
-            }
-            //Find the active prompt 'from' the other user
-            for(Message m : currentUserPlayer.getPrompts()){
-              if(m.toString().contains(waitingOn.toString())){
-                currentUserPlayer.addDisappearingMessage(DisappearingMessage.info( waitingOn + " has accepted your request.", 1));
-                response.redirect("/acceptPrompt?prompt=" + m);
-                return;
-              }
-            }
-          }
-          catch(InterruptedException ex){
-            LOG.warning("Thread was interrupted. Stacktrace: " + ex.getStackTrace());
-            Thread.currentThread().interrupt();
-          }
-        });
-
-        //Start the waiting thread
-        t.start();
-      }
-
-      //If there are any disappearing messages
-      if(!disappearingMessages.isEmpty()){
-      
-        //Loop through the messages
-        for(Iterator<DisappearingMessage> iterator = disappearingMessages.iterator(); iterator.hasNext();){
-          DisappearingMessage dm = iterator.next();
-
-          //If the message is not expired
-          if(dm.getRemainingDisplays() != 0){
-            disappearingMessagesToShow.add(dm);
-          }
-          else{
-            //If it is expired, add it to the list of items to be removed. 
-            // To note - We do not do direct removal here as it will almost certainly cause a ConcurrentModificationException 
-            toRemove.add(dm);
-          }
-        }
-
-        //Remove the expired messages
-        currentUserPlayer.removeDisappearingMessages(toRemove);
-
-        //Only add messsages if they exist
-        if(!disappearingMessagesToShow.isEmpty()){
-          LOG.info("Disappearing messages for user \" " + currentUser + "\":" + disappearingMessagesToShow.toString());
-          vm.put("disappearingMessages", disappearingMessagesToShow);
-        }
-        else{
-          //Place a null if no messages exist so there is no ghosting (Messages: text appears when there are no messages otherwise)
-          vm.put("disappearingMessages", null);
-        }
-        
-      }
-
-      //Create a new list of prompts to display
-      List<DisappearingMessage> toDisplay = new ArrayList<>();
-      //Create a list to store the prompts to remove
-      List<DisappearingMessage> toRemovePrompts = new ArrayList<>();
-      //Get the user's list of prompts
-      List<DisappearingMessage> gamePrompts = currentUserPlayer.getPrompts();
-
-      //If the user has any prompts
-      if(!gamePrompts.isEmpty()){
-
-        //Loop through the prompts
-        for(DisappearingMessage dm : gamePrompts){
-
-          //If the prompt is not expired, add it to be displayed
-          if(dm.getRemainingDisplays() != 0){
-            toDisplay.add(dm);
-          }
-          //If it is expired, add it to the list of items to be removed.
-          else{
-            toRemovePrompts.add(dm);
-          }
-        } 
-      }
-
-      //Null the list so that there is no ghosting (Prompts: text appears when there are no prompts otherwise)
-      if(toDisplay.isEmpty()) toDisplay = null;
-      //Remove the expired prompts
-      currentUserPlayer.removeOldPrompts(toRemovePrompts);
-      //Add the user's prompts to the view model
-      vm.put("activePrompts", toDisplay);
+      //Add prompts to the view model
+      vm.put("activePrompts", handleDisappearingMessages(currentUserPlayer, currentUserPlayer.getPrompts()));
 
       if(loggedInPlayers != null && (loggedInPlayers.size() != 1)) {
 
@@ -213,14 +116,70 @@ public class GetHomeRoute implements Route {
   
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
-
-    //If the user did not load home from "/", redirect them on the next refresh cycle
-    // This was a constant redirection loop.
-//    if(!request.url().equals("http://localhost:4567/")){
-//      response.redirect("/");
-//    }
     
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
+
+  public void waitOnPrompt(Player currentUserPlayer, Response response){
+    //If the user has a pending outgoing prompt
+    if(currentUserPlayer.getWaitingOn() != null){
+        //The player who the prompt was sent to
+      Player waitingOn = currentUserPlayer.getWaitingOn();
+
+      Thread t = new Thread(() -> {
+        try{
+          synchronized(waitingOn){
+            while(!waitingOn.getIsPlaying()){
+              waitingOn.wait(500);
+            }
+          }
+          //Find the active prompt 'from' the other user
+          for(Message m : currentUserPlayer.getPrompts()){
+            if(m.toString().contains(waitingOn.toString())){
+              currentUserPlayer.addDisappearingMessage(DisappearingMessage.info( waitingOn + " has accepted your request.", 1));
+              response.redirect("/acceptPrompt?prompt=" + m);
+              return;
+            }
+          }
+        }
+        catch(InterruptedException ex){
+          LOG.warning("Thread was interrupted. Stacktrace: " + ex.getStackTrace());
+          Thread.currentThread().interrupt();
+        }
+      });
+
+      //Start the waiting thread
+      t.start();
+    }
+    
+  }
+
+  public List<DisappearingMessage> handleDisappearingMessages(Player currentUserPlayer, List<DisappearingMessage> toSort){
+    //Create a new list of prompts to display
+    List<DisappearingMessage> toDisplay = new ArrayList<>();
+    //Create a list to store the prompts to remove
+    List<DisappearingMessage> toRemovePrompts = new ArrayList<>();
+
+    //If the user has any prompts
+    if(!toSort.isEmpty()){
+      //Loop through the prompts
+      for(DisappearingMessage dm : toSort){
+
+        //If the prompt is not expired, add it to be displayed
+        if(dm.getRemainingDisplays() != 0){
+          toDisplay.add(dm);
+        }
+        //If it is expired, add it to the list of items to be removed.
+        else{
+          toRemovePrompts.add(dm);
+        }
+      }
+      //Remove the expired prompts
+      currentUserPlayer.removeOldPrompts(toRemovePrompts);
+    }
+
+    return toDisplay;
+  }
+
 }

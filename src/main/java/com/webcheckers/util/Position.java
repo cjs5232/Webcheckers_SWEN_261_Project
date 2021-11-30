@@ -28,6 +28,11 @@ public class Position {
         }
     }
 
+    public void inverseForWhite(){
+        this.row = 7 - this.row;
+        this.cell = 7 - this.cell;
+    }
+
     @Override
     public String toString(){
         return "(" + row + ", " + cell + ")";

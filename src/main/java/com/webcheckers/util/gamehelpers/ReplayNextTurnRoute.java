@@ -24,6 +24,10 @@ public class ReplayNextTurnRoute implements Route {
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
+<<<<<<< HEAD
+   *
+=======
+>>>>>>> d01c9e9badf12cbc373c370509b6936c7e68935d
    */
   public ReplayNextTurnRoute() {
     //

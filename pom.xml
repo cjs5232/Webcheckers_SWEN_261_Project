@@ -189,7 +189,7 @@
       <!-- START: Testing plugins -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven.surefire.version}</version>
+        <version>2.22.1</version>
         <dependencies>
           <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -97,6 +97,14 @@ public class Game {
         this.activeColor = Color.RED;
         this.gameBoard = new BoardView(new ArrayList<>());
     }
+
+    public Player getRedPlayer(){
+        return redPlayer;
+    }
+
+    public Player getWhitePlayer(){
+        return whitePlayer;
+    }
     
     public void resetTurnOccupied(){
         this.turnPreviouslyOccupied = new ArrayList<>();
@@ -247,6 +255,16 @@ public class Game {
      */
     public BoardView getBoard(){
         return this.gameBoard;
+    }
+
+    /**
+     * @return the board for the white player,
+     * which will be flipped 180 degrees
+     */
+    public BoardView getInvertedBoard(){
+        BoardView invertedBoard = new BoardView(this.gameBoard);
+        invertedBoard.inverseForWhite();
+        return invertedBoard;
     }
 
     /**
