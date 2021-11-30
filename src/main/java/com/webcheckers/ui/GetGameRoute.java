@@ -18,9 +18,9 @@ import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the game page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class GetGameRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
@@ -56,7 +56,8 @@ public class GetGameRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     if (WebServer.DEBUG_FLAG) LOG.info("GetGameRoute is invoked.");
-    //
+
+    //Create the view model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Game");
 

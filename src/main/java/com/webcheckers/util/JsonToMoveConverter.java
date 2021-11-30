@@ -1,6 +1,7 @@
 package com.webcheckers.util;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 import com.google.gson.JsonElement;
@@ -9,6 +10,11 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.webcheckers.ui.WebServer;
 
+/**
+ * The JsonToMoveConverter class converts a JSON (opponent move) to a move.
+ *
+ * @author David Authur Cole
+ */
 public class JsonToMoveConverter {
 
     private static final Logger LOG = Logger.getLogger(JsonToMoveConverter.class.getName());
@@ -18,15 +24,8 @@ public class JsonToMoveConverter {
         //actionData={"start":{"row":5,"cell":0},"end":{"row":4,"cell":1}}
 
         if(WebServer.DEBUG_FLAG) LOG.info("Raw URI: " + rawUri);
-        String decodedData = "";
-        try{
-            decodedData = java.net.URLDecoder.decode(rawUri, "UTF-8");
-            
-        }
-        catch (UnsupportedEncodingException ex){
-            LOG.warning("UnsupportedEncodingException: " + ex.getMessage());
-            return null;
-        }
+        String decodedData;
+        decodedData = java.net.URLDecoder.decode(rawUri, StandardCharsets.UTF_8);
 
         if(decodedData.equals("")){
             return null;

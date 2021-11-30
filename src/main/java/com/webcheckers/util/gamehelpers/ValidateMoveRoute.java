@@ -19,9 +19,9 @@ import com.webcheckers.util.Row;
 import com.webcheckers.util.Space;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to validate a move.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class ValidateMoveRoute implements Route {
 
@@ -37,6 +37,17 @@ public class ValidateMoveRoute implements Route {
         LOG.config("ValidateMoveRoute is initialized.");
     }
 
+    /**
+     * Render the updated WebCheckers game page by validating a move
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   the rendered HTML for the Home page
+     */
     @Override
     public Object handle(Request request, Response response) {
         if(WebServer.DEBUG_FLAG) LOG.info("ValidateMoveRoute is invoked.");

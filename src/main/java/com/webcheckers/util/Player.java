@@ -4,7 +4,11 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-
+/**
+ * The player class handles checkers players.
+ *
+ * @author David Authur Cole
+ */
 public class Player {
     
     private Player waitingOnAccept;
@@ -100,7 +104,6 @@ public class Player {
 
     /**
      * Sets whether or not the user is spectating a game
-     * @param spectating the boolean value that indicates if a user is spectating or not
      */
     public void setSpectating(boolean spectating) {
         isSpectating = spectating;
@@ -201,7 +204,7 @@ public class Player {
      */
     public void promptForGame(Player promptingPlayer){
         promptingPlayer.setWaitingOn(this);
-        String promptString = promptingPlayer.toString() + " wants to play you in a game. [Click to accept]";
+        String promptString = promptingPlayer + " wants to play you in a game. [Click to accept]";
         promptMessages.add(DisappearingMessage.info(promptString, 6));
     }
 

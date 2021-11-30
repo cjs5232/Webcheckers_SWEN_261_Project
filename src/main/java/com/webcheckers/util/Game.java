@@ -11,12 +11,17 @@ import java.util.logging.Logger;
 import com.webcheckers.ui.WebServer;
 import com.webcheckers.util.Piece.Color;
 
+/**
+ * The game class that handles checkers.
+ *
+ * @author David Authur Cole
+ */
 public class Game {
 
     //Gets the logger object
     private static final Logger LOG = Logger.getLogger(Game.class.getName());
 
-    //Stores player objects and the active color whos turn it is
+    //Stores player objects and the active color whose turn it is
     private Player redPlayer;
     private Player whitePlayer;
     private Color activeColor;
@@ -49,13 +54,13 @@ public class Game {
 
     private Deque<Piece.Type> lastMoveCaptureTypeReplay = new ArrayDeque<>();
 
-    //Stores whether or not the last move made in a replay was a promotion
+    //Stores whether the last move made in a replay was a promotion
     private Deque<Boolean> lastMovePromotionReplay = new ArrayDeque<>();
 
-    //Stores boolean values that reflect whether or not the last move was a capture or not
+    //Stores boolean values that reflect whether the last move was a capture or not
     private Deque<Boolean> lastMovesCapture = new ArrayDeque<>();
 
-    //Stores boolean values that reflect whether or not the last move was a promotion or not
+    //Stores boolean values that reflect whether the last move was a promotion or not
     private Deque<Boolean> lastMovePromotion = new ArrayDeque<>();
 
     private List<Position> turnPreviouslyOccupied = new ArrayList<>();
@@ -106,21 +111,21 @@ public class Game {
     }
 
     /**
-     * @return Whether or not there are next moves to go to in the replay
+     * @return Whether there are next moves to go to in the replay
      */
     public boolean replayHasNext(){
         return replayIndex < moveHistory.size();
     }
 
     /**
-     * @return Whether or not there are previous moves to go to in the replay
+     * @return Whether there are previous moves to go to in the replay
      */
     public boolean replayHasPrevious(){
         return replayIndex > 0;
     }
 
     /**
-     * Incremements the replay index (next turn replay)
+     * Increments the replay index (next turn replay)
      */
     public void replayNext(){
         Move toMove = moveHistory.get(replayIndex);
@@ -145,14 +150,14 @@ public class Game {
     }
 
     /**
-     * @param boardSetFlag Whether or not the board has been set for a replay
+     * @param boardSetFlag Whether the board has been set for a replay
      */
     public void setReplayBoardSet(boolean boardSetFlag){
         replayBoardSet = boardSetFlag;
     }
 
     /**
-     * @return Whether or not the board has been set for a replay
+     * @return Whether the board has been set for a replay
      */
     public boolean getReplayBoardSet(){
         return replayBoardSet;
@@ -293,7 +298,7 @@ public class Game {
     }
 
     /**
-     * If the activecolor is red, set it to white, and vice versa
+     * If the active color is red, set it to white, and vice versa
      */
     public void swapActiveColor(){
         if(this.activeColor == Color.RED){
@@ -372,7 +377,7 @@ public class Game {
 
     public Message getGameOverMessage(){
         if(resignedPlayer != null){
-            return Message.info(resignedPlayer.toString() + " resigned the game");
+            return Message.info(resignedPlayer + " resigned the game");
         }
         else{
             return Message.info(getWinner().toString() + " won the game");
@@ -449,11 +454,11 @@ public class Game {
 
         boolean putPieceBack;
         if(replayMode){
-            putPieceBack = lastMoveCaptureReplay.removeFirst().booleanValue();
+            putPieceBack = lastMoveCaptureReplay.removeFirst();
             lastMoveCaptureTypeReplay.getFirst();
         }
         else{
-            putPieceBack = lastMovesCapture.removeFirst().booleanValue();
+            putPieceBack = lastMovesCapture.removeFirst();
         }
 
         //If a player is undoing their only non-capturing move, the count should be reset
@@ -536,7 +541,7 @@ public class Game {
         int inversion = piece.getColor() == Piece.Color.RED ? 1 : -1;
 
         //A bit of a mess, but functional
-        if( (changeX == 1 || changeX == -1 )  && ( (changeY == -1*inversion) || ( (changeY == 1*inversion) && (piece.getType() == Piece.Type.KING) ) ) //Check for simple, non capturing moves
+        if( (changeX == 1 || changeX == -1 )  && ( (changeY == -1*inversion) || ( (changeY == inversion) && (piece.getType() == Piece.Type.KING) ) ) //Check for simple, non capturing moves
            || ( (changeX == 2 || changeX == -2) && ( (changeY == -2*inversion) || ( (changeY == 2*inversion) && (piece.getType() == Piece.Type.KING) ) ) && midPiece1 != null)) //Check for single capturing move
         {
             return Message.info("Welcome to the world of online Checkers.");
@@ -598,7 +603,7 @@ public class Game {
                 if(undoPromotion) piece.setType(Piece.Type.SINGLE);
             }
             else{
-                //Gets the boolean value as to whether or not the last move was a promotion
+                //Gets the boolean value whether the last move was a promotion
                 boolean undoPromotion = lastMovePromotion.removeFirst();
                 
                 //If it was, set it back to a single piece

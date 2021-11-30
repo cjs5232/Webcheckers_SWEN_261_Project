@@ -1,5 +1,10 @@
 package com.webcheckers.util;
 
+/**
+ * The piece class handles checkers pieces.
+ *
+ * @author Connor James Stange
+ */
 public class Piece {
     /**
      * Enumeration for piece Type

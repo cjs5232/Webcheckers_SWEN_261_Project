@@ -22,9 +22,9 @@ import com.webcheckers.util.Player;
 import com.webcheckers.util.Piece.Color;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the replay page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class GetReplayRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetReplayRoute.class.getName());
@@ -60,7 +60,8 @@ public class GetReplayRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     if (WebServer.DEBUG_FLAG) LOG.info("GetReplayRoute is invoked.");
-    //
+
+    //Create the view model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Replay Browser");
 

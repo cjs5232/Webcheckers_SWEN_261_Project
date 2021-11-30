@@ -13,6 +13,11 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+/**
+ * The UI Controller to stop spectating a game.
+ *
+ * @author David Authur Cole
+ */
 public class StopSpectatingRoute implements Route {
     
     private static final Logger LOG = Logger.getLogger(StopSpectatingRoute.class.getName());
@@ -44,7 +49,8 @@ public class StopSpectatingRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
         LOG.finer("StopWatchingRoute is invoked.");
-        //
+
+        //Create the view model
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Welcome!");
 

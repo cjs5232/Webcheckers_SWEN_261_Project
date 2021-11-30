@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class should be instatiated once when the web server is started, and will handle tracking logged in players
+ * This class should be instantiated once when the web server is started, and will handle tracking logged in players
+ *
+ * @author David Authur Cole
  */
 public class PlayerController {
 
@@ -21,7 +23,7 @@ public class PlayerController {
         
         int hashId = newPlayer.getId();
 
-        if(!newPlayer.toString().matches("^[a-zA-Z0-9\\_]+$")){
+        if(!newPlayer.toString().matches("^[a-zA-Z0-9_]+$")){
             return "Name contained invalid characters.<br />Valid characters are letters (uppercase and lowercase), and numbers.";
         }
 
@@ -92,7 +94,10 @@ public class PlayerController {
      * 
      * @param ignoredPlayer The player to ignore from the list, used to show "otherUsers" in home.ftl
      * @return A list of all logged in players, ignoring the param
+<<<<<<< HEAD
      *
+=======
+>>>>>>> d01c9e9badf12cbc373c370509b6936c7e68935d
      */
     public List<Player> getPlayersExcept(String ignoredPlayer){
 

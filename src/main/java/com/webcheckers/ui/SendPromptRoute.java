@@ -16,6 +16,11 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+/**
+ * The UI Controller to send av prompt.
+ *
+ * @author David Authur Cole
+ */
 public class SendPromptRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(SendPromptRoute.class.getName());
@@ -42,6 +47,7 @@ public class SendPromptRoute implements Route {
         
         LOG.info("SendPromptRoute is invoked.");
 
+        //Create the view model
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Send Prompt");
 

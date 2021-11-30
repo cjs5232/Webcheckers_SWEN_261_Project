@@ -1,5 +1,10 @@
 package com.webcheckers.util;
 
+/**
+ * The position class handles positions on a checkers board.
+ *
+ * @author Connor James Stange
+ */
 public class Position {
 
     /**

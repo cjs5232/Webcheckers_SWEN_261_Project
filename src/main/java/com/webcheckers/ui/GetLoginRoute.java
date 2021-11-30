@@ -14,9 +14,9 @@ import spark.TemplateEngine;
 import com.webcheckers.util.Message;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the login page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class GetLoginRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetLoginRoute.class.getName());
@@ -51,7 +51,8 @@ public class GetLoginRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetLoginRoute is invoked.");
-    //
+
+    //Create the view model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Login");
 

@@ -17,6 +17,11 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+/**
+ * The UI Controller to stop replaying a game.
+ *
+ * @author David Authur Cole
+ */
 public class StopReplayingRoute implements Route {
     
     private static final Logger LOG = Logger.getLogger(StopReplayingRoute.class.getName());
@@ -48,7 +53,8 @@ public class StopReplayingRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
         LOG.finer("StopWatchingRoute is invoked.");
-        //
+
+        //Create the view model
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Welcome!");
 

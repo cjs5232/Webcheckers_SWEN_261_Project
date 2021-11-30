@@ -17,9 +17,9 @@ import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the spectate page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class GetSpectateRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetSpectateRoute.class.getName());
@@ -55,7 +55,8 @@ public class GetSpectateRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     if (WebServer.DEBUG_FLAG) LOG.info("GetSpectateRoute is invoked.");
-    //
+
+    //Create the view model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Game");
 
@@ -73,6 +74,7 @@ public class GetSpectateRoute implements Route {
     currentUserPlayer.setSpectating(true);
     currentUserPlayer.setSpectatingGame(refGame);
 
+    // put game info
     vm.put("redPlayer", refGame.getPlayers()[0]);
     vm.put("whitePlayer", refGame.getPlayers()[1]);
     vm.put("currentPlayer", currentUserPlayer);

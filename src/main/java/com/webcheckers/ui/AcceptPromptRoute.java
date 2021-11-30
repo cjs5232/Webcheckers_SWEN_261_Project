@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,11 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+/**
+ * The UI Controller to GET to accept prompt page.
+ *
+ * @author David Authur Cole
+ */
 public class AcceptPromptRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(AcceptPromptRoute.class.getName());
@@ -41,6 +47,7 @@ public class AcceptPromptRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
       if (WebServer.DEBUG_FLAG) LOG.finer("GetAcceptRoute is invoked.");
 
+      //Create the view model
       Map<String, Object> vm = new HashMap<>();
       vm.put("title", "Match");
 
@@ -69,7 +76,7 @@ public class AcceptPromptRoute implements Route {
         refPlayer.removePrompt(opponent);
       }
       catch(ConcurrentModificationException ex){
-        LOG.finer("ConcurrentModificationException caught from " + AcceptPromptRoute.class.getName() + ". Stacktrace: " + ex.getStackTrace());
+        LOG.finer("ConcurrentModificationException caught from " + AcceptPromptRoute.class.getName() + ". Stacktrace: " + Arrays.toString(ex.getStackTrace()));
       }
       return null;
     }

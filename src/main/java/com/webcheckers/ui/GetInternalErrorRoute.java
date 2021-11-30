@@ -8,9 +8,9 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the internal error page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author David Authur Cole
  */
 public class GetInternalErrorRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetInternalErrorRoute.class.getName());
@@ -43,7 +43,8 @@ public class GetInternalErrorRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetInternalErrorRoute is invoked (oh no).");
-    //
+
+    //Create the view model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "500");
 

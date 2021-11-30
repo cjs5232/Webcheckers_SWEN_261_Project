@@ -5,6 +5,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * The row class handles checkers rows.
+ *
+ * @author Connor James Stange
+ */
 public class Row implements Iterable<Space>{
 
     /**
@@ -17,7 +22,7 @@ public class Row implements Iterable<Space>{
      * Declaration for row index and spaces within the row
      */
     private int index;
-    private List<Space> spaces = new ArrayList<>();
+    private List<Space> spaces;
 
     /**
      * Initialize a row given an index and spaces
@@ -59,7 +64,7 @@ public class Row implements Iterable<Space>{
         StringBuilder sb = new StringBuilder();
         sb.append("[ ");
         for(Space space : spaces){
-            sb.append(space + " ");
+            sb.append(space).append(" ");
         }
         sb.append("]");
         return sb.toString();

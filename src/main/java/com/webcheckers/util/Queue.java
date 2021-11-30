@@ -5,7 +5,11 @@ import java.util.Deque;
 import java.util.logging.Logger;
 
 import com.webcheckers.ui.WebServer;
-
+/**
+ * The queue class handles the checkers queue.
+ *
+ * @author David Authur Cole
+ */
 public class Queue {
     
     private static final Logger LOG = Logger.getLogger(Queue.class.getName());
