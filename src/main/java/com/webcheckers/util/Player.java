@@ -100,7 +100,7 @@ public class Player {
 
     /**
      * Sets whether or not the user is spectating a game
-     * @param spectating
+     * @param spectating the boolean value that indicates if a user is spectating or not
      */
     public void setSpectating(boolean spectating) {
         isSpectating = spectating;

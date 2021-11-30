@@ -571,7 +571,6 @@ public class Game {
 
     /**
      * @param move The desired move
-     * @param player The current player
      */
     public void executeMove(Move move){ 
 

@@ -26,8 +26,6 @@ public class ResignRoute implements Route {
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
      *
-     * @param templateEngine
-     *   the HTML template rendering engine
      */
     public ResignRoute() {
         LOG.config("ResignRoute is initialized.");

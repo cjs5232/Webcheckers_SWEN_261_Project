@@ -26,8 +26,6 @@ public class BackupMoveRoute implements Route {
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
      *
-     * @param templateEngine
-     *   the HTML template rendering engine
      */
     public BackupMoveRoute() {
         LOG.config("BackupMoveRoute is initialized.");

@@ -92,8 +92,7 @@ public class PlayerController {
      * 
      * @param ignoredPlayer The player to ignore from the list, used to show "otherUsers" in home.ftl
      * @return A list of all logged in players, ignoring the param
-     * 
-     * @see home.ftl
+     *
      */
     public List<Player> getPlayersExcept(String ignoredPlayer){
 
