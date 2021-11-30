@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import com.webcheckers.ui.WebServer;
+import com.webcheckers.application.*;
 import com.webcheckers.util.Piece.Color;
 
 /**

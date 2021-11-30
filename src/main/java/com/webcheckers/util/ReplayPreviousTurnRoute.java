@@ -9,7 +9,7 @@ import spark.Route;
 import spark.Session;
 
 import com.google.gson.Gson;
-import com.webcheckers.ui.WebServer;
+import com.webcheckers.application.*;
 import com.webcheckers.util.Game;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;

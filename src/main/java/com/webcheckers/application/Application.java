@@ -1,4 +1,4 @@
-package com.webcheckers;
+package com.webcheckers.application;
 
 import java.io.InputStream;
 import java.util.Objects;
@@ -6,7 +6,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
-import com.webcheckers.ui.WebServer;
+import com.webcheckers.application.WebServer;
 
 import spark.TemplateEngine;
 import spark.template.freemarker.FreeMarkerEngine;

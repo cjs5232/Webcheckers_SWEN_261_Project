@@ -1,11 +1,12 @@
-package com.webcheckers.util;
+package com.webcheckers.application;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.webcheckers.ui.WebServer;
+import com.webcheckers.util.Game;
+import com.webcheckers.util.Player;
 
 /**
  * The game controller class for checkers.

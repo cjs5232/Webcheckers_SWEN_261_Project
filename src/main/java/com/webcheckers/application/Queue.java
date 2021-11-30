@@ -1,10 +1,11 @@
-package com.webcheckers.util;
+package com.webcheckers.application;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.logging.Logger;
 
-import com.webcheckers.ui.WebServer;
+import com.webcheckers.util.Game;
+import com.webcheckers.util.Player;
 /**
  * The queue class handles the checkers queue.
  *

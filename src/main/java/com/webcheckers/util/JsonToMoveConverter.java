@@ -1,6 +1,5 @@
 package com.webcheckers.util;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
@@ -8,7 +7,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.webcheckers.ui.WebServer;
+import com.webcheckers.application.*;
+import com.webcheckers.model.Move;
+import com.webcheckers.model.Position;
 
 /**
  * The JsonToMoveConverter class converts a JSON (opponent move) to a move.

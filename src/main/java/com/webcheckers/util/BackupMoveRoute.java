@@ -7,7 +7,7 @@ import spark.Route;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
-import com.webcheckers.ui.WebServer;
+import com.webcheckers.application.*;
 import com.webcheckers.util.Game;
 import com.webcheckers.util.Message;
 import com.webcheckers.util.Player;
@@ -25,10 +25,6 @@ public class BackupMoveRoute implements Route {
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-<<<<<<< HEAD
-     *
-=======
->>>>>>> d01c9e9badf12cbc373c370509b6936c7e68935d
      */
     public BackupMoveRoute() {
         LOG.config("BackupMoveRoute is initialized.");

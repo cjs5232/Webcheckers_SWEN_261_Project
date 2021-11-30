@@ -1,4 +1,4 @@
-package com.webcheckers.util.gamehelpers;
+package com.webcheckers.util;
 
 import spark.Request;
 import spark.Response;
@@ -7,11 +7,11 @@ import spark.Route;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
-import com.webcheckers.ui.WebServer;
-import com.webcheckers.util.Game;
-import com.webcheckers.util.Message;
-import com.webcheckers.util.Player;
-import com.webcheckers.util.Piece.Color;
+import com.webcheckers.application.*;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Message;
+import com.webcheckers.model.Player;
+import com.webcheckers.model.Piece.Color;
 
 /**
  * The UI Controller to check turn.
@@ -26,10 +26,6 @@ public class CheckTurnRoute implements Route {
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-<<<<<<< HEAD
-     *
-=======
->>>>>>> d01c9e9badf12cbc373c370509b6936c7e68935d
      */
     public CheckTurnRoute() {
         LOG.config("CheckTurnRoute is initialized.");

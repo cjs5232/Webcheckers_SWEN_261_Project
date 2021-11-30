@@ -1,4 +1,4 @@
-package com.webcheckers.ui;
+package com.webcheckers.application;
 
 import static spark.Spark.*;
 
@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.webcheckers.ui.*;
 import com.webcheckers.util.GameController;
 import com.webcheckers.util.PlayerController;
 import com.webcheckers.util.Queue;

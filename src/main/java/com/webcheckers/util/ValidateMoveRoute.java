@@ -7,7 +7,7 @@ import spark.Route;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
-import com.webcheckers.ui.WebServer;
+import com.webcheckers.application.*;
 import com.webcheckers.util.Game;
 import com.webcheckers.util.JsonToMoveConverter;
 import com.webcheckers.util.Message;

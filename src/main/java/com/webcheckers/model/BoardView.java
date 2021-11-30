@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import com.webcheckers.ui.WebServer;
+import com.webcheckers.application.*;
 
 /**
  * The board view class.
