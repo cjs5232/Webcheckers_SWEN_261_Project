@@ -118,7 +118,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>${maven.exec.version}</version>
         <configuration>
-          <mainClass>com.webcheckers.Application</mainClass>
+          <mainClass>com.webcheckers.application.Application</mainClass>
         </configuration>
         <executions>
 	  <!-- Run all tier-specific unit test with code coverage
@@ -132,8 +132,8 @@
                 <argument>test-compile</argument>
                 <argument>surefire:test@ui</argument>
                 <argument>jacoco:report@ui</argument>
-                <argument>surefire:test@appl</argument>
-                <argument>jacoco:report@appl</argument>
+                <argument>surefire:test@application</argument>
+                <argument>jacoco:report@application</argument>
                 <argument>surefire:test@model</argument>
                 <argument>jacoco:report@model</argument>
               </arguments>

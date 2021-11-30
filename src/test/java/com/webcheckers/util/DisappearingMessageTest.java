@@ -2,6 +2,9 @@ package com.webcheckers.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.webcheckers.model.DisappearingMessage;
+import com.webcheckers.model.Player;
+
 import org.junit.jupiter.api.Test;
 
 public class DisappearingMessageTest {

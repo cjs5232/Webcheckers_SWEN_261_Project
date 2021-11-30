@@ -13,10 +13,10 @@ import spark.Session;
 import spark.TemplateEngine;
 
 import com.webcheckers.application.*;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Message;
+import com.webcheckers.model.Player;
 import com.google.gson.JsonObject;
-import com.webcheckers.util.Game;
-import com.webcheckers.util.Message;
-import com.webcheckers.util.Player;
 
 /**
  * The UI Controller to GET the game page.

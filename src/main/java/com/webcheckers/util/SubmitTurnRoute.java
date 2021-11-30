@@ -1,4 +1,4 @@
-package com.webcheckers.util.gamehelpers;
+package com.webcheckers.util;
 
 import spark.Request;
 import spark.Response;
@@ -8,10 +8,10 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.webcheckers.application.*;
-import com.webcheckers.util.Game;
-import com.webcheckers.util.Message;
-import com.webcheckers.util.Player;
-import com.webcheckers.util.Position;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Message;
+import com.webcheckers.model.Player;
+import com.webcheckers.model.Position;
 
 /**
  * The UI Controller to submit a turn.

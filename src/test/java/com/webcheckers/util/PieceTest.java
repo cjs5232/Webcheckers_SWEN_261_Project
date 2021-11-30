@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import com.webcheckers.model.Piece;
+
 public class PieceTest {
     Piece piece_single_red = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
     Piece piece_king_red = new Piece(Piece.Type.KING, Piece.Color.RED);

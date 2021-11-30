@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.UnsupportedEncodingException;
 
+import com.webcheckers.model.Move;
+import com.webcheckers.model.Position;
+
 import org.junit.jupiter.api.Test;
 
 public class JsonToMoveConverterTest {

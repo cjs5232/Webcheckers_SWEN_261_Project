@@ -7,9 +7,9 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.webcheckers.application.*;
-import com.webcheckers.util.DisappearingMessage;
-import com.webcheckers.util.Message;
-import com.webcheckers.util.Player;
+import com.webcheckers.model.DisappearingMessage;
+import com.webcheckers.model.Message;
+import com.webcheckers.model.Player;
 
 import spark.ModelAndView;
 import spark.Request;

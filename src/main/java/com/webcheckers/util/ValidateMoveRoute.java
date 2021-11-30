@@ -1,4 +1,4 @@
-package com.webcheckers.util.gamehelpers;
+package com.webcheckers.util;
 
 import spark.Request;
 import spark.Response;
@@ -8,15 +8,14 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.webcheckers.application.*;
-import com.webcheckers.util.Game;
-import com.webcheckers.util.JsonToMoveConverter;
-import com.webcheckers.util.Message;
-import com.webcheckers.util.Move;
-import com.webcheckers.util.Piece;
-import com.webcheckers.util.Player;
-import com.webcheckers.util.Position;
-import com.webcheckers.util.Row;
-import com.webcheckers.util.Space;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Message;
+import com.webcheckers.model.Move;
+import com.webcheckers.model.Piece;
+import com.webcheckers.model.Player;
+import com.webcheckers.model.Position;
+import com.webcheckers.model.Row;
+import com.webcheckers.model.Space;
 
 /**
  * The UI Controller to validate a move.

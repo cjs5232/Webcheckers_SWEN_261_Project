@@ -1,4 +1,4 @@
-package com.webcheckers.util;
+package com.webcheckers.model;
 
 /**
  * The space class handles checkers spaces.

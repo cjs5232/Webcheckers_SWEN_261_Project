@@ -5,13 +5,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.model.Message;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
-
-import com.webcheckers.util.Message;
 
 /**
  * The UI Controller to GET the login page.

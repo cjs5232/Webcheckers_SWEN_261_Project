@@ -1,4 +1,4 @@
-package com.webcheckers.util.gamehelpers;
+package com.webcheckers.util;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -9,9 +9,9 @@ import spark.Route;
 
 import com.google.gson.Gson;
 import com.webcheckers.application.*;
-import com.webcheckers.util.Game;
-import com.webcheckers.util.Message;
-import com.webcheckers.util.Player;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Message;
+import com.webcheckers.model.Player;
 
 /**
  * The UI Controller to replay the next turn.

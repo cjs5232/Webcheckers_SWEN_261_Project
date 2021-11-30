@@ -1,4 +1,4 @@
-package com.webcheckers.util;
+package com.webcheckers.model;
 
 import java.util.ArrayList;
 import java.util.Collections;

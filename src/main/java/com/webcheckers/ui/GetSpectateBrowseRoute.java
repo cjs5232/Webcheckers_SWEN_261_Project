@@ -14,7 +14,7 @@ import spark.Session;
 import spark.TemplateEngine;
 
 import com.webcheckers.application.*;
-import com.webcheckers.util.Game;
+import com.webcheckers.model.Game;
 
 /**
  * The UI Controller to GET to spectate browse page.

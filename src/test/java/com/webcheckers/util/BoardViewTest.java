@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.webcheckers.model.BoardView;
+
 import org.junit.jupiter.api.Test;
 
 public class BoardViewTest {

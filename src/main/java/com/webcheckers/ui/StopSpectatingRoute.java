@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import com.webcheckers.util.Player;
-
 import com.webcheckers.application.*;
+import com.webcheckers.model.Player;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

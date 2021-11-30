@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.webcheckers.application.PlayerController;
+import com.webcheckers.model.Player;
+
 import org.junit.jupiter.api.Test;
 
 class PlayerControllerTest {

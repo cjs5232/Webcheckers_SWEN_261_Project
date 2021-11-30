@@ -15,7 +15,12 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 
-import com.webcheckers.util.Piece.Color;
+import com.webcheckers.model.DisappearingMessage;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Move;
+import com.webcheckers.model.Player;
+import com.webcheckers.model.Position;
+import com.webcheckers.model.Piece.Color;
 
 public class PlayerTest {
     final String name_tester1 = "Tester1";

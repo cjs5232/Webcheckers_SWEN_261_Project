@@ -4,8 +4,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.logging.Logger;
 
-import com.webcheckers.util.Game;
-import com.webcheckers.util.Player;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Player;
 /**
  * The queue class handles the checkers queue.
  *

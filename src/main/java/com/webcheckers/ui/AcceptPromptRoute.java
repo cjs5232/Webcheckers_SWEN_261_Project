@@ -1,12 +1,13 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.application.*;
+import com.webcheckers.model.Player;
+
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import com.webcheckers.util.Player;
 
 import spark.Request;
 import spark.Response;

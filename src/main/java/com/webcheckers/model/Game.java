@@ -1,4 +1,4 @@
-package com.webcheckers.util;
+package com.webcheckers.model;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import com.webcheckers.application.*;
-import com.webcheckers.util.Piece.Color;
+import com.webcheckers.model.Piece.Color;
 
 /**
  * The game class that handles checkers.

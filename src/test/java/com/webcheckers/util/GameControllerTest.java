@@ -7,6 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import com.webcheckers.application.GameController;
+import com.webcheckers.application.PlayerController;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Player;
+
 public class GameControllerTest {
     
     private Player p1 = mock(Player.class);

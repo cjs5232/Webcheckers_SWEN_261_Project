@@ -1,4 +1,4 @@
-package com.webcheckers.util;
+package com.webcheckers.model;
 
 /**
  * The piece class handles checkers pieces.

@@ -7,16 +7,13 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.webcheckers.ui.*;
-import com.webcheckers.util.GameController;
-import com.webcheckers.util.PlayerController;
-import com.webcheckers.util.Queue;
-import com.webcheckers.util.gamehelpers.BackupMoveRoute;
-import com.webcheckers.util.gamehelpers.CheckTurnRoute;
-import com.webcheckers.util.gamehelpers.ReplayNextTurnRoute;
-import com.webcheckers.util.gamehelpers.ReplayPreviousTurnRoute;
-import com.webcheckers.util.gamehelpers.ResignRoute;
-import com.webcheckers.util.gamehelpers.SubmitTurnRoute;
-import com.webcheckers.util.gamehelpers.ValidateMoveRoute;
+import com.webcheckers.util.BackupMoveRoute;
+import com.webcheckers.util.CheckTurnRoute;
+import com.webcheckers.util.ReplayNextTurnRoute;
+import com.webcheckers.util.ReplayPreviousTurnRoute;
+import com.webcheckers.util.ResignRoute;
+import com.webcheckers.util.SubmitTurnRoute;
+import com.webcheckers.util.ValidateMoveRoute;
 
 import spark.TemplateEngine;
 

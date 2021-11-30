@@ -1,10 +1,12 @@
-package com.webcheckers.util;
+package com.webcheckers.application;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.webcheckers.model.Player;
 
 /**
  * This class should be instantiated once when the web server is started, and will handle tracking logged in players
@@ -94,10 +96,6 @@ public class PlayerController {
      * 
      * @param ignoredPlayer The player to ignore from the list, used to show "otherUsers" in home.ftl
      * @return A list of all logged in players, ignoring the param
-<<<<<<< HEAD
-     *
-=======
->>>>>>> d01c9e9badf12cbc373c370509b6936c7e68935d
      */
     public List<Player> getPlayersExcept(String ignoredPlayer){
 

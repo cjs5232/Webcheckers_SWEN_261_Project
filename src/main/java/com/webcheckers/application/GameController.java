@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.webcheckers.util.Game;
-import com.webcheckers.util.Player;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Player;
 
 /**
  * The game controller class for checkers.

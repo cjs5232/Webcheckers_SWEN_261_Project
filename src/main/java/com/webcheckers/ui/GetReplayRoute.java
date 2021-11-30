@@ -8,6 +8,12 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.webcheckers.application.*;
+import com.webcheckers.model.BoardView;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Message;
+import com.webcheckers.model.Player;
+import com.webcheckers.model.Piece.Color;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -16,11 +22,6 @@ import spark.Session;
 import spark.TemplateEngine;
 
 import com.google.gson.JsonObject;
-import com.webcheckers.util.BoardView;
-import com.webcheckers.util.Game;
-import com.webcheckers.util.Message;
-import com.webcheckers.util.Player;
-import com.webcheckers.util.Piece.Color;
 
 /**
  * The UI Controller to GET the replay page.
