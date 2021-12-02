@@ -13,6 +13,7 @@ import spark.Session;
 import spark.TemplateEngine;
 
 import com.webcheckers.application.*;
+import com.webcheckers.model.BoardView;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.Player;
@@ -148,7 +149,8 @@ public class GetGameRoute implements Route {
     refGame.resetTurnOccupied();
 
     //Place the board from the created game in the view model
-    if(refGame.getWhitePlayer().equals(currentUserPlayer)) vm.put("board", refGame.getInvertedBoard());
+    BoardView inverseBoard = new BoardView(refGame.getBoard()).inverseForWhite();
+    if(refGame.getWhitePlayer().equals(currentUserPlayer)) vm.put("board", inverseBoard);
     else vm.put("board", refGame.getBoard());
 
     Session session = request.session();

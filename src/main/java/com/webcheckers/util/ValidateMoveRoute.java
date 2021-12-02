@@ -67,10 +67,10 @@ public class ValidateMoveRoute implements Route {
         if(WebServer.DEBUG_FLAG) LOG.info("CurrentUser from AJax call: " + player.toString());
         Game gameBoard = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
 
-        //Player is white, move should be inverted to account for flipped board
+        /* //Player is white, move should be inverted to account for flipped board
         if(gameBoard.getWhitePlayer().equals(player)) {
             combinedMove.inverseForWhite();
-        }
+        } */
 
         //Get the individual move aspects from the combined move
         int rowNumStart = combinedMove.getStart().getRow();

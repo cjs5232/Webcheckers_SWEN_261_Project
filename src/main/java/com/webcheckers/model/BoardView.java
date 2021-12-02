@@ -68,14 +68,21 @@ public class BoardView implements Iterable<Row> {
      * Copy constructor
      */
     public BoardView(BoardView template){
-        this.rows = new ArrayList<>(template.getRows());
+        List<Row> rowsTemplate = template.getRows();
+        List<Row> rowsBuild = new ArrayList<>();
+        for(Row r : rowsTemplate){
+            rowsBuild.add(new Row(r));
+        }
+        
+        this.rows = rowsBuild;
     }
 
-    public void inverseForWhite(){
+    public BoardView inverseForWhite(){
         for(Row row : rows){
             row.inverseForWhite();
         }
         Collections.reverse(rows);
+        return this;
     }
 
     /**

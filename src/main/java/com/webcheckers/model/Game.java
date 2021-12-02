@@ -258,16 +258,6 @@ public class Game {
     }
 
     /**
-     * @return the board for the white player,
-     * which will be flipped 180 degrees
-     */
-    public BoardView getInvertedBoard(){
-        BoardView invertedBoard = new BoardView(this.gameBoard);
-        invertedBoard.inverseForWhite();
-        return invertedBoard;
-    }
-
-    /**
      * @return the two Players playing the game
      */
     public Player[] getPlayers(){

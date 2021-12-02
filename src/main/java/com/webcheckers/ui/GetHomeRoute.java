@@ -93,10 +93,12 @@ public class GetHomeRoute implements Route {
       waitOnPrompt(currentUserPlayer, response);
 
       //Add Disappearing Messages to the view model
-      vm.put("disappearingMessages", handleDisappearingMessages(currentUserPlayer, currentUserPlayer.getDisappearingMessages()));
+      List<DisappearingMessage> disappearingMessages = handleDisappearingMessages(currentUserPlayer, currentUserPlayer.getDisappearingMessages());
+      vm.put("disappearingMessages", disappearingMessages.isEmpty() ? null : disappearingMessages);
 
       //Add prompts to the view model
-      vm.put("activePrompts", handleDisappearingMessages(currentUserPlayer, currentUserPlayer.getPrompts()));
+      List<DisappearingMessage> prompts = handleDisappearingMessages(currentUserPlayer, currentUserPlayer.getPrompts());
+      vm.put("activePrompts",  prompts.isEmpty() ? null : prompts);
 
       if(loggedInPlayers != null && (loggedInPlayers.size() != 1)) {
 
@@ -179,7 +181,7 @@ public class GetHomeRoute implements Route {
       //Remove the expired prompts
       currentUserPlayer.removeOldPrompts(toRemovePrompts);
     }
-
+    
     return toDisplay;
   }
 

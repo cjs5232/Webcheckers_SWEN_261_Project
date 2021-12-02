@@ -24,6 +24,11 @@ public class Space {
         this.piece = piece;
     }
 
+    public Space(Space template){
+        this.cellIdx = template.cellIdx;
+        this.piece = template.piece;
+    }
+
     /**
      * @return The index of the cell
      */

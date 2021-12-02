@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +37,18 @@ public class Row implements Iterable<Space>{
         }
         
         this.spaces = spaces;
+    }
+
+    public Row(Row template){
+        this.index = template.index;
+        
+        List<Space> templateSpaces = template.spaces;
+        List<Space> buildSpaces = new ArrayList<>();
+        for(Space s : templateSpaces){
+            buildSpaces.add(new Space(s));
+        }
+
+        this.spaces = buildSpaces;
     }
 
     public void inverseForWhite(){
