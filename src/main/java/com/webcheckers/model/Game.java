@@ -86,6 +86,7 @@ public class Game {
      * Constructor for the game class
      * @param redPlayer The red player
      * @param whitePlayer The white player
+     * @see com.webcheckers.model.Player
      */
     public Game(Player redPlayer, Player whitePlayer){
 
@@ -98,34 +99,43 @@ public class Game {
         this.gameBoard = new BoardView(new ArrayList<>());
     }
 
+    /**
+     * @return The red player
+     */
     public Player getRedPlayer(){
         return redPlayer;
     }
 
+    /**
+     * @return The white player
+     */
     public Player getWhitePlayer(){
         return whitePlayer;
     }
     
+    /**
+     * Reset the moves that have been made during the turn, used when turn changes
+     */
     public void resetTurnOccupied(){
         this.turnPreviouslyOccupied = new ArrayList<>();
     }
 
     /**
-     * @return Whether there are next moves to go to in the replay
+     * @return True if the replay has a next move, false otherwise
      */
     public boolean replayHasNext(){
         return replayIndex < moveHistory.size();
     }
 
     /**
-     * @return Whether there are previous moves to go to in the replay
+     * @return True if the replay has a previous move, false otherwise
      */
     public boolean replayHasPrevious(){
         return replayIndex > 0;
     }
 
     /**
-     * Increments the replay index (next turn replay)
+     * Increments the replay index (next turn button in replay view)
      */
     public void replayNext(){
         Move toMove = moveHistory.get(replayIndex);
@@ -142,6 +152,9 @@ public class Game {
         if(WebServer.DEBUG_FLAG) LOG.info("lastMovePromotionReplay: " + Arrays.toString(lastMovePromotionReplay.toArray()));
     }
 
+    /**
+     * Decrements the replay index (previous turn button in replay view)
+     */
     public void replayPrevious(){
         replayMode = true;
         undoLastMove();
@@ -150,21 +163,21 @@ public class Game {
     }
 
     /**
-     * @param boardSetFlag Whether the board has been set for a replay
+     * @param boardSetFlag Boolean value to indicate whether the board has been set for a replay
      */
     public void setReplayBoardSet(boolean boardSetFlag){
         replayBoardSet = boardSetFlag;
     }
 
     /**
-     * @return Whether the board has been set for a replay
+     * @return True if the board has been set for a replay, false otherwise
      */
     public boolean getReplayBoardSet(){
         return replayBoardSet;
     }
 
     /**
-     * @param flagVal the value to set the overrideOverFlag to
+     * @param flagVal the boolean value to set the overrideOverFlag to
      */
     public void setOverrideOverFlag(boolean flagVal){
         this.overrideOverFlag = flagVal;
@@ -173,17 +186,23 @@ public class Game {
     /**
      * @return The piece at position P
      * @param p The position to get the piece from
+     * @see com.webcheckers.model.Position
      */
     public Piece getPieceAtPosition(Position p){
         return gameBoard.getRow(p.getRow()).getSpace(p.getCell()).getPiece();
     }
 
+    /**
+     * Sets the index that will be used to get the current move in replay mode
+     * @param index The new index for the replay
+     */
     public void setReplayMoveIndex(int index){
         this.replayIndex = index;
     }
 
     /**
      * Increment playersExited
+     * @param p The player that exited
      */
     public void playerExited(Player p){
         if(!exited.contains(p)){
@@ -191,6 +210,9 @@ public class Game {
         }
     }
 
+    /**
+     * @return The board printed prettily as a String, used for debugging
+     */
     public String getPlayersPretty(){
         return redPlayer.toString() + " vs. " + whitePlayer.toString();
     }
@@ -242,6 +264,7 @@ public class Game {
 
     /**
      * @param board the board to set
+     * @see com.webcheckers.model.BoardView
      */
     public void setBoard(BoardView board){
         if(!replayBoardSet){
@@ -310,18 +333,22 @@ public class Game {
 
     /**
      * @param c The color to set the active color to
+     * @see com.webcheckers.model.Piece.Color
      */
     public void setActiveColor(Color c){
         this.activeColor = c;
     }
 
     /**
-     * @return the active color of the game
+     * @return the color of the player who's turn it is
      */
     public Color getActiveColor(){
         return activeColor;
     }
 
+    /**
+     * @return the color of the player who's turn is not  currently active
+     */
     public Color getNonActiveColor(){
         return activeColor == Color.RED ? Color.WHITE : Color.RED;
     }
@@ -337,7 +364,8 @@ public class Game {
     }
 
     /**
-     * Remove a position from the list: it will not be killed when the call is made
+     * @param p The position to remove from the dead list
+     * @see com.webcheckers.model.Position
      */
     public void removeDeadPieceFromList(Position p){
 
@@ -353,6 +381,11 @@ public class Game {
         if (WebServer.DEBUG_FLAG) LOG.info("Dead piece list after removal: " + toRemove);
     }
 
+    /**
+     * @param p The position to check if it has already been visited in the current turn
+     * @return Whether the position has already been visited in the current turn
+     * @see com.webcheckers.model.Position
+     */
     public boolean alreadyVisited(Position p){
         for(Position po : turnPreviouslyOccupied){
             if(p.getRow() == po.getRow() && p.getCell() == po.getCell()){
@@ -365,6 +398,9 @@ public class Game {
         return false;
     }
 
+    /**
+     * @return The message as to why the game ended
+     */
     public Message getGameOverMessage(){
         if(resignedPlayer != null){
             return Message.info(resignedPlayer + " resigned the game");
@@ -377,6 +413,7 @@ public class Game {
     /**
      * @param p The position to check
      * @return True if the piece at position p can make further moves, false otherwise
+     * @see com.webcheckers.model.Position
      */
     public boolean positionHasOtherMoves(Position p){
 
@@ -410,12 +447,25 @@ public class Game {
         
         //Red piece, north moves as single, white piece, south moves as single
         return((
-            ((pieceColor == Piece.Color.WHITE || isPieceKing) && southEast != null && southEast2 != null && getPieceAtPosition(southEast) != null && getPieceAtPosition(southEast).getColor().equals(otherColor) && getPieceAtPosition(southEast2) == null && !alreadyVisited(southEast2)) ||
-            ((pieceColor == Piece.Color.WHITE || isPieceKing) && southWest != null && southWest2 != null && getPieceAtPosition(southWest) != null && getPieceAtPosition(southWest).getColor().equals(otherColor) && getPieceAtPosition(southWest2) == null && !alreadyVisited(southWest2)) ||
-            ((pieceColor == Piece.Color.RED || isPieceKing) && northEast != null && northEast2 != null && getPieceAtPosition(northEast) != null && getPieceAtPosition(northEast).getColor().equals(otherColor) && getPieceAtPosition(northEast2) == null && !alreadyVisited(northEast2)) ||
-            ((pieceColor == Piece.Color.RED || isPieceKing) && northWest != null && northWest2 != null && getPieceAtPosition(northWest) != null && getPieceAtPosition(northWest).getColor().equals(otherColor) && getPieceAtPosition(northWest2) == null && !alreadyVisited(northWest2)) 
-            )&&(!promotionDuringTurn)
+            ((pieceColor == Piece.Color.WHITE || isPieceKing) && positionConditionals(southEast, southEast2, otherColor)) ||
+            ((pieceColor == Piece.Color.WHITE || isPieceKing) && positionConditionals(southWest, southWest2, otherColor)) ||
+            ((pieceColor == Piece.Color.RED || isPieceKing) && positionConditionals(northEast, northEast2, otherColor)) ||
+            ((pieceColor == Piece.Color.RED || isPieceKing) && positionConditionals(northWest, northWest2, otherColor)) 
+            ) &&(!promotionDuringTurn)
         );
+    }
+
+    /**
+     * 
+     * @param p1 The position one square diagonally from the piece
+     * @param p2 The position two squares diagonally from the piece
+     * @param otherColor The color of the other player
+     * @return True if the position has valid other moves, false otherwise
+     * @see com.webcheckers.model.Position
+     * @see com.webcheckers.model.Piece.Color
+     */
+    boolean positionConditionals(Position p1, Position p2, Color otherColor){
+        return(p1 != null && p2 != null && getPieceAtPosition(p1) != null && getPieceAtPosition(p1).getColor().equals(otherColor) && getPieceAtPosition(p2) == null && !alreadyVisited(p2));
     }
 
     /**
@@ -466,9 +516,9 @@ public class Game {
     }
 
     /**
-     * @return true if the game is won by a player
+     * @return true if the game is ended, false otherwise
      */
-    public boolean isOver(){
+    public boolean isGameOver(){
         
         //Count of pieces still on the board
         int redPieces = 0;
@@ -490,6 +540,8 @@ public class Game {
 
     /** 
      * There is a lot of complex logic in here to determine if a move is valid
+     * @param move The move to check validity of
+     * @param piece The piece that is moving
      * @return true if the move is valid, false otherwise
     */
     public Message isMoveValid(Move move, Piece piece){
@@ -541,6 +593,10 @@ public class Game {
 
     /**
      * If a piece moves to the 7th or 0th row, it should be made a king
+     * @param end The position the piece is moving to
+     * @param piece The piece that is moving
+     * @see com.webcheckers.model.Position
+     * @see com.webcheckers.model.Piece
      */
     public void checkForPromotion(Position end, Piece p){
         if(p.getType() == Piece.Type.SINGLE && (end.getRow() == 0 || end.getRow() == 7)){
@@ -565,7 +621,8 @@ public class Game {
     }
 
     /**
-     * @param move The desired move
+     * @param move The desired move to be made
+     * @see com.webcheckers.model.Move
      */
     public void executeMove(Move move){ 
 
@@ -641,12 +698,18 @@ public class Game {
 
     /**
      * Sets the resignation flag to true
+     * @param player The player who resigned
+     * @see com.webcheckers.model.Player
      */
     public void resign(Player player){
         resignedPlayer = player;
         overrideOverFlag = true;   
     }
 
+    /**
+     * @return The complete list of moves made during a game to be used for the replay
+     * @see com.webcheckers.model.Move
+     */
     public List<Move> getMoveHistoryForReplay() {
         return moveHistory;
     }

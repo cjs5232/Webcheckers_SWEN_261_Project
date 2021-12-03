@@ -56,7 +56,7 @@ public class CheckTurnRoute implements Route {
             refGame = player.getSpectatingGame();
 
             //If the game is over, return the winner as a message
-            if(refGame.isOver()){
+            if(refGame.isGameOver()){
                 return gson.toJson(refGame.getGameOverMessage()); 
             }
 
@@ -70,7 +70,7 @@ public class CheckTurnRoute implements Route {
         Player whitePlayer = players[1];
 
         //Boolean logic to determine if it is the player's turn
-        return gson.toJson(Message.info(Boolean.toString((player == redPlayer && refGame.getActiveColor() == Color.RED) || (player == whitePlayer && refGame.getActiveColor() == Color.WHITE) || refGame.isOver())));
+        return gson.toJson(Message.info(Boolean.toString((player == redPlayer && refGame.getActiveColor() == Color.RED) || (player == whitePlayer && refGame.getActiveColor() == Color.WHITE) || refGame.isGameOver())));
     }
     
 }

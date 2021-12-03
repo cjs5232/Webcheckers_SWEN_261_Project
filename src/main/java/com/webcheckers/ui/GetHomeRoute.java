@@ -85,7 +85,7 @@ public class GetHomeRoute implements Route {
       else currentUserPlayer.setIsPlaying(false);
 
       //If the user has an active game, and they are on the home page, they exited/resigned
-      if(refGame != null && refGame.isOver()){
+      if(refGame != null && refGame.isGameOver()){
         WebServer.GLOBAL_GAME_CONTROLLER.handlePlayerExitGame(refGame.getId(), currentUserPlayer);
         WebServer.GLOBAL_GAME_CONTROLLER.addCompletedGame(refGame);
       }

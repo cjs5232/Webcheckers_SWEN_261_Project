@@ -50,7 +50,7 @@ public class ResignRoute implements Route {
         Game refGame = WebServer.GLOBAL_GAME_CONTROLLER.getGameOfPlayer(player);
 
         //This should never happen, but just in case
-        if(refGame.isOver()){
+        if(refGame.isGameOver()){
             return(gson.toJson(Message.error("Cannot resign. Game is over.")));
         }
         else{

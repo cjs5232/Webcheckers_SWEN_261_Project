@@ -134,7 +134,7 @@ public class GetGameRoute implements Route {
     vm.put("viewMode", "PLAY");
 
     //If the game is over, tell the server to end the game
-    if(refGame.isOver()){
+    if(refGame.isGameOver()){
       if (WebServer.DEBUG_FLAG) LOG.info("GAME IS OVER");
 
       JsonObject modeOptions = new JsonObject();

@@ -126,7 +126,7 @@ public class GetReplayRoute implements Route {
       modeOptions.addProperty("isGameOver", "true");
     }
     if(refGame.replayHasPrevious()) modeOptions.addProperty("hasPrevious", "false");
-    if(refGame.isOver()) modeOptions.addProperty("isGameOver", "true");
+    if(refGame.isGameOver()) modeOptions.addProperty("isGameOver", "true");
     vm.put("modeOptionsAsJSON", modeOptions);
 
     Session session = request.session();
